@@ -1,845 +1,613 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ishi Olam</title>
-    <style>html, body { background-color: #0A0908; margin: 0; padding: 0; }</style>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;1,400&family=Noto+Serif+Hebrew:wght@400&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* Palette strictly enforced */
-            --bg: #0A0908;
-            --text: #E2D9C8;
-            --gold: #C5A55A;
-            --glow: #8B6914;
-            --card-bg: #12100E;
-            --border: #2A2318;
-            --hover: #D4B96A;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ishi Olam</title>
+<meta name="description" content="The entire Bible is a love story. You are the one being pursued. Ishi Olam — tracing the desire of God across the full arc of Scripture.">
+<style>html{background:#0A0908}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Serif+Hebrew:wght@400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'EB Garamond', serif;
-            font-size: 19px;
-            line-height: 1.78;
-            letter-spacing: 0.01em;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+:root {
+  --bg: #0A0908;
+  --text: #E2D9C8;
+  --gold: #C5A55A;
+  --fire: #8B6914;
+  --surface: #12100E;
+  --border: #2A2318;
+  --gold-hover: #D4B96A;
+}
 
-        /* Typography */
-        h1, h2, h3, .cinzel {
-            font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-weight: 400;
-            margin: 0;
-        }
-        
-        .italic { font-style: italic; }
-        .hebrew { font-family: 'Noto Serif Hebrew', serif; }
-        
-        /* Cathedral Spacing */
-        .container {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 120px 80px;
-        }
-        @media (max-width: 768px) {
-            .container { padding: 100px 24px; }
-        }
+html { background: var(--bg); scroll-behavior: smooth; }
 
-        p { margin-bottom: 32px; margin-top: 0; }
-        .section-gap { margin-top: 140px; margin-bottom: 140px; }
-        .scripture-gap { margin-top: 80vh; margin-bottom: 80vh; }
-        .darkness-60vh { height: 60vh; }
-        .darkness-40vh { height: 40vh; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.78;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-        /* Liturgical Motion */
-        .reveal {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+::selection { background: rgba(197,165,90,0.2); color: var(--text); }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 56px;
-            background-color: rgba(10, 9, 8, 0.92);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 40px;
-            z-index: 100;
-            transition: transform 0.3s ease;
-        }
-        nav.hidden { transform: translateY(-100%); }
-        .nav-logo {
-            font-family: 'Cinzel', serif;
-            font-variant: small-caps;
-            color: var(--gold);
-            font-size: 13px;
-            letter-spacing: 0.15em;
-            text-decoration: none;
-        }
-        .nav-links { display: flex; gap: 16px; align-items: center; }
-        .nav-link {
-            font-family: 'Cinzel', serif;
-            font-variant: small-caps;
-            color: rgba(197, 165, 90, 0.6);
-            font-size: 12px;
-            letter-spacing: 0.15em;
-            text-decoration: none;
-            position: relative;
-            transition: color 0.3s ease-in;
-        }
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 160px; height: 160px;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            filter: blur(30px);
-            z-index: -1;
-            transition: opacity 0.5s ease-out;
-            pointer-events: none;
-        }
-        .nav-link:hover { color: var(--gold); }
-        .nav-link:hover::before { opacity: 0.25; transition: opacity 0.3s ease-in; }
-        .middot { color: rgba(197, 165, 90, 0.6); font-size: 12px; }
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: rgba(10,9,8,0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+nav.hidden { transform: translateY(-100%); opacity: 0; }
+.nav-logo {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: rgba(197,165,90,0.5);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-logo:hover { color: var(--gold); }
 
-        /* Mobile Nav */
-        .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 10px; }
-        .hamburger div { width: 24px; height: 1px; background-color: var(--gold); margin: 6px 0; }
-        .mobile-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background-color: rgba(10, 9, 8, 0.98);
-            z-index: 200;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-        .mobile-overlay.active { opacity: 1; pointer-events: all; }
-        .mobile-overlay .nav-link { font-size: 22px; margin: 26px 0; color: var(--gold); opacity: 0.8; }
-        .close-menu { position: absolute; top: 20px; right: 24px; color: var(--gold); font-family: 'Cinzel', serif; font-size: 24px; cursor: pointer; }
+/* ── SECTIONS ── */
+.s {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 28px;
+  position: relative;
+}
+.s.half { min-height: 60vh; }
+.s.auto { min-height: auto; }
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hamburger { display: block; }
-            nav { padding: 0 24px; }
-        }
+/* ── REVEAL ── */
+.r {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.r.v { opacity: 1; transform: translateY(0); }
 
-        /* Page Routing */
-        .page { display: none; opacity: 0; transition: opacity 0.4s ease; }
-        .page.active { display: block; opacity: 1; }
+/* ── APPROACH ── */
+#approach { min-height: 100vh; position: relative; }
+.approach-text {
+  font-style: italic;
+  font-size: 28px;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.55;
+  max-width: 680px;
+}
+.approach-text .w {
+  opacity: 0;
+  display: inline-block;
+  margin-right: 0.28em;
+  transition: opacity 0.4s ease;
+}
+.approach-text .w.v { opacity: 1; }
+.approach-text .l2 { display: block; margin-top: 20px; }
 
-        /* The Approach (Home) */
-        #approach-screen {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-        .approach-text {
-            position: absolute;
-            font-family: 'EB Garamond', serif;
-            font-style: italic;
-            color: var(--gold);
-            font-size: 28px;
-            text-align: center;
-            z-index: 10;
-        }
-        @media (max-width: 768px) { .approach-text { font-size: 32px; } }
-        
-        .approach-word { opacity: 0; transition: opacity 0.3s ease-in; }
+.glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.01);
+  width: 550px; height: 550px;
+  background: radial-gradient(ellipse, var(--fire) 0%, transparent 68%);
+  opacity: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+}
+.glow.on {
+  animation: gg 4.5s ease-out forwards, gb 6s ease-in-out 4.5s infinite;
+}
+@keyframes gg {
+  to { transform: translate(-50%, -50%) scale(1); opacity: 0.065; }
+}
+@keyframes gb {
+  0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.08; transform: translate(-50%, -50%) scale(1.012); }
+}
 
-        .center-glow {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0;
-            pointer-events: none;
-            z-index: 1;
-        }
-        @keyframes breathe {
-            0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.08; transform: translate(-50%, -50%) scale(1.015); }
-        }
+.scroll-hint {
+  position: absolute;
+  bottom: 44px; left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 2s ease;
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, transparent, rgba(197,165,90,0.25), transparent);
+}
+.scroll-hint.v { opacity: 1; animation: sh 3s ease-in-out infinite; }
+@keyframes sh {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.4; }
+}
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px; left: 50%;
-            transform: translateX(-50%);
-            width: 1px; height: 40px;
-            background: linear-gradient(to bottom, transparent, rgba(197, 165, 90, 0.3), transparent);
-            opacity: 0;
-            animation: pulse 3s infinite ease-in-out;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.6; } }
+/* ── SCRIPTURE ── */
+.scripture {
+  font-style: italic;
+  color: var(--gold);
+  font-size: 21px;
+  line-height: 1.65;
+  text-align: center;
+  max-width: 580px;
+}
+.ref {
+  display: block;
+  font-style: normal;
+  font-size: 13px;
+  color: rgba(197,165,90,0.45);
+  margin-top: 10px;
+  letter-spacing: 0.03em;
+}
 
-        .audio-circle {
-            position: fixed;
-            bottom: 40px; right: 40px;
-            width: 40px; height: 40px;
-            border: 1px solid rgba(197, 165, 90, 0.4);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer;
-            opacity: 0;
-            transition: border-color 0.3s ease, opacity 0.9s ease;
-            z-index: 50;
-        }
-        .audio-circle:hover { border-color: rgba(197, 165, 90, 0.7); }
-        .audio-circle::after {
-            content: '';
-            width: 0; height: 0;
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-left: 8px solid rgba(197, 165, 90, 0.4);
-            margin-left: 3px;
-            transition: border-left-color 0.3s ease;
-        }
-        .audio-circle:hover::after { border-left-color: rgba(197, 165, 90, 0.7); }
-        @keyframes gentle-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); border-color: rgba(197, 165, 90, 0.6); } }
-        .audio-circle.playing { animation: gentle-pulse 2s infinite ease-in-out; }
+/* ── THEOLOGY ── */
+.theology {
+  max-width: 660px;
+  text-align: left;
+  font-size: 19px;
+  line-height: 1.82;
+}
+.theology p { margin-bottom: 30px; }
+.theology em { color: var(--gold); font-style: italic; }
+.theology .pause {
+  display: block;
+  text-align: center;
+  color: rgba(197,165,90,0.2);
+  font-size: 14px;
+  letter-spacing: 0.6em;
+  padding: 48px 0;
+}
 
-        /* Typography Styles */
-        .text-center { text-align: center; }
-        .text-gold { color: var(--gold); }
-        .max-640 { max-width: 640px; margin-left: auto; margin-right: auto; }
-        .max-660 { max-width: 660px; margin-left: auto; margin-right: auto; }
-        .title-42 { font-size: 42px; margin-bottom: 16px; }
-        .subtitle-22 { font-size: 22px; margin-bottom: 32px; }
-        .author-smallcaps { font-size: 14px; font-variant: small-caps; letter-spacing: 0.1em; }
-        .scripture-quote { font-size: 20px; color: var(--gold); margin-bottom: 12px; }
-        .scripture-attr { font-size: 13px; color: rgba(197, 165, 90, 0.5); font-style: normal; }
-        .divider { text-align: center; color: rgba(197, 165, 90, 0.4); letter-spacing: 8px; margin: 60px 0; }
-        
-        /* Watermark */
-        .watermark {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: clamp(120px, 15vw, 220px);
-            color: var(--gold);
-            opacity: 0.03;
-            z-index: -1;
-            pointer-events: none;
-            white-space: nowrap;
-            animation: drift 20s ease-in-out infinite;
-        }
-        @keyframes drift {
-            0%, 100% { transform: translate(calc(-50% - 10px), -50%); }
-            50% { transform: translate(calc(-50% + 10px), -50%); }
-        }
+/* ── BOOK ── */
+.book-title {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  color: var(--gold);
+  text-align: center;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.book-sub {
+  font-style: italic;
+  font-size: 20px;
+  color: var(--text);
+  text-align: center;
+  margin-top: 6px;
+}
+.book-by {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: rgba(197,165,90,0.5);
+  text-align: center;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+.book-body {
+  max-width: 640px;
+  text-align: center;
+  margin-top: 52px;
+  font-size: 18px;
+  line-height: 1.8;
+  color: rgba(226,217,200,0.85);
+}
+.book-body p { margin-bottom: 24px; }
+.book-note {
+  font-style: italic;
+  font-size: 14px;
+  color: rgba(197,165,90,0.4);
+  margin-top: 36px;
+  text-align: center;
+}
 
-        /* Cards */
-        .card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            position: relative;
-            z-index: 10;
-        }
-        @media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 32px;
-            border-radius: 2px;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            transition: border-color 0.3s ease;
-            cursor: pointer;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            filter: blur(40px);
-            transition: opacity 0.5s ease-out;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .card:hover::before { opacity: 0.2; transition: opacity 0.3s ease-in; }
-        .card-content { position: relative; z-index: 1; }
-        .card-title { font-size: 18px; font-variant: small-caps; margin-bottom: 8px; color: var(--gold); }
-        .card-desc { font-size: 14px; color: var(--text); margin: 0; }
+/* ── NAME ── */
+.name-title {
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  color: var(--gold);
+  text-align: center;
+  font-weight: 400;
+}
+.name-epi {
+  font-style: italic;
+  color: var(--gold);
+  font-size: 17px;
+  text-align: center;
+  max-width: 560px;
+  margin-top: 20px;
+  line-height: 1.7;
+}
+.name-epi .ref { margin-top: 6px; }
+.name-body {
+  max-width: 640px;
+  text-align: left;
+  margin-top: 56px;
+}
+.name-body p { margin-bottom: 28px; }
+.name-body .hw {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  color: var(--gold);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
 
-        /* Buttons & Forms */
-        .btn-gold {
-            display: inline-block;
-            font-family: 'Cinzel', serif;
-            font-variant: small-caps;
-            font-size: 14px;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            background: transparent;
-            padding: 14px 40px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .btn-gold:hover { background-color: rgba(139, 105, 20, 0.15); }
+/* ── GATE ── */
+.gate-text {
+  text-align: center;
+  font-size: 18px;
+  color: rgba(226,217,200,0.7);
+  line-height: 2.2;
+  max-width: 500px;
+}
+.gate-cta {
+  font-style: italic;
+  color: var(--gold);
+  font-size: 20px;
+  margin-top: 48px;
+  text-align: center;
+}
+.gate-form {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.gate-form input[type="email"] {
+  width: 320px;
+  max-width: 90vw;
+  padding: 13px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.gate-form input[type="email"]::placeholder {
+  color: rgba(226,217,200,0.25);
+  font-style: italic;
+}
+.gate-form input[type="email"]:focus {
+  border-color: var(--gold);
+}
+.gate-form button {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(197,165,90,0.4);
+  background: transparent;
+  padding: 12px 52px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.gate-form button::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse, var(--fire), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.gate-form button:hover { border-color: var(--gold); color: var(--gold-hover); }
+.gate-form button:hover::before { opacity: 0.15; }
+.gate-confirmation {
+  display: none;
+  text-align: center;
+  font-style: italic;
+  color: rgba(197,165,90,0.65);
+  font-size: 16px;
+  line-height: 1.8;
+  animation: fu 0.8s ease-out;
+}
+.gate-confirmation .ref { margin-top: 4px; font-size: 12px; }
+@keyframes fu {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
-        .input-dark {
-            width: 100%;
-            max-width: 400px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            color: var(--text);
-            font-family: 'EB Garamond', serif;
-            font-size: 16px;
-            padding: 14px 20px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.3s ease;
-            text-align: center;
-        }
-        .input-dark:focus { border-color: var(--gold); }
-        .input-dark::placeholder { color: rgba(226, 217, 200, 0.3); }
+/* ── WHISPER ── */
+.whisper {
+  text-align: right;
+  padding-right: 12%;
+  font-style: italic;
+  color: rgba(197,165,90,0.45);
+  font-size: 16px;
+  width: 100%;
+  max-width: 700px;
+  margin-top: 140px;
+}
 
-        /* The Whisper */
-        .whisper {
-            text-align: right;
-            margin-right: 15%;
-            font-style: italic;
-            color: rgba(197, 165, 90, 0.6);
-            font-size: 16px;
-            margin-top: 200px;
-            margin-bottom: 80px;
-        }
+/* ── WATERMARK ── */
+.wm {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Noto Serif Hebrew', serif;
+  font-size: 200px;
+  color: rgba(197,165,90,0.025);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: wmd 22s ease-in-out infinite;
+  z-index: 0;
+  user-select: none;
+}
+@keyframes wmd {
+  0%, 100% { transform: translate(-50%, -50%) translateX(-8px); }
+  50% { transform: translate(-50%, -50%) translateX(8px); }
+}
 
-        /* Specific Page Elements */
-        .book-cover-placeholder {
-            width: 100%; max-width: 360px; height: 520px;
-            margin: 0 auto 40px auto;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            position: relative;
-        }
-        .book-cover-placeholder::before {
-            content: ''; position: absolute; top: 50%; left: 50%;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
-            transform: translate(-50%, -50%);
-            opacity: 0.1; filter: blur(60px); z-index: -1;
-        }
-        
-        .essay-entry { margin-bottom: 60px; padding-bottom: 60px; border-bottom: 1px solid var(--border); }
-        .essay-entry:last-child { border-bottom: none; }
-        .essay-date { font-size: 12px; color: rgba(197, 165, 90, 0.4); margin-top: 16px; font-family: sans-serif; letter-spacing: 0.05em;}
+/* ── DIVIDER ── */
+.div {
+  text-align: center;
+  padding: 72px 0;
+  color: rgba(197,165,90,0.2);
+  font-size: 14px;
+  letter-spacing: 0.6em;
+}
 
-        .audio-player-custom {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 24px;
-            display: flex; align-items: center; gap: 24px;
-            margin-top: 16px;
-        }
-        .play-btn {
-            width: 48px; height: 48px; border-radius: 50%;
-            border: 1px solid var(--gold);
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; background: transparent; flex-shrink: 0;
-        }
-        .play-btn::after {
-            content: ''; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid var(--gold); margin-left: 4px;
-        }
-        .progress-container { flex-grow: 1; height: 2px; background-color: var(--border); position: relative; }
-        .progress-bar { position: absolute; left: 0; top: 0; height: 100%; background-color: var(--gold); width: 0%; }
-        .time-display { font-size: 12px; color: var(--gold); width: 40px; text-align: right; }
+/* ── FOOTER ── */
+footer {
+  text-align: center;
+  padding: 100px 24px 52px;
+}
+.f-name {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.35);
+}
+.f-email {
+  font-size: 12px;
+  color: rgba(197,165,90,0.3);
+  text-decoration: none;
+  display: block;
+  margin-top: 6px;
+  transition: color 0.3s;
+}
+.f-email:hover { color: var(--gold); }
 
-        .masonry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        @media (max-width: 768px) { .masonry-grid { grid-template-columns: 1fr; } }
-        .visual-piece {
-            background-color: var(--card-bg); aspect-ratio: 4/3;
-            display: flex; justify-content: center; align-items: center;
-            position: relative; cursor: pointer; overflow: hidden;
-        }
-        .visual-piece::after {
-            content: ''; position: absolute; inset: 0; background-color: var(--glow); opacity: 0; transition: opacity 0.3s ease;
-        }
-        .visual-piece:hover::after { opacity: 0.12; }
-        .visual-placeholder-text { font-family: 'Cinzel', serif; color: var(--gold); opacity: 0.1; font-size: 14px; z-index: 1; }
-
-        .footer { text-align: center; margin-top: 140px; padding-bottom: 80px; }
-        .footer-logo { font-size: 12px; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 8px; }
-        .footer-link { font-size: 12px; color: rgba(197, 165, 90, 0.5); text-decoration: none; }
-    </style>
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .approach-text { font-size: 25px; padding: 0 8px; }
+  .book-title, .name-title { font-size: 30px; }
+  .theology { font-size: 17px; }
+  .scripture { font-size: 19px; }
+  .s { padding: 80px 22px; }
+  .whisper { padding-right: 8%; margin-top: 100px; }
+  .wm { font-size: 130px; }
+}
+@media (max-width: 480px) {
+  .approach-text { font-size: 23px; }
+  body { font-size: 17px; }
+  .theology { font-size: 16.5px; }
+  .s { padding: 64px 18px; }
+}
+</style>
 </head>
 <body>
 
-    <nav id="navbar">
-        <a href="#home" class="nav-logo" onclick="navTo('home')">Ishi Olam</a>
-        <div class="nav-links">
-            <a href="#book" class="nav-link" onclick="navTo('book')">The Book</a>
-            <span class="middot">·</span>
-            <a href="#writings" class="nav-link" onclick="navTo('writings')">Writings</a>
-            <span class="middot">·</span>
-            <a href="#listen" class="nav-link" onclick="navTo('listen')">Listen</a>
-            <span class="middot">·</span>
-            <a href="#see" class="nav-link" onclick="navTo('see')">See</a>
-            <span class="middot">·</span>
-            <a href="#gather" class="nav-link" onclick="navTo('gather')">Gather</a>
-            <span class="middot">·</span>
-            <a href="#name" class="nav-link" onclick="navTo('name')">The Name</a>
-        </div>
-        <button class="hamburger" onclick="toggleMenu()">
-            <div></div><div></div><div></div>
-        </button>
-    </nav>
+<nav id="nav"><a href="#approach" class="nav-logo">Ishi Olam</a></nav>
 
-    <div class="mobile-overlay" id="mobileMenu">
-        <div class="close-menu" onclick="toggleMenu()">X</div>
-        <a href="#book" class="nav-link cinzel" onclick="navTo('book'); toggleMenu();">The Book</a>
-        <a href="#writings" class="nav-link cinzel" onclick="navTo('writings'); toggleMenu();">Writings</a>
-        <a href="#listen" class="nav-link cinzel" onclick="navTo('listen'); toggleMenu();">Listen</a>
-        <a href="#see" class="nav-link cinzel" onclick="navTo('see'); toggleMenu();">See</a>
-        <a href="#gather" class="nav-link cinzel" onclick="navTo('gather'); toggleMenu();">Gather</a>
-        <a href="#name" class="nav-link cinzel" onclick="navTo('name'); toggleMenu();">The Name</a>
+<!-- THE APPROACH -->
+<div class="s" id="approach">
+  <div class="glow" id="glow"></div>
+  <div class="approach-text" id="at">
+    <span class="w">The</span>
+    <span class="w">entire</span>
+    <span class="w">Bible</span>
+    <span class="w">is</span>
+    <span class="w">a</span>
+    <span class="w">love</span>
+    <span class="w">story.</span>
+    <span class="l2">
+      <span class="w">You</span>
+      <span class="w">are</span>
+      <span class="w">the</span>
+      <span class="w">one</span>
+      <span class="w">being</span>
+      <span class="w">pursued.</span>
+    </span>
+  </div>
+  <div class="scroll-hint" id="sh"></div>
+</div>
+
+<!-- SCRIPTURE 1 -->
+<div class="s">
+  <div class="r scripture">
+    &ldquo;I have loved you with an everlasting love.&rdquo;
+    <span class="ref">Jeremiah 31:3</span>
+  </div>
+</div>
+
+<!-- SCRIPTURE 2 -->
+<div class="s">
+  <div class="r scripture">
+    &ldquo;I will betroth you to me forever.&rdquo;
+    <span class="ref">Hosea 2:19</span>
+  </div>
+</div>
+
+<!-- SCRIPTURE 3 -->
+<div class="s">
+  <div class="r scripture">
+    &ldquo;Set me as a seal upon your heart&nbsp;.&nbsp;.&nbsp;.<br>
+    its flashes are flashes of fire,<br>
+    the very flame of the <span style="font-variant:small-caps">Lord</span>.&rdquo;
+    <span class="ref">Song of Songs 8:6</span>
+  </div>
+</div>
+
+<!-- THE THEOLOGY -->
+<div class="s auto" style="padding-top:40px; padding-bottom:40px; position:relative;">
+  <div class="wm" aria-hidden="true">&#x05E9;&#x05B7;&#x05C1;&#x05DC;&#x05B0;&#x05D4;&#x05B6;&#x05D1;&#x05B6;&#x05EA;&#x05B0;&#x05D9;&#x05B8;&#x05D4;</div>
+  <div class="r theology" style="position:relative; z-index:1;">
+
+    <p>Isaiah 49:15&ndash;16. God is speaking:</p>
+
+    <p style="text-align:center; font-style:italic; color:var(--gold); font-size:20px; line-height:1.7; padding: 20px 0;">
+      &ldquo;Can a woman forget her nursing child,<br>
+      that she should have no compassion on the son of her womb?<br>
+      Even these may forget, yet I will not forget you.<br>
+      Behold, I have engraved you on the palms of my hands.&rdquo;
+    </p>
+
+    <p>The Hebrew verb is <em>chaqaq</em> (&thinsp;&#x05D7;&#x05B8;&#x05E7;&#x05B7;&#x05E7;&thinsp;)&thinsp;&mdash;&thinsp;to cut, to inscribe, to carve into stone or flesh. Not written. Not painted. <em>Carved.</em> A mark that cannot be erased because it has been cut into the surface of the body itself. And the surface is <em>kapayim</em>&thinsp;&mdash;&thinsp;the palms. The open, upturned hands.</p>
+
+    <p>The nails went through the palms.</p>
+
+    <p>Isaiah wrote this seven hundred years before Golgotha, and the sentence waited&thinsp;&mdash;&thinsp;waited through the exile and the return and the silence between the testaments&thinsp;&mdash;&thinsp;and then on a Friday afternoon the Roman soldiers drove iron through the hands of Jesus of Nazareth and the prophecy was fulfilled not as metaphor but as <em>metal through flesh.</em> What was carved into the palms was the bride&rsquo;s name. <em>Your</em> name. Engraved by iron into the body of God.</p>
+
+    <p>And after the Resurrection, He did not heal the scars. He <em>showed</em> them. He held out His hands to Thomas in the locked room and said: <em>see.</em> The wounds are the record&thinsp;&mdash;&thinsp;permanent, bodily, irrevocable&thinsp;&mdash;&thinsp;that you were loved at this cost, in this flesh, with these hands.</p>
+
+    <p>And the hands that bear your name are the same hands that broke the bread at Emmaus. The same hands that cooked fish on the beach at dawn. The same hands that, the night before He died, picked up a basin and a towel and knelt on the floor and washed the dirty feet of the men who would, within hours, abandon Him.</p>
+
+    <p>The same hands that will wipe every tear from every eye.</p>
+
+    <p class="pause">&middot; &middot; &middot;</p>
+
+    <p>This is what hides in the Bible. Not on the surface&thinsp;&mdash;&thinsp;deeper. In the verbs. In the roots. In the spaces between the lines where the Bridegroom left His fingerprints. A love so specific it knows your name, so ancient it preceded the stars, so reckless it let itself be nailed to wood so the bride could read the inscription.</p>
+
+    <p>The entire Scripture is a love story. The fire that burns through every page has a name. The Song of Songs calls it <em>shalhevet-Yah</em>&thinsp;&mdash;&thinsp;the flame of the <span style="font-variant:small-caps">Lord</span>. It is not a metaphor. It is the innermost nature of the God who <em>is</em> love, expressed as desire, directed at you.</p>
+
+  </div>
+</div>
+
+<div class="div">&middot; &middot; &middot;</div>
+
+<!-- THE BOOK -->
+<div class="s auto" id="book" style="padding-top: 60px; padding-bottom: 40px;">
+  <div class="r" style="text-align:center;">
+    <div class="book-title">The Bridegroom</div>
+    <div class="book-sub">The Desire of God</div>
+    <div class="book-by">Ishi Olam</div>
+    <div class="book-body">
+      <p><em>The Bridegroom</em> traces the nuptial mystery across the full arc of Scripture&thinsp;&mdash;&thinsp;from the deep sleep of Adam to the wedding feast of the Lamb, from the burning bush to the upper room, from the Song of Songs to the New Jerusalem. One flame through every page. One desire. One Bridegroom walking toward one bride since before the foundation of the world.</p>
+      <p>This book does not argue that God loves you.<br>It shows you where He carved your name into His palms.</p>
+    </div>
+    <div class="book-note">Forthcoming</div>
+
+    <div class="whisper r" style="margin-top:120px;">&ldquo;Where are you?&rdquo;</div>
+  </div>
+</div>
+
+<div class="div">&middot; &middot; &middot;</div>
+
+<!-- THE NAME -->
+<div class="s auto" id="name" style="padding-top: 60px; padding-bottom: 40px;">
+  <div class="r">
+    <div class="name-title">The Name</div>
+    <div class="name-epi">
+      &ldquo;In that day, declares the <span style="font-variant:small-caps">Lord</span>,<br>
+      you will call me &lsquo;My Husband,&rsquo;<br>
+      and no longer will you call me &lsquo;My Master.&rsquo;&rdquo;
+      <span class="ref">Hosea 2:16</span>
+    </div>
+    <div class="name-body">
+      <p><span class="hw">ISHI</span> (&#x05D0;&#x05B4;&#x05D9;&#x05E9;&#x05B4;&#x05C1;&#x05D9;) means &ldquo;my husband.&rdquo; It comes from Hosea 2:16, where God tells the bride: you will no longer call me <em>Ba&rsquo;ali</em>&thinsp;&mdash;&thinsp;my lord, my master, my owner. You will call me <em>Ishi</em>&thinsp;&mdash;&thinsp;my man. My husband. The fire does not want to be obeyed. The fire wants to be loved.</p>
+
+      <p><span class="hw">OLAM</span> (&#x05E2;&#x05D5;&#x05B9;&#x05DC;&#x05B8;&#x05DD;) means &ldquo;forever.&rdquo; It comes from Hosea 2:19: &ldquo;I will betroth you to me forever.&rdquo; The desire has no expiration. The betrothal has no end.</p>
+
+      <p>There is no face behind this name. No biography. No credentials offered. Only a voice, and the Voice it carries.</p>
     </div>
 
-    <main id="app">
+    <div class="whisper r" style="margin-top:100px;">&ldquo;You will call me Ishi.&rdquo;</div>
+  </div>
+</div>
 
-        <div id="home" class="page active">
-            <div id="approach-screen">
-                <div class="approach-text" id="approach-container"></div>
-                <div class="center-glow" id="main-glow"></div>
-                <div class="scroll-indicator" id="scroll-ind"></div>
-                <div class="audio-circle" id="audio-invitation" title="Listen to the Voice"></div>
-            </div>
+<div class="div">&middot; &middot; &middot;</div>
 
-            <div class="container">
-                <div class="darkness-60vh"></div>
+<!-- THE GATE -->
+<div class="s half">
+  <div class="r" style="text-align:center;">
+    <div class="gate-text">
+      If the fire has found you,
+    </div>
+    <div class="gate-cta">leave your name.</div>
+    <div class="gate-form" id="gateForm">
+      <input type="email" placeholder="your email" id="gateEmail" autocomplete="email">
+      <button type="button" onclick="submitGate()">Enter</button>
+    </div>
+    <div class="gate-confirmation" id="gateConf">
+      &ldquo;There is a white stone with a name on it<br>
+      that no one knows except the one who receives it.&rdquo;
+      <span class="ref">Revelation 2:17</span>
+    </div>
+  </div>
+</div>
 
-                <div class="reveal text-center max-640">
-                    <p>"What if every verse of Scripture — every covenant, every prophecy, every name — is a love letter written by a Bridegroom who has been walking toward you since before the foundation of the world?"</p>
-                </div>
+<!-- FOOTER -->
+<footer>
+  <div class="f-name">Ishi Olam</div>
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-email">v.ishi.olam@gmail.com</a>
+</footer>
 
-                <div class="darkness-40vh"></div>
+<script>
+(function(){
+  const ws = document.querySelectorAll('#at .w');
+  const glow = document.getElementById('glow');
+  const sh = document.getElementById('sh');
+  let d = 2000;
+  ws.forEach((w) => {
+    if (w.parentElement.classList.contains('l2') &&
+        w === w.parentElement.querySelector('.w')) d += 1800;
+    setTimeout(() => w.classList.add('v'), d);
+    d += 600;
+  });
+  setTimeout(() => glow.classList.add('on'), d + 600);
+  setTimeout(() => sh.classList.add('v'), d + 3500);
+})();
 
-                <div class="scripture-gap text-center reveal">
-                    <div class="scripture-quote italic">"I have loved you with an everlasting love."</div>
-                    <div class="scripture-attr">— Jeremiah 31:3</div>
-                </div>
+(function(){
+  const obs = new IntersectionObserver((es) => {
+    es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('v'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+})();
 
-                <div class="scripture-gap text-center reveal">
-                    <div class="scripture-quote italic">"I will betroth you to me forever."</div>
-                    <div class="scripture-attr">— Hosea 2:19</div>
-                </div>
+(function(){
+  let ly = 0;
+  const n = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 80 && y > ly) n.classList.add('hidden');
+    else n.classList.remove('hidden');
+    ly = y;
+  }, { passive: true });
+})();
 
-                <div class="scripture-gap text-center reveal">
-                    <div class="scripture-quote italic">"Set me as a seal upon your heart . . . its flashes are flashes of fire, the very flame of the LORD."</div>
-                    <div class="scripture-attr">— Song of Songs 8:6</div>
-                </div>
+function submitGate() {
+  const email = document.getElementById('gateEmail').value;
+  if (!email || !email.includes('@')) return;
+  document.getElementById('gateForm').style.display = 'none';
+  document.querySelector('.gate-cta').style.display = 'none';
+  document.querySelector('.gate-text').style.display = 'none';
+  document.getElementById('gateConf').style.display = 'block';
+}
+</script>
 
-                <div class="section-gap reveal text-center max-660">
-                    <p>"This is what The Bridegroom traces: the desire of God for you — not as doctrine, not as metaphor, but as the central fire of Scripture itself. From the first sleep in Genesis to the last word in Revelation, one flame burns. It has a name. It has your name on its hands. And it has been walking toward you since before the foundation of the world."</p>
-                </div>
-
-                <div class="section-gap reveal relative">
-                    <div class="watermark hebrew">שַׁלְהֶבֶתְיָה</div>
-                    <div class="card-grid">
-                        <div class="card" onclick="navTo('book')">
-                            <div class="card-content">
-                                <div class="card-title">The Book</div>
-                                <p class="card-desc italic">The Bridegroom: The Desire of God</p>
-                            </div>
-                        </div>
-                        <div class="card" onclick="navTo('writings')">
-                            <div class="card-content">
-                                <div class="card-title">Writings</div>
-                                <p class="card-desc italic">Ongoing reflections on Scripture and desire</p>
-                            </div>
-                        </div>
-                        <div class="card" onclick="navTo('listen')">
-                            <div class="card-content">
-                                <div class="card-title">Listen</div>
-                                <p class="card-desc italic">The voice in the wilderness</p>
-                            </div>
-                        </div>
-                        <div class="card" onclick="navTo('gather')">
-                            <div class="card-content">
-                                <div class="card-title">Gather</div>
-                                <p class="card-desc italic">For those the fire has found</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="footer reveal">
-                    <div class="footer-logo cinzel">Ishi Olam</div>
-                    <a href="mailto:v.ishi.olam@gmail.com" class="footer-link">v.ishi.olam@gmail.com</a>
-                </div>
-            </div>
-        </div>
-
-        <div id="book" class="page container">
-            <div class="text-center reveal">
-                <h1 class="title-42">The Bridegroom</h1>
-                <div class="subtitle-22 italic">The Desire of God</div>
-                <div class="author-smallcaps cinzel text-gold">Ishi Olam</div>
-            </div>
-            
-            <div class="section-gap reveal">
-                <div class="book-cover-placeholder">
-                    <div class="cinzel text-gold" style="font-size: 24px; margin-bottom: 12px;">The Bridegroom</div>
-                    <div class="cinzel text-gold" style="font-size: 12px; letter-spacing: 0.1em; opacity: 0.6;">Ishi Olam</div>
-                </div>
-            </div>
-
-            <div class="divider reveal">· · ·</div>
-
-            <div class="reveal max-660 text-center">
-                <p>The entire Bible is a love story. You are the one being pursued.</p>
-                <p>This is not a metaphor. It is the architecture of reality. From the moment God formed humanity from the dust, He has been seeking a bride. Through the patriarchs and the prophets, through the fire on Sinai and the silence of the exile, the Bridegroom has been walking toward us.</p>
-                <p>He does not want subjects. He does not want employees. He wants intimacy. <span class="italic">The Bridegroom: The Desire of God</span> traces this single, blazing thread through the entire canon of Scripture, revealing how every covenant is a betrothal, and every prophecy is a love letter. </p>
-                <p>He is standing in the dew. He is knocking. Where are you?</p>
-            </div>
-
-            <div class="divider reveal">· · ·</div>
-
-            <div class="text-center reveal section-gap">
-                <a href="#" class="btn-gold">Read the Book</a>
-            </div>
-
-            <div class="divider reveal">· · ·</div>
-
-            <div class="reveal max-660 section-gap">
-                <div class="scripture-quote italic text-center" style="font-size: 16px; margin-bottom: 24px;">"I sleep, but my heart is awake." — Song of Songs 5:2</div>
-                <p>When the fire finally reaches you, it does not announce itself with thunder. It comes as a whisper in the garden, at the hour when the day breathes its last. The tragedy of modern theology is that we have mistaken the Bridegroom's desperate pursuit for a set of behavioral demands. We have turned the greatest romance in the cosmos into a legal contract.</p>
-            </div>
-
-            <div class="whisper reveal">"Where are you?"</div>
-        </div>
-
-        <div id="writings" class="page container">
-            <div class="watermark hebrew">שַׁלְהֶבֶתְיָה</div>
-            <div class="text-center reveal section-gap">
-                <h1 class="title-42">The Fire</h1>
-                <div class="subtitle-22 italic">Writings on the Nuptial Mystery</div>
-            </div>
-
-            <div class="essay-entry reveal" style="border-top: 1px solid var(--gold); padding-top: 40px;">
-                <h2 class="cinzel" style="font-size: 22px; margin-bottom: 8px; cursor:pointer;">Start Here: The Fire at the Center</h2>
-                <div class="italic text-gold" style="font-size: 14px; opacity: 0.6; margin-bottom: 16px;">"For love is strong as death, jealousy is fierce as the grave."</div>
-                <p style="font-size: 16px;">An introduction to the nuptial mystery — God as Bridegroom, Scripture as love letter, desire as the central heartbeat of the canon. If you read nothing else, read this.</p>
-                <div class="essay-date">THE FIRST WRITING</div>
-            </div>
-
-            <div class="essay-entry reveal">
-                <h2 class="cinzel" style="font-size: 22px; margin-bottom: 8px; cursor:pointer;">The Silence Between the Cherubim</h2>
-                <div class="italic text-gold" style="font-size: 14px; opacity: 0.6; margin-bottom: 16px;">"And there I will meet with you." — Exodus 25:22</div>
-                <p style="font-size: 16px;">We fear the dark, but the Holy of Holies was designed to hold it. Why the deepest encounters with the Bridegroom happen when all our words have run out.</p>
-                <div class="essay-date">RECENTLY ADDED</div>
-            </div>
-
-            <div class="essay-entry reveal">
-                <h2 class="cinzel" style="font-size: 22px; margin-bottom: 8px; cursor:pointer;">Not a Master, but a Husband</h2>
-                <div class="italic text-gold" style="font-size: 14px; opacity: 0.6; margin-bottom: 16px;">"You will call me Ishi." — Hosea 2:16</div>
-                <p style="font-size: 16px;">The profound theological shift in the book of Hosea, where God officially changes His title in the hearts of His people from Owner to Lover.</p>
-                <div class="essay-date">ARCHIVE</div>
-            </div>
-
-            <div class="whisper reveal">"Open to me."</div>
-        </div>
-
-        <div id="listen" class="page container">
-            <div class="text-center reveal section-gap">
-                <h1 class="title-42">The Voice</h1>
-                <div class="subtitle-22 italic">Scripture Meditations</div>
-            </div>
-
-            <div class="essay-entry reveal">
-                <h2 class="cinzel" style="font-size: 20px;">Lectio Divina: Song of Songs 8</h2>
-                <div class="italic text-gold" style="font-size: 14px; margin-bottom: 8px;">Song of Songs 8:6-7</div>
-                <p style="font-size: 15px; margin-bottom: 0;">A guided contemplation on the flame of Yahweh.</p>
-                <div class="audio-player-custom">
-                    <button class="play-btn"></button>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
-                    <div class="time-display">0:00</div>
-                </div>
-            </div>
-
-            <div class="essay-entry reveal">
-                <h2 class="cinzel" style="font-size: 20px;">The Burning Bush</h2>
-                <div class="italic text-gold" style="font-size: 14px; margin-bottom: 8px;">Exodus 3:1-6</div>
-                <p style="font-size: 15px; margin-bottom: 0;">Meditation on the fire that burns but does not consume.</p>
-                <div class="audio-player-custom">
-                    <button class="play-btn"></button>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
-                    <div class="time-display">0:00</div>
-                </div>
-            </div>
-
-            <div class="essay-entry reveal">
-                <h2 class="cinzel" style="font-size: 20px;">The Name in the Garden</h2>
-                <div class="italic text-gold" style="font-size: 14px; margin-bottom: 8px;">John 20:11-16</div>
-                <p style="font-size: 15px; margin-bottom: 0;">Recognizing the Bridegroom's voice at the resurrection.</p>
-                <div class="audio-player-custom">
-                    <button class="play-btn"></button>
-                    <div class="progress-container"><div class="progress-bar"></div></div>
-                    <div class="time-display">0:00</div>
-                </div>
-            </div>
-
-            <div class="whisper reveal">"Do you love me?"</div>
-        </div>
-
-        <div id="see" class="page container">
-            <div class="text-center reveal section-gap">
-                <h1 class="title-42">The Veil</h1>
-                <div class="subtitle-22 italic">Visual Meditations</div>
-            </div>
-
-            <div class="masonry-grid reveal">
-                <div class="visual-piece"><span class="visual-placeholder-text">THE FIRE MAP</span></div>
-                <div class="visual-piece"><span class="visual-placeholder-text">TYPOGRAPHY I</span></div>
-                <div class="visual-piece"><span class="visual-placeholder-text">CONTEMPLATION</span></div>
-                <div class="visual-piece"><span class="visual-placeholder-text">TYPOGRAPHY II</span></div>
-                <div class="visual-piece"><span class="visual-placeholder-text">HEBREW ROOT</span></div>
-                <div class="visual-piece"><span class="visual-placeholder-text">THE GARDEN</span></div>
-            </div>
-
-            <div class="whisper reveal">"I have called you by name."</div>
-        </div>
-
-        <div id="gather" class="page container text-center">
-            <div class="section-gap">
-                <h1 class="title-42 reveal">The Garden</h1>
-            </div>
-
-            <div class="scripture-gap reveal">
-                <p>"You have followed the fire this far."</p>
-            </div>
-            
-            <div class="scripture-gap reveal">
-                <p>"Through the Torah and the Prophets and the Song."</p>
-            </div>
-
-            <div class="scripture-gap reveal">
-                <p>"Through the bread and the breath and the garden at dawn."</p>
-            </div>
-
-            <div class="scripture-gap reveal">
-                <p>"You are here."</p>
-            </div>
-
-            <div class="scripture-gap reveal">
-                <p>"The fire has found you."</p>
-            </div>
-
-            <div class="scripture-gap reveal" id="gather-form-container">
-                <div class="italic text-gold" style="font-size: 22px; margin-bottom: 32px;">"Leave your name."</div>
-                <form id="gather-form" onsubmit="handleGatherSubmit(event)">
-                    <input type="email" class="input-dark" placeholder="your email" required>
-                    <div style="margin-top: 24px;">
-                        <button type="submit" class="btn-gold">Enter</button>
-                    </div>
-                </form>
-            </div>
-
-            <div id="gather-response" class="scripture-gap text-center" style="display: none; opacity: 0; transition: opacity 0.6s ease;">
-                <div class="italic text-gold" style="font-size: 16px; opacity: 0.7;">"There is a white stone with a name on it that no one knows except the one who receives it."</div>
-                <div style="font-size: 13px; color: var(--gold); opacity: 0.5; margin-top: 12px;">— Revelation 2:17</div>
-            </div>
-            </div>
-
-        <div id="name" class="page container">
-            <div class="watermark hebrew">שַׁלְהֶבֶתְיָה</div>
-            <div class="text-center reveal section-gap">
-                <h1 class="title-42">The Name</h1>
-            </div>
-
-            <div class="reveal text-center max-660 section-gap">
-                <div class="scripture-quote italic text-center">"In that day, declares the LORD, you will call me 'My Husband,' and no longer will you call me 'My Master.'"</div>
-                <div class="scripture-attr text-center">— Hosea 2:16</div>
-            </div>
-
-            <div class="reveal max-660">
-                <p><span class="text-gold hebrew" style="font-size: 24px;">אִישִׁי</span> (Ishi) means 'my husband.' It comes from Hosea 2:16, where God tells the bride: you will no longer call me Ba'ali — my lord, my master, my owner. You will call me Ishi — my man. My husband. The one whose body is the origin of your body. The fire does not want to be obeyed. The fire wants to be loved.</p>
-                <p><span class="text-gold hebrew" style="font-size: 24px;">עוֹלָם</span> (Olam) means 'forever.' It comes from Hosea 2:19: 'I will betroth you to me forever.' The desire has no expiration. The betrothal has no end.</p>
-                <p><span class="text-gold hebrew" style="font-size: 24px;">וְ</span> (The vav) — the prefix — is the Hebrew conjunction 'and.' In biblical Hebrew, the vav often initiates action: 'And God said.' 'And it was evening.' The Bridegroom moves first. The bride responds. The vav is the step the Bridegroom takes before the bride takes hers.</p>
-                <p>There is no face behind this name. No biography. No credentials offered. Only a voice, and the Voice it carries. The work exists to make one thing visible: that the God of the Bible is a Bridegroom, and His desire for you is the oldest fire in the cosmos, and it has not gone out.</p>
-                
-                <div class="text-center" style="margin-top: 80px;">
-                    <a href="mailto:v.ishi.olam@gmail.com" class="text-gold italic" style="text-decoration: none; opacity: 0.7;">v.ishi.olam@gmail.com</a>
-                </div>
-            </div>
-
-            <div class="whisper reveal">"You will call me Ishi."</div>
-        </div>
-
-    </main>
-
-    <script>
-        // --- 1. Routing Logic ---
-        function navTo(pageId) {
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            
-            // Crossfade
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => {
-                p.style.opacity = '0';
-                setTimeout(() => {
-                    p.classList.remove('active');
-                    if (p.id === pageId) {
-                        p.classList.add('active');
-                        setTimeout(() => p.style.opacity = '1', 50);
-                    }
-                }, 400); // Wait for fade out
-            });
-
-            // Re-trigger animations for the new page
-            setTimeout(() => setupObservers(), 500);
-            
-            // If going home, re-trigger approach if at top
-            if(pageId === 'home') runApproachSequence();
-        }
-
-        // --- 2. Liturgical Motion (Scroll Reveals) ---
-        let observer;
-        function setupObservers() {
-            if(observer) observer.disconnect();
-            
-            observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.15, rootMargin: "0px 0px -100px 0px" });
-
-            document.querySelectorAll('.page.active .reveal').forEach(el => {
-                observer.observe(el);
-            });
-        }
-
-        // --- 3. Navbar Hide on Scroll ---
-        let lastScrollTop = 0;
-        window.addEventListener("scroll", function() {
-            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-            let nav = document.getElementById('navbar');
-            if (currentScroll > lastScrollTop && currentScroll > 100) {
-                nav.classList.add('hidden'); // Scroll Down
-            } else {
-                nav.classList.remove('hidden'); // Scroll Up
-            }
-            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-        }, false);
-
-        // --- 4. Mobile Menu ---
-        function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
-        }
-
-        // --- 5. The Approach Sequence (Homepage) ---
-        let approachHasRun = false;
-        function runApproachSequence() {
-            if (approachHasRun) return;
-            const container = document.getElementById('approach-container');
-            const glow = document.getElementById('main-glow');
-            const scrollInd = document.getElementById('scroll-ind');
-            const audioInv = document.getElementById('audio-invitation');
-            
-            container.innerHTML = '';
-            
-            const line1 = ["The", "entire", "Bible", "is", "a", "love", "story."];
-            const line2 = ["You", "are", "the", "one", "being", "pursued."];
-            
-            setTimeout(() => {
-                // Render Line 1
-                let delay = 0;
-                line1.forEach((word) => {
-                    let span = document.createElement('span');
-                    span.className = 'approach-word';
-                    span.innerHTML = word + '&nbsp;';
-                    container.appendChild(span);
-                    setTimeout(() => { span.style.opacity = '1'; }, delay);
-                    delay += 600; // 0.6s gap
-                });
-
-                // Render Line 2
-                setTimeout(() => {
-                    container.innerHTML += '<br><br>';
-                    let delay2 = 0;
-                    line2.forEach((word) => {
-                        let span = document.createElement('span');
-                        span.className = 'approach-word';
-                        span.innerHTML = word + '&nbsp;';
-                        container.appendChild(span);
-                        setTimeout(() => { span.style.opacity = '1'; }, delay2);
-                        delay2 += 600;
-                    });
-
-                    // Trigger Glow & Final elements
-                    setTimeout(() => {
-                        glow.style.transition = "opacity 4s ease-in-out, transform 4s ease-out";
-                        glow.style.opacity = "0.07";
-                        
-                        setTimeout(() => {
-                            glow.style.animation = "breathe 6s infinite ease-in-out";
-                            scrollInd.style.opacity = "1";
-                            audioInv.style.opacity = "1";
-                            approachHasRun = true;
-                        }, 4000);
-
-                    }, delay2 + 500);
-
-                }, delay + 1400); // 2-second pause after line 1 completes
-
-            }, 2000); // Initial 2s of total darkness
-        }
-
-        // --- 6. Gather Page Form ---
-        function handleGatherSubmit(e) {
-            e.preventDefault();
-            const container = document.getElementById('gather-form-container');
-            const response = document.getElementById('gather-response');
-            
-            container.style.transition = "opacity 0.8s ease";
-            container.style.opacity = "0";
-            
-            setTimeout(() => {
-                container.style.display = "none";
-                response.style.display = "block";
-                setTimeout(() => response.style.opacity = "1", 50);
-            }, 800);
-        }
-
-        // Initialize
-        document.addEventListener("DOMContentLoaded", () => {
-            setupObservers();
-            if(document.getElementById('home').classList.contains('active')) {
-                runApproachSequence();
-            }
-        });
-    </script>
 </body>
 </html>
