@@ -45,7 +45,8 @@ nav {
   background: rgba(10,9,8,0.94);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 32px;
   z-index: 100;
   transition: transform 0.5s ease, opacity 0.5s ease;
 }
@@ -60,6 +61,16 @@ nav.hidden { transform: translateY(-100%); opacity: 0; }
   transition: color 0.3s;
 }
 .nav-logo:hover { color: var(--gold); }
+.nav-daily {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(197,165,90,0.3);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-daily:hover { color: var(--gold); }
 
 /* ── SECTIONS ── */
 .s {
@@ -397,6 +408,7 @@ footer {
   .s { padding: 80px 22px; }
   .whisper { padding-right: 8%; margin-top: 100px; }
   .wm { font-size: 130px; }
+  nav { padding: 0 20px; }
 }
 @media (max-width: 480px) {
   .approach-text { font-size: 23px; }
@@ -408,7 +420,10 @@ footer {
 </head>
 <body>
 
-<nav id="nav"><a href="#approach" class="nav-logo">Ishi Olam</a></nav>
+<nav id="nav">
+  <a href="#approach" class="nav-logo">Ishi Olam</a>
+  <a href="readings.html" class="nav-daily">Daily Mass Commentaries</a>
+</nav>
 
 <!-- THE APPROACH -->
 <div class="s" id="approach">
@@ -525,9 +540,9 @@ footer {
       <span class="ref">Hosea 2:16</span>
     </div>
     <div class="name-body">
-      <p><span class="hw">ISHI</span> (&#x05D0;&#x05B4;&#x05D9;&#x05E9;&#x05B4;&#x05C1;&#x05D9;) means &ldquo;my husband.&rdquo; It comes from Hosea 2:16, where God tells the bride: you will no longer call me <em>Ba&rsquo;ali</em>&thinsp;&mdash;&thinsp;my lord, my master, my owner. You will call me <em>Ishi</em>&thinsp;&mdash;&thinsp;my man. My husband. The fire does not want to be obeyed. The fire wants to be loved.</p>
+      <p><span class="hw">ISHI</span> (&#x05D0;&#x05D9;&#x05E9;&#x05D9;) means &ldquo;my husband.&rdquo; It comes from Hosea 2:16, where God tells the bride: you will no longer call me <em>Ba&rsquo;ali</em>&thinsp;&mdash;&thinsp;my lord, my master, my owner. You will call me <em>Ishi</em>&thinsp;&mdash;&thinsp;my man. My husband. The fire does not want to be obeyed. The fire wants to be loved.</p>
 
-      <p><span class="hw">OLAM</span> (&#x05E2;&#x05D5;&#x05B9;&#x05DC;&#x05B8;&#x05DD;) means &ldquo;forever.&rdquo; It comes from Hosea 2:19: &ldquo;I will betroth you to me forever.&rdquo; The desire has no expiration. The betrothal has no end.</p>
+      <p><span class="hw">OLAM</span> (&#x05E2;&#x05D5;&#x05DC;&#x05DD;) means &ldquo;forever.&rdquo; It comes from Hosea 2:19: &ldquo;I will betroth you to me forever.&rdquo; The desire has no expiration. The betrothal has no end.</p>
 
       <p>There is no face behind this name. No biography. No credentials offered. Only a voice, and the Voice it carries.</p>
     </div>
