@@ -13,7 +13,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;
-  --gold-dim:rgba(197,165,90,0.42);--gold-soft:rgba(197,165,90,0.22);
+  --gold-dim:rgba(197,165,90,0.42);
   --fire:#8B6914;--surface:#12100E;--border:#1C1914;
 }
 html{background:var(--bg);scroll-behavior:smooth}
@@ -21,8 +21,6 @@ body{background:var(--bg);color:var(--text);font-family:'EB Garamond',Georgia,se
   font-size:19px;line-height:1.86;letter-spacing:0.012em;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;height:52px;
   background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);
   display:flex;align-items:center;justify-content:space-between;
@@ -32,11 +30,7 @@ nav{position:fixed;top:0;left:0;right:0;height:52px;
 .nav-home:hover{color:var(--gold)}
 .nav-section{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;
   text-transform:uppercase;color:rgba(197,165,90,0.2)}
-
-/* LAYOUT */
 main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
-
-/* DATE NAV */
 .date-nav{display:grid;grid-template-columns:64px 1fr 64px;align-items:start;margin-bottom:72px}
 .nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;
   font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
@@ -49,8 +43,6 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
   text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1}
 .lit-day{margin-top:12px;font-style:italic;font-size:15px;
   color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
-
-/* READINGS LINK */
 .readings-link-wrap{padding-left:22px;border-left:1px solid rgba(197,165,90,0.08);
   margin-bottom:56px;opacity:0;transform:translateY(8px);
   transition:opacity .8s ease,transform .8s ease}
@@ -64,12 +56,8 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
   text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.14);
   padding-bottom:2px;transition:color .3s,border-color .3s}
 .usccb-anchor:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
-
-/* DIVIDER */
 .sep{text-align:center;padding:40px 0 52px;color:rgba(197,165,90,0.15);
   font-size:13px;letter-spacing:0.65em}
-
-/* COMMENTARY */
 .com-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;
   text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:30px;
   opacity:0;transition:opacity .9s ease .05s}
@@ -101,17 +89,12 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
   transition:color .3s,border-color .3s}
 .substack-link:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
 .state{font-style:italic;color:rgba(197,165,90,0.22);font-size:16px;line-height:2}
-
-/* SKELETON */
 .sk{display:block;background:linear-gradient(90deg,
   rgba(197,165,90,0.03) 0%,rgba(197,165,90,0.065) 50%,rgba(197,165,90,0.03) 100%);
   background-size:200% 100%;animation:shim 2.2s ease-in-out infinite;
   border-radius:1px;height:13px;margin-bottom:12px}
 @keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-/* SUBSCRIBE */
-.sub-wrap{margin-top:88px;padding-top:60px;border-top:1px solid rgba(197,165,90,0.06);
-  text-align:center}
+.sub-wrap{margin-top:88px;padding-top:60px;border-top:1px solid rgba(197,165,90,0.06);text-align:center}
 .sub-cta{font-style:italic;color:var(--gold);font-size:22px;line-height:1.5;margin-bottom:8px}
 .sub-note{font-size:14px;color:rgba(226,217,200,0.2);margin-bottom:32px}
 .sub-form{display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -135,24 +118,16 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .sub-confirm .ref-mark{display:block;font-family:'Cinzel',serif;font-size:10px;
   letter-spacing:0.16em;margin-top:6px;opacity:.5}
 @keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-/* FOOTER */
 footer{text-align:center;padding:80px 24px 48px}
 .f-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;
   text-transform:uppercase;color:rgba(197,165,90,0.16)}
 .f-mail{display:block;margin-top:7px;font-size:12px;
   color:rgba(197,165,90,0.14);text-decoration:none;transition:color .3s}
 .f-mail:hover{color:var(--gold)}
-
-/* RESPONSIVE */
-@media(max-width:680px){
-  main{padding:88px 22px 100px}nav{padding:0 22px}
+@media(max-width:680px){main{padding:88px 22px 100px}nav{padding:0 22px}
   .date-nav{grid-template-columns:56px 1fr 56px}
-  .com-body{font-size:17.5px}.sub-cta{font-size:20px}
-}
-@media(max-width:420px){
-  body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}
-}
+  .com-body{font-size:17.5px}.sub-cta{font-size:20px}}
+@media(max-width:420px){body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}}
 </style>
 </head>
 <body>
@@ -163,12 +138,11 @@ footer{text-align:center;padding:80px 24px 48px}
 </nav>
 
 <main>
-
   <div class="date-nav">
     <button class="nav-btn prev" id="prevBtn" onclick="go(-1)">← Prev</button>
     <div class="date-center">
       <div class="date-text" id="dateTxt">—</div>
-      <div class="lit-day"   id="litDay"></div>
+      <div class="lit-day" id="litDay"></div>
     </div>
     <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
   </div>
@@ -176,22 +150,19 @@ footer{text-align:center;padding:80px 24px 48px}
   <div class="readings-link-wrap" id="readingsWrap">
     <div class="readings-link-label">Mass Readings</div>
     <div class="readings-link-note">Today's scripture, from the United States Conference of Catholic Bishops.</div>
-    <a class="usccb-anchor" id="usccbLink"
-       href="https://bible.usccb.org/daily-bible-reading"
-       target="_blank" rel="noopener">Read today's readings &rarr;</a>
+    <a class="usccb-anchor" id="usccbLink" href="https://bible.usccb.org/daily-bible-reading" target="_blank" rel="noopener">Read today's readings &rarr;</a>
   </div>
 
   <div class="sep">&middot;&thinsp;&middot;&thinsp;&middot;</div>
 
-  <div class="com-label"    id="comLabel">Commentary</div>
+  <div class="com-label" id="comLabel">Commentary</div>
   <div class="com-subtitle" id="comSubtitle"></div>
-  <div class="com-body"     id="comBody">
+  <div class="com-body" id="comBody">
     <span class="sk" style="width:100%"></span>
     <span class="sk" style="width:93%"></span>
     <span class="sk" style="width:97%"></span>
     <span class="sk" style="width:88%"></span>
     <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:91%"></span>
     <span class="sk" style="width:75%"></span>
   </div>
 
@@ -203,12 +174,10 @@ footer{text-align:center;padding:80px 24px 48px}
       <button onclick="handleSubscribe()">Enter</button>
     </div>
     <div class="sub-confirm" id="subConf">
-      &ldquo;There is a white stone with a name on it<br>
-      that no one knows except the one who receives it.&rdquo;
+      &ldquo;There is a white stone with a name on it<br>that no one knows except the one who receives it.&rdquo;
       <span class="ref-mark">Revelation 2:17</span>
     </div>
   </div>
-
 </main>
 
 <footer>
@@ -217,61 +186,50 @@ footer{text-align:center;padding:80px 24px 48px}
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════
-// CONFIGURATION — set this once, never touch again
-//
-// POST TITLE FORMAT (required):
-//   2026-03-05 — Wednesday of the First Week of Lent
-//   Everything after " — " shows as the liturgical label.
-//   Your subtitle shows in italic gold below.
-// ═══════════════════════════════════════════════
+// ════════════════════════════════════════
+// CONFIGURATION — set SUBSTACK_SLUG once.
+// Use only your subdomain, e.g. 'ishiolam'
+// for ishiolam.substack.com
+// ════════════════════════════════════════
+var SUBSTACK_SLUG = 'ishiolam';
+// ════════════════════════════════════════
 
-var SUBSTACK_SLUG = 'ishiolam.substack.com';
-
-// ═══════════════════════════════════════════════
-
-var MONTHS  = ['January','February','March','April','May','June',
-               'July','August','September','October','November','December'];
-var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday',
-               'Thursday','Friday','Saturday'];
-
+var MONTHS  = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 var allPosts = [];
-var curIdx   = 0;
+var curIdx = 0;
 
-function pad(n) { return String(n).padStart(2,'0'); }
+function pad(n){ return String(n).padStart(2,'0'); }
 
-function todayKey() {
+function todayKey(){
   var d = new Date();
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
 
-function fmtDate(str) {
-  var parts = str.split('-');
-  var y = parseInt(parts[0]), m = parseInt(parts[1])-1, d = parseInt(parts[2]);
-  var dt = new Date(y, m, d);
-  return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+d+', '+y;
+function fmtDate(str){
+  var p = str.split('-');
+  var dt = new Date(parseInt(p[0]), parseInt(p[1])-1, parseInt(p[2]));
+  return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+parseInt(p[2])+', '+p[0];
 }
 
-function usccbUrl(dateStr) {
-  return 'https://bible.usccb.org/daily-bible-reading/'+dateStr.replace(/-/g,'');
+function usccbUrl(str){
+  return 'https://bible.usccb.org/daily-bible-reading/'+str.replace(/-/g,'');
 }
 
-function go(delta) {
+function go(delta){
   curIdx += delta;
   render();
 }
 
-function render() {
+function render(){
   var post = allPosts[curIdx];
-  if (!post) return;
-
-  document.getElementById('prevBtn').disabled = curIdx >= allPosts.length - 1;
+  if(!post) return;
+  document.getElementById('prevBtn').disabled = curIdx >= allPosts.length-1;
   document.getElementById('nextBtn').disabled = curIdx <= 0;
   document.getElementById('dateTxt').textContent = fmtDate(post.dateKey);
   document.getElementById('litDay').textContent  = post.litDay || '';
   document.getElementById('usccbLink').href = usccbUrl(post.dateKey);
-
-  try { history.replaceState(null,'','?date='+post.dateKey); } catch(e) {}
+  try{ history.replaceState(null,'','?date='+post.dateKey); }catch(e){}
 
   var rw = document.getElementById('readingsWrap');
   rw.classList.remove('in');
@@ -280,7 +238,6 @@ function render() {
   var label    = document.getElementById('comLabel');
   var subtitle = document.getElementById('comSubtitle');
   var body     = document.getElementById('comBody');
-
   label.classList.remove('in');
   subtitle.classList.remove('in');
   body.classList.remove('in');
@@ -288,85 +245,94 @@ function render() {
   setTimeout(function(){
     subtitle.textContent = post.subtitle || '';
     body.innerHTML = post.html;
-
-    if (post.link && SUBSTACK_SLUG !== 'YOUR-SUBSTACK-SLUG') {
+    if(post.link){
       var a = document.createElement('a');
-      a.href      = post.link;
-      a.target    = '_blank';
-      a.rel       = 'noopener';
-      a.className = 'substack-link';
-      a.textContent = 'Read on Substack \u2192';
+      a.href = post.link; a.target = '_blank'; a.rel = 'noopener';
+      a.className = 'substack-link'; a.textContent = 'Read on Substack \u2192';
       body.appendChild(a);
     }
-
     label.classList.add('in');
     subtitle.classList.add('in');
     body.classList.add('in');
-  }, 30);
+  }, 40);
 }
 
-function showEmpty() {
+function showEmpty(){
+  document.getElementById('dateTxt').textContent = fmtDate(todayKey());
+  document.getElementById('readingsWrap').classList.add('in');
+  document.getElementById('usccbLink').href = usccbUrl(todayKey());
   var body = document.getElementById('comBody');
-  body.innerHTML = '<p class="state">No posts found. Make sure your Substack slug is set and you have published at least one post with the date format in the title.</p>';
+  body.innerHTML = '<p class="state">No posts found. Make sure SUBSTACK_SLUG is correct and your posts use the date title format: 2026-03-05 \u2014 Liturgical Day</p>';
   body.classList.add('in');
   document.getElementById('comLabel').classList.add('in');
-  document.getElementById('readingsWrap').classList.add('in');
-  document.getElementById('dateTxt').textContent = fmtDate(todayKey());
+  document.getElementById('prevBtn').disabled = true;
+  document.getElementById('nextBtn').disabled = true;
 }
 
-function cleanHtml(html) {
-  if (!html) return '';
+function getText(item, tag){
+  var el = item.querySelector(tag);
+  return el ? (el.textContent || el.innerHTML || '') : '';
+}
+
+function cleanHtml(html){
+  if(!html) return '';
   return html
-    .replace(/<div[^>]*class="[^"]*subscription[^"]*"[\s\S]*?<\/div>/gi, '')
-    .replace(/<p[^>]*>\s*<a[^>]*substack[^>]*>Subscribe<\/a>\s*<\/p>/gi, '')
-    .replace(/<p[^>]*>\s*(&nbsp;)?\s*<\/p>/gi, '')
+    .replace(/<div[^>]*class="[^"]*subscription[^"]*"[\s\S]*?<\/div>/gi,'')
+    .replace(/<p[^>]*>\s*<a[^>]*substack[^>]*>Subscribe<\/a>\s*<\/p>/gi,'')
+    .replace(/<p[^>]*>\s*(&nbsp;)?\s*<\/p>/gi,'')
     .trim();
 }
 
-function parsePost(item) {
-  var title      = item.title || '';
-  var dateMatch  = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
-  var dateKey    = dateMatch ? dateMatch[1] : null;
-  var litDay     = dateMatch ? dateMatch[2].trim() : '';
-  return {
-    dateKey:  dateKey,
-    litDay:   litDay,
-    subtitle: item.subtitle || '',
-    html:     cleanHtml(item.content || item.description || ''),
-    link:     item.link || ('https://'+SUBSTACK_SLUG+'.substack.com')
-  };
+function parseItem(item){
+  var title     = getText(item,'title');
+  var m         = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
+  var dateKey   = m ? m[1] : null;
+  var litDay    = m ? m[2].trim() : '';
+  var content   = getText(item,'content\\:encoded') || getText(item,'description');
+  var link      = getText(item,'link');
+  // subtitle: Substack puts it in <subtitle> or sometimes description before content
+  var subtitle  = getText(item,'subtitle');
+  return { dateKey:dateKey, litDay:litDay, subtitle:subtitle,
+           html:cleanHtml(content), link:link };
 }
 
-function init() {
+function init(){
   var paramDate = new URLSearchParams(window.location.search).get('date');
 
+  fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://'+SUBSTACK_SLUG+'.substack.com/feed'))
+    .then(function(r){ return r.json(); })
+    .then(function(j){ return j.contents; })
+    .then(function(xml){
+      var doc   = new DOMParser().parseFromString(xml,'text/xml');
+      var items = Array.from(doc.querySelectorAll('item'));
+      if(!items.length){ showEmpty(); return; }
 
-  var feedUrl = 'https://'+SUBSTACK_SLUG+'.substack.com/feed';
-  var apiUrl  = 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feedUrl)+'&count=100';
-
-  fetch(apiUrl)
-    .then(function(res){ return res.json(); })
-    .then(function(data){
-      if (!data.items || !data.items.length) { showEmpty(); return; }
-
-      allPosts = data.items
-        .map(parsePost)
+      allPosts = items
+        .map(parseItem)
         .filter(function(p){ return p.dateKey; })
         .sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
 
-      if (!allPosts.length) { showEmpty(); return; }
+      if(!allPosts.length){ showEmpty(); return; }
 
-      if (paramDate) {
-        var i = allPosts.findIndex(function(p){ return p.dateKey === paramDate; });
-        curIdx = i >= 0 ? i : 0;
+      if(paramDate){
+        var i = allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
+        curIdx = i>=0 ? i : 0;
       } else {
         curIdx = 0;
       }
       render();
     })
-    .catch(function(){
-      showEmpty();
-    });
+    .catch(function(){ showEmpty(); });
+}
+
+function handleSubscribe(){
+  var email = document.getElementById('subEmail').value.trim();
+  if(!email || !email.includes('@')) return;
+  window.open('https://'+SUBSTACK_SLUG+'.substack.com/subscribe?email='+encodeURIComponent(email),'_blank');
+  document.getElementById('subForm').style.display = 'none';
+  document.querySelector('.sub-cta').style.display = 'none';
+  document.querySelector('.sub-note').style.display = 'none';
+  document.getElementById('subConf').style.display = 'block';
 }
 
 init();
