@@ -316,7 +316,7 @@ function loadAndRender(paramDate){
 
 function fetchFeed(callback){
   var feedUrl = 'https://'+SUBSTACK_SLUG+'.substack.com/feed';
-  var proxyUrl = 'https://feed-proxy.YOUR-SUBDOMAIN.workers.dev/?url='+encodeURIComponent(feedUrl);
+  var proxyUrl = 'https://feed-proxy.v-ishi-olam.workers.dev/?url='+encodeURIComponent(feedUrl);
   fetch(proxyUrl)
     .then(function(r){ return r.text(); })
     .then(function(xml){
