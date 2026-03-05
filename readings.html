@@ -122,12 +122,12 @@ footer{text-align:center;padding:80px 24px 48px}
 
 <main>
   <div class="date-nav">
-    <button class="nav-btn prev" id="prevBtn" onclick="go(-1)">← Prev</button>
+    <button class="nav-btn prev" id="prevBtn" onclick="go(1)">← Prev</button>
     <div class="date-center">
       <div class="date-text" id="dateTxt">—</div>
       <div class="lit-day" id="litDay"> </div>
     </div>
-    <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
+    <button class="nav-btn next" id="nextBtn" onclick="go(-1)">Next →</button>
   </div>
 
   <div class="readings-link-wrap">
@@ -362,7 +362,12 @@ function loadAndRender(paramDate){
     if(paramDate){
       var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
       curIdx=i>=0?i:0;
-    } else { curIdx=0; }
+    } else {
+      // Find today's post first, fall back to most recent
+      var today=todayKey();
+      var todayIdx=allPosts.findIndex(function(p){ return p.dateKey===today; });
+      curIdx=todayIdx>=0?todayIdx:0;
+    }
     console.log('Posts loaded:', allPosts.length, allPosts.map(function(p){return p.dateKey;}));
     render();
   });
