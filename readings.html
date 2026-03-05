@@ -5,41 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Mass — Ishi Olam</title>
 <meta name="description" content="Daily Mass readings commentary. Ishi Olam.">
-<style>html{background:#0A0908}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914;--surface:#12100E;--border:#1C1914}
-html{background:var(--bg);scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'EB Garamond',Georgia,serif;font-size:19px;line-height:1.86;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html,body{background:var(--bg)}
+body{color:var(--text);font-family:'EB Garamond',Georgia,serif;font-size:19px;line-height:1.86;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
+
 nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 40px;z-index:100;border-bottom:1px solid rgba(197,165,90,0.05)}
 .nav-home{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.22em;color:rgba(197,165,90,0.32);text-transform:uppercase;text-decoration:none;transition:color .3s}
 .nav-home:hover{color:var(--gold)}
 .nav-section{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.2)}
+
 main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
+
+/* DATE NAV - always visible */
 .date-nav{display:grid;grid-template-columns:64px 1fr 64px;align-items:start;margin-bottom:72px}
 .nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.2);padding:6px 0;transition:color .3s;line-height:1}
 .nav-btn:hover:not(:disabled){color:var(--gold-dim)}
 .nav-btn:disabled{opacity:.08;cursor:default}
 .nav-btn.prev{text-align:left}.nav-btn.next{text-align:right}
 .date-center{text-align:center}
-.date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1}
+.date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1;min-height:14px}
 .lit-day{margin-top:12px;font-style:italic;font-size:15px;color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
-.readings-link-wrap{padding-left:22px;border-left:1px solid rgba(197,165,90,0.08);margin-bottom:56px;opacity:0;transform:translateY(8px);transition:opacity .7s ease,transform .7s ease}
-.readings-link-wrap.in{opacity:1;transform:none}
+
+/* READINGS LINK - always visible */
+.readings-link-wrap{padding-left:22px;border-left:1px solid rgba(197,165,90,0.08);margin-bottom:56px}
 .readings-link-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:14px}
 .readings-link-note{font-size:16px;color:rgba(226,217,200,0.38);font-style:italic;margin-bottom:16px;line-height:1.7}
 .usccb-anchor{display:inline-block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.28);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.14);padding-bottom:2px;transition:color .3s,border-color .3s}
 .usccb-anchor:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
+
 .sep{text-align:center;padding:40px 0 52px;color:rgba(197,165,90,0.15);font-size:13px;letter-spacing:0.65em}
-.com-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:30px;opacity:0;transition:opacity .7s ease}
-.com-label.in{opacity:1}
-.com-subtitle{font-style:italic;font-size:20px;color:rgba(197,165,90,0.5);line-height:1.65;margin-bottom:40px;opacity:0;transform:translateY(8px);transition:opacity .7s ease .1s,transform .7s ease .1s}
-.com-subtitle.in{opacity:1;transform:none}
+
+/* COMMENTARY LABEL - always visible */
+.com-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:30px}
+
+/* SUBTITLE - always visible */
+.com-subtitle{font-style:italic;font-size:20px;color:rgba(197,165,90,0.5);line-height:1.65;margin-bottom:40px}
 .com-subtitle:empty{display:none}
+
+/* BODY - always visible, content fades in when loaded */
 .com-body{font-size:19.5px;line-height:1.92}
 .com-body p{margin-bottom:30px}
 .com-body p:last-child{margin-bottom:0}
@@ -50,13 +59,18 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
 .com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
 .com-body img{display:none}
-@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.com-body.loaded{animation:fadein .8s ease forwards}
+
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.content-loaded{animation:fadein .7s ease forwards}
+
 .substack-link{display:inline-block;margin-top:40px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.22);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.1);padding-bottom:2px;transition:color .3s,border-color .3s}
 .substack-link:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
-.state{font-style:italic;color:rgba(197,165,90,0.22);font-size:16px;line-height:2}
-.sk{display:block;background:linear-gradient(90deg,rgba(197,165,90,0.04) 0%,rgba(197,165,90,0.09) 50%,rgba(197,165,90,0.04) 100%);background-size:200% 100%;animation:shim 1.8s ease-in-out infinite;border-radius:1px;height:14px;margin-bottom:14px}
+
+/* SKELETON - clearly visible against dark bg */
+.sk{display:block;background:linear-gradient(90deg,rgba(197,165,90,0.08) 0%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.08) 100%);background-size:200% 100%;animation:shim 1.6s ease-in-out infinite;border-radius:2px;height:15px;margin-bottom:15px}
 @keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* SUBSCRIBE */
 .sub-wrap{margin-top:88px;padding-top:60px;border-top:1px solid rgba(197,165,90,0.06);text-align:center}
 .sub-cta{font-style:italic;color:var(--gold);font-size:22px;line-height:1.5;margin-bottom:8px}
 .sub-note{font-size:14px;color:rgba(226,217,200,0.2);margin-bottom:32px}
@@ -65,55 +79,61 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .sub-form input::placeholder{color:rgba(226,217,200,0.18);font-style:italic}
 .sub-form input:focus{border-color:rgba(197,165,90,0.38)}
 .sub-form button{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-dim);border:1px solid rgba(197,165,90,0.22);background:transparent;padding:11px 44px;cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,color .3s}
-.sub-form button::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,var(--fire),transparent 70%);opacity:0;transition:opacity .4s}
 .sub-form button:hover{border-color:var(--gold-dim);color:var(--gold)}
-.sub-form button:hover::before{opacity:.12}
 .sub-confirm{display:none;font-style:italic;color:rgba(197,165,90,0.42);font-size:16px;line-height:2;animation:fadein .9s ease}
 .sub-confirm .ref-mark{display:block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.16em;margin-top:6px;opacity:.5}
+
 footer{text-align:center;padding:80px 24px 48px}
 .f-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.16)}
 .f-mail{display:block;margin-top:7px;font-size:12px;color:rgba(197,165,90,0.14);text-decoration:none;transition:color .3s}
 .f-mail:hover{color:var(--gold)}
+
 @media(max-width:680px){main{padding:88px 22px 100px}nav{padding:0 22px}.date-nav{grid-template-columns:56px 1fr 56px}.com-body{font-size:17.5px}.sub-cta{font-size:20px}}
 @media(max-width:420px){body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}}
 </style>
 </head>
 <body>
+
 <nav>
   <a href="index.html" class="nav-home">Ishi Olam</a>
   <span class="nav-section">Daily Mass</span>
 </nav>
+
 <main>
   <div class="date-nav">
     <button class="nav-btn prev" id="prevBtn" onclick="go(-1)">← Prev</button>
     <div class="date-center">
-      <div class="date-text" id="dateTxt"></div>
-      <div class="lit-day" id="litDay"></div>
+      <div class="date-text" id="dateTxt">—</div>
+      <div class="lit-day" id="litDay"> </div>
     </div>
     <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
   </div>
-  <div class="readings-link-wrap" id="readingsWrap">
+
+  <div class="readings-link-wrap">
     <div class="readings-link-label">Mass Readings</div>
     <div class="readings-link-note">Today’s scripture, from the United States Conference of Catholic Bishops.</div>
     <a class="usccb-anchor" id="usccbLink" href="https://bible.usccb.org/daily-bible-reading" target="_blank" rel="noopener">Read today’s readings →</a>
   </div>
-  <div class="sep">&middot;&thinsp;&middot;&thinsp;&middot;</div>
-  <div class="com-label" id="comLabel">Commentary</div>
+
+  <div class="sep">· · ·</div>
+
+  <div class="com-label">Commentary</div>
   <div class="com-subtitle" id="comSubtitle"></div>
   <div class="com-body" id="comBody">
     <span class="sk" style="width:100%"></span>
+    <span class="sk" style="width:91%"></span>
+    <span class="sk" style="width:96%"></span>
+    <span class="sk" style="width:85%"></span>
+    <span class="sk" style="width:99%"></span>
+    <span class="sk" style="width:70%"></span>
+    <span class="sk" style="width:0%;height:8px;background:none"></span>
+    <span class="sk" style="width:98%"></span>
     <span class="sk" style="width:93%"></span>
-    <span class="sk" style="width:97%"></span>
-    <span class="sk" style="width:88%"></span>
+    <span class="sk" style="width:87%"></span>
     <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:72%"></span>
-    <br>
-    <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:95%"></span>
-    <span class="sk" style="width:83%"></span>
-    <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:60%"></span>
+    <span class="sk" style="width:62%"></span>
   </div>
+
   <div class="sub-wrap">
     <div class="sub-cta">Receive this each morning.</div>
     <div class="sub-note">Daily commentary, delivered free.</div>
@@ -127,10 +147,12 @@ footer{text-align:center;padding:80px 24px 48px}
     </div>
   </div>
 </main>
+
 <footer>
   <div class="f-name">Ishi Olam</div>
   <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
 </footer>
+
 <script>
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -142,17 +164,11 @@ function pad(n){ return String(n).padStart(2,'0'); }
 function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function fmtDate(str){ var p=str.split('-'); var dt=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])); return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+parseInt(p[2])+', '+p[0]; }
 function usccbUrl(str){ return 'https://bible.usccb.org/daily-bible-reading/'+str.replace(/-/g,''); }
-
 function go(delta){ curIdx+=delta; render(); }
 
-function initDateDisplay(){
-  var paramDate = new URLSearchParams(window.location.search).get('date');
-  var key = paramDate || todayKey();
+function setDate(key){
   document.getElementById('dateTxt').textContent = fmtDate(key);
   document.getElementById('usccbLink').href = usccbUrl(key);
-  document.getElementById('nextBtn').disabled = !paramDate;
-  setTimeout(function(){ document.getElementById('readingsWrap').classList.add('in'); }, 60);
-  setTimeout(function(){ document.getElementById('comLabel').classList.add('in'); }, 80);
 }
 
 function render(){
@@ -160,60 +176,45 @@ function render(){
   if(!post) return;
   document.getElementById('prevBtn').disabled = curIdx >= allPosts.length-1;
   document.getElementById('nextBtn').disabled = curIdx <= 0;
-  document.getElementById('dateTxt').textContent = fmtDate(post.dateKey);
-  document.getElementById('litDay').textContent = post.litDay || '';
-  document.getElementById('usccbLink').href = usccbUrl(post.dateKey);
+  setDate(post.dateKey);
+  document.getElementById('litDay').textContent = post.litDay || ' ';
   try{ history.replaceState(null,'','?date='+post.dateKey); }catch(e){}
 
-  var rw = document.getElementById('readingsWrap');
-  rw.classList.remove('in');
-  setTimeout(function(){ rw.classList.add('in'); }, 20);
-
-  var label = document.getElementById('comLabel');
   var subtitle = document.getElementById('comSubtitle');
   var body = document.getElementById('comBody');
 
-  if(body.classList.contains('loaded')){
-    body.classList.remove('loaded');
-    body.innerHTML = '<span class="sk" style="width:100%"></span><span class="sk" style="width:93%"></span><span class="sk" style="width:88%"></span><span class="sk" style="width:100%"></span><span class="sk" style="width:72%"></span>';
+  subtitle.textContent = post.subtitle || '';
+  body.classList.remove('content-loaded');
+  body.innerHTML = post.html;
+  if(post.link){
+    var a = document.createElement('a');
+    a.href=post.link; a.target='_blank'; a.rel='noopener';
+    a.className='substack-link'; a.textContent='Read on Substack →';
+    body.appendChild(a);
   }
-  subtitle.classList.remove('in');
-  label.classList.remove('in');
-
-  setTimeout(function(){
-    subtitle.textContent = post.subtitle || '';
-    body.innerHTML = post.html;
-    if(post.link){
-      var a = document.createElement('a');
-      a.href=post.link; a.target='_blank'; a.rel='noopener';
-      a.className='substack-link'; a.textContent='Read on Substack →';
-      body.appendChild(a);
-    }
-    body.classList.add('loaded');
-    label.classList.add('in');
-    subtitle.classList.add('in');
-  }, 40);
+  void body.offsetWidth; /* force reflow so animation restarts */
+  body.classList.add('content-loaded');
 }
 
-function showEmpty(){
+function showSkeleton(){
   var body = document.getElementById('comBody');
-  body.innerHTML = '<p class="state">No commentary found for this day yet.</p>';
-  body.classList.add('loaded');
+  body.classList.remove('content-loaded');
+  body.innerHTML =
+    '<span class="sk" style="width:100%"></span>' +
+    '<span class="sk" style="width:91%"></span>' +
+    '<span class="sk" style="width:96%"></span>' +
+    '<span class="sk" style="width:85%"></span>' +
+    '<span class="sk" style="width:99%"></span>' +
+    '<span class="sk" style="width:70%"></span>';
 }
 
 function getTag(item,tag){ var el=item.getElementsByTagName(tag)[0]; return el?(el.textContent||''):''; }
-
-function getEncoded(item){
-  var el=item.getElementsByTagName('content:encoded')[0]||item.getElementsByTagName('encoded')[0];
-  return el?(el.textContent||''):'';
-}
-
+function getEncoded(item){ var el=item.getElementsByTagName('content:encoded')[0]||item.getElementsByTagName('encoded')[0]; return el?(el.textContent||''):''; }
 function getLink(item){
   var el=item.getElementsByTagName('link')[0];
   if(!el) return '';
   if(el.textContent&&el.textContent.trim()) return el.textContent.trim();
-  var next=el.nextSibling;
-  if(next&&next.nodeType===3) return next.textContent.trim();
+  var n=el.nextSibling; if(n&&n.nodeType===3) return n.textContent.trim();
   return '';
 }
 
@@ -222,39 +223,49 @@ function cleanHtml(html){
   html=html.replace(/<div[^>]*class="[^"]*(?:subscription|paywall|subscribe|cta)[^"]*"[\s\S]*?<\/div>/gi,'');
   html=html.replace(/<div[^>]*id="[^"]*(?:paywall|subscribe)[^"]*"[\s\S]*?<\/div>/gi,'');
   html=html.replace(/<p[^>]*>[\s\S]*?substack\.com\/subscribe[\s\S]*?<\/p>/gi,'');
-  html=html.replace(/<a[^>]*>[\s]*(?:Subscribe|Upgrade|Subscribe now)[\s]*<\/a>/gi,'');
-  html=html.replace(/<p[^>]*>\s*(&nbsp;|&#160;)?\s*<\/p>/gi,'');
+  html=html.replace(/<a[^>]*>\s*(?:Subscribe|Upgrade|Subscribe now)\s*<\/a>/gi,'');
+  html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
   html=html.replace(/<hr[^>]*>/gi,'');
   return html.trim();
 }
 
 function parseItem(item){
   var title=getTag(item,'title');
-  var m=title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
-  var dateKey=m?m[1]:null;
-  var litDay=m?m[2].trim():'';
-  var content=getEncoded(item)||getTag(item,'description');
-  var link=getLink(item);
-  var subtitle=getTag(item,'subtitle');
-  return {dateKey:dateKey,litDay:litDay,subtitle:subtitle,html:cleanHtml(content),link:link};
+  var m=title.match(/^(\d{4}-\d{2}-\d{2})\s*[-—–]\s*(.*)/);
+  return {
+    dateKey: m?m[1]:null,
+    litDay:  m?m[2].trim():'',
+    subtitle:getTag(item,'subtitle'),
+    html:    cleanHtml(getEncoded(item)||getTag(item,'description')),
+    link:    getLink(item)
+  };
 }
 
 function init(){
-  var paramDate=new URLSearchParams(window.location.search).get('date');
-  initDateDisplay();
+  var paramDate = new URLSearchParams(window.location.search).get('date');
+  var startKey  = paramDate || todayKey();
+  setDate(startKey);
+  document.getElementById('nextBtn').disabled = !paramDate;
+
   fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://'+SUBSTACK_SLUG+'.substack.com/feed'))
     .then(function(r){ return r.json(); })
     .then(function(j){ return j.contents; })
     .then(function(xml){
-      var doc=new DOMParser().parseFromString(xml,'text/xml');
-      var items=Array.from(doc.querySelectorAll('item'));
+      var doc = new DOMParser().parseFromString(xml,'text/xml');
+      var items = Array.from(doc.querySelectorAll('item'));
       if(!items.length){ showEmpty(); return; }
-      allPosts=items.map(parseItem).filter(function(p){ return p.dateKey; }).sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
+      allPosts = items.map(parseItem).filter(function(p){ return p.dateKey; })
+                      .sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
       if(!allPosts.length){ showEmpty(); return; }
-      if(paramDate){ var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; }); curIdx=i>=0?i:0; } else { curIdx=0; }
+      if(paramDate){
+        var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
+        curIdx=i>=0?i:0;
+      } else { curIdx=0; }
       render();
     })
-    .catch(function(){ showEmpty(); });
+    .catch(function(){
+      document.getElementById('comBody').innerHTML='<p style="font-style:italic;color:rgba(197,165,90,0.3);font-size:16px">Could not load commentary. Please refresh or <a href="https://'+SUBSTACK_SLUG+'.substack.com" target="_blank" style="color:rgba(197,165,90,0.4);border-bottom:1px solid rgba(197,165,90,0.2)">read on Substack</a>.</p>';
+    });
 }
 
 function handleSubscribe(){
