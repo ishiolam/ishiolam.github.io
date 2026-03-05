@@ -34,12 +34,7 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1;min-height:14px}
 .lit-day{margin-top:12px;font-style:italic;font-size:15px;color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
 
-/* READINGS LINK - always visible */
-.readings-link-wrap{padding-left:22px;border-left:1px solid rgba(197,165,90,0.08);margin-bottom:56px}
-.readings-link-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:14px}
-.readings-link-note{font-size:16px;color:rgba(226,217,200,0.38);font-style:italic;margin-bottom:16px;line-height:1.7}
-.usccb-anchor{display:inline-block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.28);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.14);padding-bottom:2px;transition:color .3s,border-color .3s}
-.usccb-anchor:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
+
 
 .sep{text-align:center;padding:40px 0 52px;color:rgba(197,165,90,0.15);font-size:13px;letter-spacing:0.65em}
 
@@ -130,14 +125,6 @@ footer{text-align:center;padding:80px 24px 48px}
     <button class="nav-btn next" id="nextBtn" onclick="go(-1)">Next →</button>
   </div>
 
-  <div class="readings-link-wrap">
-    <div class="readings-link-label">Mass Readings</div>
-    <div class="readings-link-note">Today’s scripture, from the United States Conference of Catholic Bishops.</div>
-    <a class="usccb-anchor" id="usccbLink" href="https://bible.usccb.org/daily-bible-reading" target="_blank" rel="noopener">Read today’s readings →</a>
-  </div>
-
-  <div class="sep">· · ·</div>
-
   <div class="com-label">Commentary</div>
   <div class="com-subtitle" id="comSubtitle"></div>
   <div class="com-body" id="comBody">
@@ -210,7 +197,6 @@ function go(delta){
 
 function setDate(key){
   document.getElementById('dateTxt').textContent = fmtDate(key);
-  document.getElementById('usccbLink').href = usccbUrl(key);
 }
 
 function render(){
