@@ -10,411 +10,148 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;
+  --gold-dim:rgba(197,165,90,0.42);--gold-soft:rgba(197,165,90,0.22);
+  --fire:#8B6914;--surface:#12100E;--border:#1C1914;
+}
+html{background:var(--bg);scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'EB Garamond',Georgia,serif;
+  font-size:19px;line-height:1.86;letter-spacing:0.012em;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+::selection{background:rgba(197,165,90,0.15);color:var(--text)}
 
-/* ── RESET ── */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:52px;
+  background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;z-index:100;border-bottom:1px solid rgba(197,165,90,0.05)}
+.nav-home{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.22em;
+  color:rgba(197,165,90,0.32);text-transform:uppercase;text-decoration:none;transition:color .3s}
+.nav-home:hover{color:var(--gold)}
+.nav-section{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;
+  text-transform:uppercase;color:rgba(197,165,90,0.2)}
 
-:root {
-  --bg:        #0A0908;
-  --text:      #E2D9C8;
-  --gold:      #C5A55A;
-  --gold-dim:  rgba(197,165,90,0.42);
-  --gold-soft: rgba(197,165,90,0.22);
-  --gold-ghost:rgba(197,165,90,0.07);
-  --fire:      #8B6914;
-  --surface:   #12100E;
-  --border:    #1C1914;
-}
+/* LAYOUT */
+main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 
-html { background: var(--bg); scroll-behavior: smooth; }
+/* DATE NAV */
+.date-nav{display:grid;grid-template-columns:64px 1fr 64px;align-items:start;margin-bottom:72px}
+.nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;
+  font-size:9px;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(197,165,90,0.2);padding:6px 0;transition:color .3s;line-height:1}
+.nav-btn:hover:not(:disabled){color:var(--gold-dim)}
+.nav-btn:disabled{opacity:.08;cursor:default}
+.nav-btn.prev{text-align:left}.nav-btn.next{text-align:right}
+.date-center{text-align:center}
+.date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;
+  text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1}
+.lit-day{margin-top:12px;font-style:italic;font-size:15px;
+  color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 19px;
-  line-height: 1.86;
-  letter-spacing: 0.012em;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-}
+/* READINGS LINK */
+.readings-link-wrap{padding-left:22px;border-left:1px solid rgba(197,165,90,0.08);
+  margin-bottom:56px;opacity:0;transform:translateY(8px);
+  transition:opacity .8s ease,transform .8s ease}
+.readings-link-wrap.in{opacity:1;transform:none}
+.readings-link-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;
+  text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:14px}
+.readings-link-note{font-size:16px;color:rgba(226,217,200,0.38);font-style:italic;
+  margin-bottom:16px;line-height:1.7}
+.usccb-anchor{display:inline-block;font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.28);
+  text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.14);
+  padding-bottom:2px;transition:color .3s,border-color .3s}
+.usccb-anchor:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
 
-::selection { background: rgba(197,165,90,0.15); color: var(--text); }
+/* DIVIDER */
+.sep{text-align:center;padding:40px 0 52px;color:rgba(197,165,90,0.15);
+  font-size:13px;letter-spacing:0.65em}
 
-/* ── NAV ── */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 52px;
-  background: rgba(10,9,8,0.97);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
-  z-index: 100;
-  border-bottom: 1px solid rgba(197,165,90,0.05);
-}
-.nav-home {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  color: rgba(197,165,90,0.32);
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.nav-home:hover { color: var(--gold); }
-.nav-section {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.2);
-}
+/* COMMENTARY */
+.com-label{font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.36em;
+  text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:30px;
+  opacity:0;transition:opacity .9s ease .05s}
+.com-label.in{opacity:1}
+.com-subtitle{font-style:italic;font-size:20px;color:rgba(197,165,90,0.5);
+  line-height:1.65;margin-bottom:40px;opacity:0;transform:translateY(8px);
+  transition:opacity .9s ease .17s,transform .9s ease .17s}
+.com-subtitle.in{opacity:1;transform:none}
+.com-subtitle:empty{display:none}
+.com-body{font-size:19.5px;line-height:1.92;opacity:0;transform:translateY(10px);
+  transition:opacity 1s ease .2s,transform 1s ease .2s}
+.com-body.in{opacity:1;transform:none}
+.com-body p{margin-bottom:30px}
+.com-body p:last-child{margin-bottom:0}
+.com-body em{color:var(--gold);font-style:italic}
+.com-body strong{color:rgba(226,217,200,0.9);font-weight:500}
+.com-body h2,.com-body h3{font-family:'Cinzel',serif;font-weight:400;
+  color:var(--gold);font-size:16px;letter-spacing:0.05em;margin:36px 0 18px}
+.com-body blockquote{border-left:1px solid rgba(197,165,90,0.18);
+  padding-left:22px;margin:28px 0;font-style:italic;color:rgba(197,165,90,0.55)}
+.com-body a{color:var(--gold-dim);text-decoration:none;
+  border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
+.com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
+.com-body img{display:none}
+.substack-link{display:inline-block;margin-top:40px;font-family:'Cinzel',serif;
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(197,165,90,0.22);text-decoration:none;
+  border-bottom:1px solid rgba(197,165,90,0.1);padding-bottom:2px;
+  transition:color .3s,border-color .3s}
+.substack-link:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
+.state{font-style:italic;color:rgba(197,165,90,0.22);font-size:16px;line-height:2}
 
-/* ── MAIN ── */
-main {
-  max-width: 660px;
-  margin: 0 auto;
-  padding: 108px 36px 130px;
-}
+/* SKELETON */
+.sk{display:block;background:linear-gradient(90deg,
+  rgba(197,165,90,0.03) 0%,rgba(197,165,90,0.065) 50%,rgba(197,165,90,0.03) 100%);
+  background-size:200% 100%;animation:shim 2.2s ease-in-out infinite;
+  border-radius:1px;height:13px;margin-bottom:12px}
+@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ── DATE NAV ── */
-.date-nav {
-  display: grid;
-  grid-template-columns: 64px 1fr 64px;
-  align-items: start;
-  margin-bottom: 72px;
-}
+/* SUBSCRIBE */
+.sub-wrap{margin-top:88px;padding-top:60px;border-top:1px solid rgba(197,165,90,0.06);
+  text-align:center}
+.sub-cta{font-style:italic;color:var(--gold);font-size:22px;line-height:1.5;margin-bottom:8px}
+.sub-note{font-size:14px;color:rgba(226,217,200,0.2);margin-bottom:32px}
+.sub-form{display:flex;flex-direction:column;align-items:center;gap:14px}
+.sub-form input[type="email"]{width:300px;max-width:86vw;padding:13px 18px;
+  background:var(--surface);border:1px solid var(--border);color:var(--text);
+  font-family:'EB Garamond',serif;font-size:16px;outline:none;
+  transition:border-color .3s;border-radius:0;-webkit-appearance:none}
+.sub-form input::placeholder{color:rgba(226,217,200,0.18);font-style:italic}
+.sub-form input:focus{border-color:rgba(197,165,90,0.38)}
+.sub-form button{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--gold-dim);border:1px solid rgba(197,165,90,0.22);
+  background:transparent;padding:11px 44px;cursor:pointer;
+  position:relative;overflow:hidden;transition:border-color .3s,color .3s}
+.sub-form button::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,var(--fire),transparent 70%);
+  opacity:0;transition:opacity .4s}
+.sub-form button:hover{border-color:var(--gold-dim);color:var(--gold)}
+.sub-form button:hover::before{opacity:.12}
+.sub-confirm{display:none;font-style:italic;color:rgba(197,165,90,0.42);
+  font-size:16px;line-height:2;animation:fadeup .9s ease}
+.sub-confirm .ref-mark{display:block;font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:0.16em;margin-top:6px;opacity:.5}
+@keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-.nav-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.2);
-  padding: 6px 0;
-  transition: color 0.3s;
-  line-height: 1;
-}
-.nav-btn:hover:not(:disabled) { color: var(--gold-dim); }
-.nav-btn:disabled { opacity: 0.08; cursor: default; }
-.nav-btn.prev { text-align: left; }
-.nav-btn.next { text-align: right; }
+/* FOOTER */
+footer{text-align:center;padding:80px 24px 48px}
+.f-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;
+  text-transform:uppercase;color:rgba(197,165,90,0.16)}
+.f-mail{display:block;margin-top:7px;font-size:12px;
+  color:rgba(197,165,90,0.14);text-decoration:none;transition:color .3s}
+.f-mail:hover{color:var(--gold)}
 
-.date-center { text-align: center; }
-.date-text {
-  font-family: 'Cinzel', serif;
-  font-size: 11.5px;
-  letter-spacing: 0.19em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.45);
-  line-height: 1;
+/* RESPONSIVE */
+@media(max-width:680px){
+  main{padding:88px 22px 100px}nav{padding:0 22px}
+  .date-nav{grid-template-columns:56px 1fr 56px}
+  .com-body{font-size:17.5px}.sub-cta{font-size:20px}
 }
-.lit-day {
-  margin-top: 12px;
-  font-style: italic;
-  font-size: 15px;
-  color: rgba(197,165,90,0.27);
-  line-height: 1.55;
-  min-height: 23px;
-}
-
-/* ── READINGS LINK ── */
-.readings-link-wrap {
-  padding-left: 22px;
-  border-left: 1px solid rgba(197,165,90,0.08);
-  margin-bottom: 56px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.readings-link-wrap.in { opacity: 1; transform: none; }
-
-.readings-link-label {
-  font-family: 'Cinzel', serif;
-  font-size: 8.5px;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.2);
-  margin-bottom: 14px;
-}
-.readings-link-note {
-  font-size: 16px;
-  color: rgba(226,217,200,0.38);
-  font-style: italic;
-  margin-bottom: 16px;
-  line-height: 1.7;
-}
-.usccb-anchor {
-  display: inline-block;
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.28);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(197,165,90,0.14);
-  padding-bottom: 2px;
-  transition: color 0.3s, border-color 0.3s;
-}
-.usccb-anchor:hover { color: var(--gold-dim); border-color: var(--gold-dim); }
-
-/* ── DIVIDER ── */
-.sep {
-  text-align: center;
-  padding: 40px 0 52px;
-  color: rgba(197,165,90,0.15);
-  font-size: 13px;
-  letter-spacing: 0.65em;
-}
-
-/* ── COMMENTARY ── */
-.com-label {
-  font-family: 'Cinzel', serif;
-  font-size: 8.5px;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.2);
-  margin-bottom: 30px;
-  opacity: 0;
-  transition: opacity 0.9s ease 0.05s;
-}
-.com-label.in { opacity: 1; }
-
-.com-title {
-  font-family: 'Cinzel', serif;
-  font-size: 21px;
-  color: var(--gold);
-  font-weight: 400;
-  letter-spacing: 0.025em;
-  line-height: 1.45;
-  margin-bottom: 36px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.9s ease 0.1s, transform 0.9s ease 0.1s;
-}
-.com-title.in { opacity: 1; transform: none; }
-.com-title:empty { display: none; }
-
-.com-subtitle {
-  font-style: italic;
-  font-size: 20px;
-  color: rgba(197,165,90,0.5);
-  line-height: 1.65;
-  margin-bottom: 40px;
-  margin-top: -18px;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.9s ease 0.17s, transform 0.9s ease 0.17s;
-}
-.com-subtitle.in { opacity: 1; transform: none; }
-.com-subtitle:empty { display: none; }
-
-.com-body {
-  font-size: 19.5px;
-  line-height: 1.92;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 1s ease 0.15s, transform 1s ease 0.15s;
-}
-.com-body.in { opacity: 1; transform: none; }
-.com-body p { margin-bottom: 30px; }
-.com-body p:last-child { margin-bottom: 0; }
-.com-body em  { color: var(--gold); font-style: italic; }
-.com-body strong { color: rgba(226,217,200,0.9); font-weight: 500; }
-.com-body h2, .com-body h3 {
-  font-family: 'Cinzel', serif;
-  font-weight: 400;
-  color: var(--gold);
-  font-size: 16px;
-  letter-spacing: 0.05em;
-  margin: 36px 0 18px;
-}
-.com-body blockquote {
-  border-left: 1px solid rgba(197,165,90,0.18);
-  padding-left: 22px;
-  margin: 28px 0;
-  font-style: italic;
-  color: rgba(197,165,90,0.55);
-}
-.com-body a {
-  color: var(--gold-dim);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(197,165,90,0.18);
-  transition: color 0.3s, border-color 0.3s;
-}
-.com-body a:hover { color: var(--gold); border-color: var(--gold-dim); }
-.com-body img { display: none; } /* Hide Substack images — aesthetic choice */
-
-.substack-link {
-  display: inline-block;
-  margin-top: 40px;
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.22);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(197,165,90,0.1);
-  padding-bottom: 2px;
-  transition: color 0.3s, border-color 0.3s;
-}
-.substack-link:hover { color: var(--gold-dim); border-color: var(--gold-dim); }
-
-/* State messages */
-.state {
-  font-style: italic;
-  color: rgba(197,165,90,0.22);
-  font-size: 16px;
-  line-height: 2;
-}
-
-/* Skeleton */
-.sk {
-  display: block;
-  background: linear-gradient(90deg,
-    rgba(197,165,90,0.03) 0%,
-    rgba(197,165,90,0.065) 50%,
-    rgba(197,165,90,0.03) 100%);
-  background-size: 200% 100%;
-  animation: shim 2.2s ease-in-out infinite;
-  border-radius: 1px;
-  height: 13px;
-  margin-bottom: 12px;
-}
-@keyframes shim {
-  0%   { background-position:  200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ── SUBSCRIBE ── */
-.sub-wrap {
-  margin-top: 88px;
-  padding-top: 60px;
-  border-top: 1px solid rgba(197,165,90,0.06);
-  text-align: center;
-}
-.sub-cta {
-  font-style: italic;
-  color: var(--gold);
-  font-size: 22px;
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-.sub-note {
-  font-size: 14px;
-  color: rgba(226,217,200,0.2);
-  margin-bottom: 32px;
-  letter-spacing: 0.01em;
-}
-.sub-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-.sub-form input[type="email"] {
-  width: 300px;
-  max-width: 86vw;
-  padding: 13px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font-family: 'EB Garamond', serif;
-  font-size: 16px;
-  outline: none;
-  transition: border-color 0.3s;
-  border-radius: 0;
-  -webkit-appearance: none;
-}
-.sub-form input::placeholder { color: rgba(226,217,200,0.18); font-style: italic; }
-.sub-form input:focus { border-color: rgba(197,165,90,0.38); }
-
-.sub-form button {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold-dim);
-  border: 1px solid rgba(197,165,90,0.22);
-  background: transparent;
-  padding: 11px 44px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s, color 0.3s;
-}
-.sub-form button::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, var(--fire), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.sub-form button:hover { border-color: var(--gold-dim); color: var(--gold); }
-.sub-form button:hover::before { opacity: 0.12; }
-
-.sub-confirm {
-  display: none;
-  font-style: italic;
-  color: rgba(197,165,90,0.42);
-  font-size: 16px;
-  line-height: 2;
-  animation: fadeup 0.9s ease;
-}
-.sub-confirm .ref-mark {
-  display: block;
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  margin-top: 6px;
-  opacity: 0.5;
-}
-@keyframes fadeup {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* ── FOOTER ── */
-footer {
-  text-align: center;
-  padding: 80px 24px 48px;
-}
-.f-name {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(197,165,90,0.16);
-}
-.f-mail {
-  display: block;
-  margin-top: 7px;
-  font-size: 12px;
-  color: rgba(197,165,90,0.14);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.f-mail:hover { color: var(--gold); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 680px) {
-  main { padding: 88px 22px 100px; }
-  nav  { padding: 0 22px; }
-  .date-nav { grid-template-columns: 56px 1fr 56px; }
-  .com-body { font-size: 17.5px; }
-  .sub-cta  { font-size: 20px; }
-}
-@media (max-width: 420px) {
-  body { font-size: 17px; }
-  .com-body { font-size: 16.5px; }
-  .date-text { font-size: 10.5px; }
+@media(max-width:420px){
+  body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}
 }
 </style>
 </head>
@@ -427,33 +164,26 @@ footer {
 
 <main>
 
-  <!-- DATE / POST NAVIGATION -->
   <div class="date-nav">
     <button class="nav-btn prev" id="prevBtn" onclick="go(-1)">← Prev</button>
     <div class="date-center">
-      <div class="date-text"  id="dateTxt">—</div>
-      <div class="lit-day"    id="litDay"></div>
+      <div class="date-text" id="dateTxt">—</div>
+      <div class="lit-day"   id="litDay"></div>
     </div>
     <button class="nav-btn next" id="nextBtn" onclick="go(1)">Next →</button>
   </div>
 
-  <!-- READINGS LINK -->
   <div class="readings-link-wrap" id="readingsWrap">
     <div class="readings-link-label">Mass Readings</div>
-    <div class="readings-link-note">
-      Today&rsquo;s scripture, from the United States Conference of Catholic Bishops.
-    </div>
-    <a class="usccb-anchor" id="usccbLink" href="https://bible.usccb.org/daily-bible-reading"
-       target="_blank" rel="noopener">
-      Read today&rsquo;s readings &rarr;
-    </a>
+    <div class="readings-link-note">Today's scripture, from the United States Conference of Catholic Bishops.</div>
+    <a class="usccb-anchor" id="usccbLink"
+       href="https://bible.usccb.org/daily-bible-reading"
+       target="_blank" rel="noopener">Read today's readings &rarr;</a>
   </div>
 
   <div class="sep">&middot;&thinsp;&middot;&thinsp;&middot;</div>
 
-  <!-- COMMENTARY -->
   <div class="com-label"    id="comLabel">Commentary</div>
-  <div class="com-title"    id="comTitle"></div>
   <div class="com-subtitle" id="comSubtitle"></div>
   <div class="com-body"     id="comBody">
     <span class="sk" style="width:100%"></span>
@@ -465,7 +195,6 @@ footer {
     <span class="sk" style="width:75%"></span>
   </div>
 
-  <!-- SUBSCRIBE -->
   <div class="sub-wrap">
     <div class="sub-cta">Receive this each morning.</div>
     <div class="sub-note">Daily commentary, delivered free.</div>
@@ -484,222 +213,163 @@ footer {
 
 <footer>
   <div class="f-name">Ishi Olam</div>
-  <a href="/cdn-cgi/l/email-protection#f482da9d879c9dda9b989599b49399959d98da979b99" class="f-mail"><span class="__cf_email__" data-cfemail="94e2bafde7fcfdbafbf8f5f9d4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a>
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ═══════════════════════════════════════════════════════
-   CONFIGURATION
-   ═══════════════════════════════════════════════════════
+<script>
+// ═══════════════════════════════════════════════
+// CONFIGURATION — set this once, never touch again
+//
+// POST TITLE FORMAT (required):
+//   2026-03-05 — Wednesday of the First Week of Lent
+//   Everything after " — " shows as the liturgical label.
+//   Your subtitle shows in italic gold below.
+// ═══════════════════════════════════════════════
 
-   POST TITLE CONVENTION (important)
-     For each daily post on Substack, begin the title with
-     the date in YYYY-MM-DD format. Example:
+var SUBSTACK_SLUG = 'ishi-olam.substack.com';
 
-       "2026-03-05 — Wednesday of the First Week of Lent"
+// ═══════════════════════════════════════════════
 
-     The page uses this to match posts to dates and to
-     display the liturgical day below the date.
-     Everything after " — " becomes the liturgical label.
+var MONTHS  = ['January','February','March','April','May','June',
+               'July','August','September','October','November','December'];
+var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday',
+               'Thursday','Friday','Saturday'];
 
-   ═══════════════════════════════════════════════════════ */
+var allPosts = [];
+var curIdx   = 0;
 
-const SUBSTACK_SLUG = 'https://ishiolam.substack.com/'; //
-
-/* ═══════════════════════════════════════════════════════ */
-
-const MONTHS  = ['January','February','March','April','May','June',
-                 'July','August','September','October','November','December'];
-const WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday',
-                 'Thursday','Friday','Saturday'];
-
-const pad = n => String(n).padStart(2,'0');
-
-// All posts fetched from Substack, sorted newest first
-let allPosts = [];
-let curIdx   = 0;   // index into allPosts (0 = newest)
-let loaded   = false;
+function pad(n) { return String(n).padStart(2,'0'); }
 
 function todayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  var d = new Date();
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 }
 
 function fmtDate(str) {
-  // str is YYYY-MM-DD
-  const [y, m, d] = str.split('-').map(Number);
-  const dt = new Date(y, m-1, d);
-  return `${WEEKDAY[dt.getDay()]}, ${MONTHS[dt.getMonth()]} ${d}, ${y}`;
+  var parts = str.split('-');
+  var y = parseInt(parts[0]), m = parseInt(parts[1])-1, d = parseInt(parts[2]);
+  var dt = new Date(y, m, d);
+  return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+d+', '+y;
 }
 
 function usccbUrl(dateStr) {
-  return `https://bible.usccb.org/daily-bible-reading/${dateStr.replace(/-/g,'')}`;
+  return 'https://bible.usccb.org/daily-bible-reading/'+dateStr.replace(/-/g,'');
 }
 
-/* ── INIT ── */
-async function init() {
-  // Determine starting index from URL param
-  const paramDate = new URLSearchParams(window.location.search).get('date');
-  await fetchPosts();
-  if (!allPosts.length) { showEmpty(); return; }
-
-  // Find the right starting index
-  if (paramDate) {
-    const i = allPosts.findIndex(p => p.dateKey === paramDate);
-    curIdx = i >= 0 ? i : 0;
-  } else {
-    curIdx = 0; // most recent
-  }
-
-  render();
-}
-
-/* ── FETCH ── */
-async function fetchPosts() {
-  if (SUBSTACK_SLUG === 'YOUR-SUBSTACK-SLUG') {
-    // Demo mode
-    allPosts = [{
-      dateKey: todayKey(),
-      litDay: 'Your liturgical day here',
-      title: 'Your commentary title',
-      subtitle: 'The subtitle of your Substack post will appear here — italic, in gold.',
-      html: `<p>Your daily commentary will appear here automatically once you set your Substack slug at the top of this file.</p><p>Write on Substack. Publish. It appears here.</p>`,
-      link: '#'
-    }];
-    return;
-  }
-
-  try {
-    const feedUrl = `https://${SUBSTACK_SLUG}.substack.com/feed`;
-    const apiUrl  = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=100`;
-    const res  = await fetch(apiUrl);
-    const data = await res.json();
-    if (!data.items?.length) throw new Error('empty');
-
-    allPosts = data.items
-      .map(parsePost)
-      .filter(p => p.dateKey)           // only posts with a date in the title
-      .sort((a,b) => b.dateKey.localeCompare(a.dateKey)); // newest first
-
-  } catch(e) {
-    allPosts = [];
-  }
-}
-
-function parsePost(item) {
-  const title = item.title || '';
-
-  // Match titles starting with YYYY-MM-DD
-  const dateMatch = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-—–]\s*(.*)/);
-  const dateKey   = dateMatch ? dateMatch[1] : null;
-  const litDay    = dateMatch ? dateMatch[2].trim() : '';
-
-  // Clean commentary title — everything after the liturgical label separator
-  // If title is just the date + liturgical day, use litDay as display title
-  const displayTitle = litDay || '';
-
-  return {
-    dateKey,
-    litDay: displayTitle,
-    title: displayTitle,
-    subtitle: item.subtitle || '',
-    html: cleanHtml(item.content || item.description || ''),
-    link: item.link || `https://${SUBSTACK_SLUG}.substack.com`
-  };
-}
-
-function cleanHtml(html) {
-  return html
-    // Remove Substack subscribe prompts
-    .replace(/<div[^>]*class="[^"]*subscription[^"]*"[\s\S]*?<\/div>/gi, '')
-    .replace(/<p[^>]*>\s*<a[^>]*substack[^>]*>Subscribe<\/a>\s*<\/p>/gi, '')
-    // Remove empty paragraphs
-    .replace(/<p[^>]*>\s*(&nbsp;)?\s*<\/p>/gi, '')
-    .trim();
-}
-
-/* ── NAVIGATE ── */
 function go(delta) {
   curIdx += delta;
   render();
 }
 
 function render() {
-  const post = allPosts[curIdx];
+  var post = allPosts[curIdx];
   if (!post) return;
 
-  // Nav buttons
   document.getElementById('prevBtn').disabled = curIdx >= allPosts.length - 1;
   document.getElementById('nextBtn').disabled = curIdx <= 0;
-
-  // Date display
   document.getElementById('dateTxt').textContent = fmtDate(post.dateKey);
   document.getElementById('litDay').textContent  = post.litDay || '';
-
-  // URL
-  history.replaceState(null,'',`?date=${post.dateKey}`);
-
-  // USCCB link
   document.getElementById('usccbLink').href = usccbUrl(post.dateKey);
 
-  // Animate readings wrap
-  const rw = document.getElementById('readingsWrap');
-  rw.classList.remove('in');
-  requestAnimationFrame(() => requestAnimationFrame(() => rw.classList.add('in')));
+  try { history.replaceState(null,'','?date='+post.dateKey); } catch(e) {}
 
-  // Commentary
-  const label = document.getElementById('comLabel');
-  const title = document.getElementById('comTitle');
-  const body  = document.getElementById('comBody');
+  var rw = document.getElementById('readingsWrap');
+  rw.classList.remove('in');
+  setTimeout(function(){ rw.classList.add('in'); }, 20);
+
+  var label    = document.getElementById('comLabel');
+  var subtitle = document.getElementById('comSubtitle');
+  var body     = document.getElementById('comBody');
 
   label.classList.remove('in');
-  title.classList.remove('in');
-  document.getElementById('comSubtitle').classList.remove('in');
+  subtitle.classList.remove('in');
   body.classList.remove('in');
-  body.style.opacity = '0';
 
-  // Small delay so removal registers before re-adding
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    title.textContent    = '';  // title shown in litDay, not repeated
-    const sub = document.getElementById('comSubtitle');
-    sub.textContent = post.subtitle || '';
-    sub.classList.add('in');
-    body.innerHTML    = post.html;
+  setTimeout(function(){
+    subtitle.textContent = post.subtitle || '';
+    body.innerHTML = post.html;
 
-    // Append Substack link
     if (post.link && SUBSTACK_SLUG !== 'YOUR-SUBSTACK-SLUG') {
-      const a = document.createElement('a');
+      var a = document.createElement('a');
       a.href      = post.link;
       a.target    = '_blank';
       a.rel       = 'noopener';
       a.className = 'substack-link';
-      a.textContent = 'Read on Substack →';
+      a.textContent = 'Read on Substack \u2192';
       body.appendChild(a);
     }
 
     label.classList.add('in');
-    title.classList.add('in');
+    subtitle.classList.add('in');
     body.classList.add('in');
-  }));
+  }, 30);
 }
 
 function showEmpty() {
-  document.getElementById('comBody').innerHTML =
-    `<p class="state">No posts found. Make sure your Substack slug is set correctly and you have published at least one post.</p>`;
-  document.getElementById('comBody').classList.add('in');
+  var body = document.getElementById('comBody');
+  body.innerHTML = '<p class="state">No posts found. Make sure your Substack slug is set and you have published at least one post with the date format in the title.</p>';
+  body.classList.add('in');
   document.getElementById('comLabel').classList.add('in');
+  document.getElementById('readingsWrap').classList.add('in');
+  document.getElementById('dateTxt').textContent = fmtDate(todayKey());
 }
 
-/* ── SUBSCRIBE ── */
-function handleSubscribe() {
-  const email = document.getElementById('subEmail').value.trim();
-  if (!email || !email.includes('@')) return;
+function cleanHtml(html) {
+  if (!html) return '';
+  return html
+    .replace(/<div[^>]*class="[^"]*subscription[^"]*"[\s\S]*?<\/div>/gi, '')
+    .replace(/<p[^>]*>\s*<a[^>]*substack[^>]*>Subscribe<\/a>\s*<\/p>/gi, '')
+    .replace(/<p[^>]*>\s*(&nbsp;)?\s*<\/p>/gi, '')
+    .trim();
+}
 
-  const slug = SUBSTACK_SLUG !== 'YOUR-SUBSTACK-SLUG' ? SUBSTACK_SLUG : 'substack';
-  window.open(
-    `https://${slug}.substack.com/subscribe?email=${encodeURIComponent(email)}`,
-    '_blank'
-  );
+function parsePost(item) {
+  var title      = item.title || '';
+  var dateMatch  = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
+  var dateKey    = dateMatch ? dateMatch[1] : null;
+  var litDay     = dateMatch ? dateMatch[2].trim() : '';
+  return {
+    dateKey:  dateKey,
+    litDay:   litDay,
+    subtitle: item.subtitle || '',
+    html:     cleanHtml(item.content || item.description || ''),
+    link:     item.link || ('https://'+SUBSTACK_SLUG+'.substack.com')
+  };
+}
 
-  document.getElementById('subForm').style.display          = 'none';
-  document.querySelector('.sub
+function init() {
+  var paramDate = new URLSearchParams(window.location.search).get('date');
+
+
+  var feedUrl = 'https://'+SUBSTACK_SLUG+'.substack.com/feed';
+  var apiUrl  = 'https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(feedUrl)+'&count=100';
+
+  fetch(apiUrl)
+    .then(function(res){ return res.json(); })
+    .then(function(data){
+      if (!data.items || !data.items.length) { showEmpty(); return; }
+
+      allPosts = data.items
+        .map(parsePost)
+        .filter(function(p){ return p.dateKey; })
+        .sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
+
+      if (!allPosts.length) { showEmpty(); return; }
+
+      if (paramDate) {
+        var i = allPosts.findIndex(function(p){ return p.dateKey === paramDate; });
+        curIdx = i >= 0 ? i : 0;
+      } else {
+        curIdx = 0;
+      }
+      render();
+    })
+    .catch(function(){
+      showEmpty();
+    });
+}
+
+init();
+</script>
+</body>
+</html>
