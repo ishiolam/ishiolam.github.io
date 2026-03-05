@@ -269,9 +269,24 @@ function showEmpty(){
   document.getElementById('nextBtn').disabled = true;
 }
 
-function getText(item, tag){
-  var el = item.querySelector(tag);
-  return el ? (el.textContent || el.innerHTML || '') : '';
+function getTag(item, tag){
+  var el = item.getElementsByTagName(tag)[0];
+  return el ? (el.textContent || '') : '';
+}
+
+function getEncoded(item){
+  var el = item.getElementsByTagName('content:encoded')[0]
+            || item.getElementsByTagName('encoded')[0];
+  return el ? (el.textContent || '') : '';
+}
+
+function getLink(item){
+  var el = item.getElementsByTagName('link')[0];
+  if(!el) return '';
+  if(el.textContent && el.textContent.trim()) return el.textContent.trim();
+  var next = el.nextSibling;
+  if(next && next.nodeType === 3) return next.textContent.trim();
+  return '';
 }
 
 function cleanHtml(html){
@@ -284,14 +299,13 @@ function cleanHtml(html){
 }
 
 function parseItem(item){
-  var title     = getText(item,'title');
-  var m         = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
-  var dateKey   = m ? m[1] : null;
-  var litDay    = m ? m[2].trim() : '';
-  var content   = getText(item,'content\\:encoded') || getText(item,'description');
-  var link      = getText(item,'link');
-  // subtitle: Substack puts it in <subtitle> or sometimes description before content
-  var subtitle  = getText(item,'subtitle');
+  var title   = getTag(item,'title');
+  var m       = title.match(/^(\d{4}-\d{2}-\d{2})\s*[-\u2014\u2013]\s*(.*)/);
+  var dateKey = m ? m[1] : null;
+  var litDay  = m ? m[2].trim() : '';
+  var content = getEncoded(item) || getTag(item,'description');
+  var link    = getLink(item);
+  var subtitle = getTag(item,'subtitle');
   return { dateKey:dateKey, litDay:litDay, subtitle:subtitle,
            html:cleanHtml(content), link:link };
 }
