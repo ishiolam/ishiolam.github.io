@@ -182,10 +182,10 @@ footer{text-align:center;padding:80px 24px 48px}
 
 <footer>
   <div class="f-name">Ishi Olam</div>
-  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#d4a2fabda7bcbdfabbb8b5b994b3b9b5bdb8fab7bbb9" class="f-mail"><span class="__cf_email__" data-cfemail="6f1941061c07064100030e022f08020e0603410c0002">[email&#160;protected]</span></a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════
 // CONFIGURATION — set SUBSTACK_SLUG once.
 // Use only your subdomain, e.g. 'ishiolam'
@@ -291,11 +291,18 @@ function getLink(item){
 
 function cleanHtml(html){
   if(!html) return '';
-  return html
-    .replace(/<div[^>]*class="[^"]*subscription[^"]*"[\s\S]*?<\/div>/gi,'')
-    .replace(/<p[^>]*>\s*<a[^>]*substack[^>]*>Subscribe<\/a>\s*<\/p>/gi,'')
-    .replace(/<p[^>]*>\s*(&nbsp;)?\s*<\/p>/gi,'')
-    .trim();
+  // Remove Substack paywall / subscribe / CTA blocks
+  html = html.replace(/<div[^>]*class="[^"]*(?:subscription|paywall|subscribe|cta)[^"]*"[\s\S]*?<\/div>/gi,'');
+  html = html.replace(/<div[^>]*id="[^"]*(?:paywall|subscribe)[^"]*"[\s\S]*?<\/div>/gi,'');
+  // Remove any paragraph that contains a Substack subscribe link
+  html = html.replace(/<p[^>]*>[\s\S]*?substack\.com\/subscribe[\s\S]*?<\/p>/gi,'');
+  // Remove "Subscribe" / "Upgrade" button links
+  html = html.replace(/<a[^>]*>[\s]*(?:Subscribe|Upgrade|Subscribe now)[\s]*<\/a>/gi,'');
+  // Remove empty paragraphs
+  html = html.replace(/<p[^>]*>\s*(&nbsp;|&#160;)?\s*<\/p>/gi,'');
+  // Remove hr elements Substack adds before subscribe prompts
+  html = html.replace(/<hr[^>]*>/gi,'');
+  return html.trim();
 }
 
 function parseItem(item){
@@ -310,8 +317,20 @@ function parseItem(item){
            html:cleanHtml(content), link:link };
 }
 
+function showLoading(){
+  // Show date as today while loading
+  document.getElementById('dateTxt').textContent = fmtDate(todayKey());
+  document.getElementById('usccbLink').href = usccbUrl(todayKey());
+  document.getElementById('readingsWrap').classList.add('in');
+  // Skeleton already in DOM — just make sure body opacity shows it
+  var body = document.getElementById('comBody');
+  body.style.opacity = '1';
+  body.style.transform = 'none';
+}
+
 function init(){
   var paramDate = new URLSearchParams(window.location.search).get('date');
+  showLoading();
 
   fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://'+SUBSTACK_SLUG+'.substack.com/feed'))
     .then(function(r){ return r.json(); })
@@ -343,13 +362,4 @@ function handleSubscribe(){
   var email = document.getElementById('subEmail').value.trim();
   if(!email || !email.includes('@')) return;
   window.open('https://'+SUBSTACK_SLUG+'.substack.com/subscribe?email='+encodeURIComponent(email),'_blank');
-  document.getElementById('subForm').style.display = 'none';
-  document.querySelector('.sub-cta').style.display = 'none';
-  document.querySelector('.sub-note').style.display = 'none';
-  document.getElementById('subConf').style.display = 'block';
-}
-
-init();
-</script>
-</body>
-</html>
+  document.getElementById('subForm')
