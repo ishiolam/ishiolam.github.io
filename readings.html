@@ -241,31 +241,77 @@ function parseItem(item){
   };
 }
 
+function processFeed(xml){
+  var doc = new DOMParser().parseFromString(xml,'text/xml');
+  var items = Array.from(doc.querySelectorAll('item'));
+  if(!items.length) return [];
+  return items.map(parseItem).filter(function(p){ return p.dateKey; })
+              .sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
+}
+
+function showError(){
+  document.getElementById('comBody').innerHTML='<p style="font-style:italic;color:rgba(197,165,90,0.3);font-size:16px">Could not load commentary. Please refresh or <a href="https://'+SUBSTACK_SLUG+'.substack.com" target="_blank" style="color:rgba(197,165,90,0.4);border-bottom:1px solid rgba(197,165,90,0.2)">read on Substack →</a>.</p>';
+}
+
+function loadAndRender(paramDate){
+  var CACHE_KEY = 'ishi_feed_' + SUBSTACK_SLUG;
+  var CACHE_TS  = 'ishi_feed_ts_' + SUBSTACK_SLUG;
+  var MAX_AGE   = 15 * 60 * 1000; // 15 minutes
+
+  // Try sessionStorage cache first — instant load
+  try {
+    var cached = sessionStorage.getItem(CACHE_KEY);
+    var ts     = parseInt(sessionStorage.getItem(CACHE_TS) || '0');
+    if(cached && (Date.now() - ts) < MAX_AGE){
+      allPosts = JSON.parse(cached);
+      if(allPosts.length){
+        if(paramDate){
+          var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
+          curIdx=i>=0?i:0;
+        } else { curIdx=0; }
+        render();
+        // Silently refresh cache in background
+        fetchFeed(function(posts){
+          if(posts.length){
+            try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify(posts)); sessionStorage.setItem(CACHE_TS, String(Date.now())); }catch(e){}
+          }
+        });
+        return;
+      }
+    }
+  } catch(e){}
+
+  // No cache — fetch fresh
+  fetchFeed(function(posts){
+    if(!posts.length){ showError(); return; }
+    allPosts = posts;
+    try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify(posts)); sessionStorage.setItem(CACHE_TS, String(Date.now())); }catch(e){}
+    if(paramDate){
+      var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
+      curIdx=i>=0?i:0;
+    } else { curIdx=0; }
+    render();
+  });
+}
+
+function fetchFeed(callback){
+  var feedUrl = 'https://'+SUBSTACK_SLUG+'.substack.com/feed';
+  var proxyUrl = 'https://feed-proxy.v-ishi-olam.workers.dev/?url='+encodeURIComponent(feedUrl);
+  fetch(proxyUrl)
+    .then(function(r){ return r.text(); })
+    .then(function(xml){
+      var posts = processFeed(xml);
+      callback(posts);
+    })
+    .catch(function(){ callback([]); });
+}
+
 function init(){
   var paramDate = new URLSearchParams(window.location.search).get('date');
   var startKey  = paramDate || todayKey();
   setDate(startKey);
   document.getElementById('nextBtn').disabled = !paramDate;
-
-  fetch('https://api.allorigins.win/get?url='+encodeURIComponent('https://'+SUBSTACK_SLUG+'.substack.com/feed'))
-    .then(function(r){ return r.json(); })
-    .then(function(j){ return j.contents; })
-    .then(function(xml){
-      var doc = new DOMParser().parseFromString(xml,'text/xml');
-      var items = Array.from(doc.querySelectorAll('item'));
-      if(!items.length){ showEmpty(); return; }
-      allPosts = items.map(parseItem).filter(function(p){ return p.dateKey; })
-                      .sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
-      if(!allPosts.length){ showEmpty(); return; }
-      if(paramDate){
-        var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
-        curIdx=i>=0?i:0;
-      } else { curIdx=0; }
-      render();
-    })
-    .catch(function(){
-      document.getElementById('comBody').innerHTML='<p style="font-style:italic;color:rgba(197,165,90,0.3);font-size:16px">Could not load commentary. Please refresh or <a href="https://'+SUBSTACK_SLUG+'.substack.com" target="_blank" style="color:rgba(197,165,90,0.4);border-bottom:1px solid rgba(197,165,90,0.2)">read on Substack</a>.</p>';
-    });
+  loadAndRender(paramDate);
 }
 
 function handleSubscribe(){
