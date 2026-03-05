@@ -381,6 +381,8 @@ function fetchFeed(callback){
 }
 
 function init(){
+  // Clear cache to force fresh fetch (remove this line once navigation is confirmed working)
+  try{ sessionStorage.clear(); }catch(e){}
   var paramDate = new URLSearchParams(window.location.search).get('date');
   var startKey  = paramDate || todayKey();
   setDate(startKey);
