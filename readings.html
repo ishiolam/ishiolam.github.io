@@ -263,46 +263,38 @@ function getLink(item){
 function cleanHtml(html){
   if(!html) return '';
 
-  // Remove entire subscribe widget blocks (the input+button form Substack appends)
-  // Matches: <div>...<input type="email"...>...</div> patterns
-  html=html.replace(/<div[^>]*>(?:(?!<div).)*?<input[^>]*type=["']email["'][^>]*>[\s\S]*?<\/div>/gi,'');
+  // Substack's subscribe widget is always at the end of post content.
+  // The safest removal: find the first <input and chop everything from there,
+  // then remove any dangling open tags left behind.
+  var inputIdx = html.search(/<input/i);
+  if(inputIdx !== -1){
+    // Walk back to find the opening of the containing block
+    // (usually a <div or <p a few hundred chars back)
+    var before = html.substring(0, inputIdx);
+    // Trim any trailing incomplete block — find last complete closing tag
+    var lastClose = Math.max(
+      before.lastIndexOf('</p>'),
+      before.lastIndexOf('</figure>'),
+      before.lastIndexOf('</blockquote>'),
+      before.lastIndexOf('</h1>'),
+      before.lastIndexOf('</h2>'),
+      before.lastIndexOf('</h3>')
+    );
+    if(lastClose !== -1){
+      html = before.substring(0, lastClose + before.substring(lastClose).indexOf('>') + 1);
+    } else {
+      html = before;
+    }
+  }
 
-  // Remove subscription/paywall divs by class or id
-  html=html.replace(/<div[^>]*class="[^"]*(?:subscription|paywall|subscribe|cta|portal)[^"]*"[\s\S]*?<\/div>/gi,'');
-  html=html.replace(/<div[^>]*id="[^"]*(?:paywall|subscribe|portal)[^"]*"[\s\S]*?<\/div>/gi,'');
-
-  // Remove any remaining email inputs and their parent wrappers
-  html=html.replace(/<input[^>]*type=["']email["'][^>]*>/gi,'');
-  html=html.replace(/<button[^>]*>\s*Subscribe\s*<\/button>/gi,'');
-
-  // Remove paragraphs/divs containing substack subscribe links
-  html=html.replace(/<p[^>]*>[\s\S]*?substack\.com[\s\S]*?<\/p>/gi,'');
-  html=html.replace(/<div[^>]*>[\s\S]*?substack\.com\/subscribe[\s\S]*?<\/div>/gi,'');
-
-  // Remove "Subscribe", "Upgrade", "Subscribe now" standalone links
-  html=html.replace(/<a[^>]*>\s*(?:Subscribe|Upgrade|Subscribe now|Sign up)\s*<\/a>/gi,'');
-
-  // Remove horizontal rules Substack adds before subscribe prompts
-  html=html.replace(/<hr[^>]*>/gi,'');
-
-  // Remove Substack image expand/fullscreen buttons
-  html=html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi,'');
-  html=html.replace(/<div[^>]*class="[^"]*expand[^"]*"[^>]*>[\s\S]*?<\/div>/gi,'');
-
-  // Remove forms that contain email inputs (subscribe widgets)
-  // Use a loop to handle nested/multiple occurrences
-  var prev;
-  do {
-    prev = html;
-    html = html.replace(/<form[^>]*>(?:(?!<form)[\s\S])*?type=["']email["'][\s\S]*?<\/form>/gi,'');
-  } while(html !== prev);
-  // Remove any remaining standalone email inputs
-  html=html.replace(/<input[^>]*type=["']email["'][^>]*>/gi,'');
-  // Remove standalone Subscribe buttons (not inside our own UI)
-  html=html.replace(/<button[^>]*class="[^"]*subscribe[^"]*"[^>]*>[\s\S]*?<\/button>/gi,'');
+  // Remove horizontal rules
+  html = html.replace(/<hr[^>]*>/gi, '');
 
   // Remove empty paragraphs
-  html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
+  html = html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi, '');
+
+  // Remove Substack image expand buttons (small icon next to images)
+  html = html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi, '');
 
   return html.trim();
 }
@@ -346,7 +338,10 @@ function loadAndRender(paramDate){
         if(paramDate){
           var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
           curIdx=i>=0?i:0;
-        } else { curIdx=0; }
+        } else {
+          // Always show the most recent post first (index 0)
+          curIdx=0;
+        }
         render();
         // Silently refresh cache in background
         fetchFeed(function(posts){
