@@ -617,6 +617,12 @@ footer {
 function submitGate() {
   const email = document.getElementById('gateEmail').value;
   if (!email || !email.includes('@')) return;
+
+  window.open(
+    `https://https://ishiolam.substack.com/subscribe?email=${encodeURIComponent(email)}`,
+    '_blank'
+  );
+
   document.getElementById('gateForm').style.display = 'none';
   document.querySelector('.gate-cta').style.display = 'none';
   document.querySelector('.gate-text').style.display = 'none';
