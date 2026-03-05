@@ -58,7 +58,7 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .com-body blockquote{border-left:1px solid rgba(197,165,90,0.18);padding-left:22px;margin:28px 0;font-style:italic;color:rgba(197,165,90,0.55)}
 .com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
 .com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
-.com-body img{display:none}
+.com-body img{display:block;max-width:100%;height:auto;margin:36px 0;opacity:0.88;filter:brightness(0.92) contrast(1.05)}
 
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .content-loaded{animation:fadein .7s ease forwards}
@@ -150,10 +150,10 @@ footer{text-align:center;padding:80px 24px 48px}
 
 <footer>
   <div class="f-name">Ishi Olam</div>
-  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#6b1d45021803024504070a062b0c060a020745080406" class="f-mail"><span class="__cf_email__" data-cfemail="85f3abecf6edecabeae9e4e8c5e2e8e4ece9abe6eae8">[email&#160;protected]</span></a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -220,12 +220,32 @@ function getLink(item){
 
 function cleanHtml(html){
   if(!html) return '';
-  html=html.replace(/<div[^>]*class="[^"]*(?:subscription|paywall|subscribe|cta)[^"]*"[\s\S]*?<\/div>/gi,'');
-  html=html.replace(/<div[^>]*id="[^"]*(?:paywall|subscribe)[^"]*"[\s\S]*?<\/div>/gi,'');
-  html=html.replace(/<p[^>]*>[\s\S]*?substack\.com\/subscribe[\s\S]*?<\/p>/gi,'');
-  html=html.replace(/<a[^>]*>\s*(?:Subscribe|Upgrade|Subscribe now)\s*<\/a>/gi,'');
-  html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
+
+  // Remove entire subscribe widget blocks (the input+button form Substack appends)
+  // Matches: <div>...<input type="email"...>...</div> patterns
+  html=html.replace(/<div[^>]*>(?:(?!<div).)*?<input[^>]*type=["']email["'][^>]*>[\s\S]*?<\/div>/gi,'');
+
+  // Remove subscription/paywall divs by class or id
+  html=html.replace(/<div[^>]*class="[^"]*(?:subscription|paywall|subscribe|cta|portal)[^"]*"[\s\S]*?<\/div>/gi,'');
+  html=html.replace(/<div[^>]*id="[^"]*(?:paywall|subscribe|portal)[^"]*"[\s\S]*?<\/div>/gi,'');
+
+  // Remove any remaining email inputs and their parent wrappers
+  html=html.replace(/<input[^>]*type=["']email["'][^>]*>/gi,'');
+  html=html.replace(/<button[^>]*>\s*Subscribe\s*<\/button>/gi,'');
+
+  // Remove paragraphs/divs containing substack subscribe links
+  html=html.replace(/<p[^>]*>[\s\S]*?substack\.com[\s\S]*?<\/p>/gi,'');
+  html=html.replace(/<div[^>]*>[\s\S]*?substack\.com\/subscribe[\s\S]*?<\/div>/gi,'');
+
+  // Remove "Subscribe", "Upgrade", "Subscribe now" standalone links
+  html=html.replace(/<a[^>]*>\s*(?:Subscribe|Upgrade|Subscribe now|Sign up)\s*<\/a>/gi,'');
+
+  // Remove horizontal rules Substack adds before subscribe prompts
   html=html.replace(/<hr[^>]*>/gi,'');
+
+  // Remove empty paragraphs
+  html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
+
   return html.trim();
 }
 
@@ -296,7 +316,7 @@ function loadAndRender(paramDate){
 
 function fetchFeed(callback){
   var feedUrl = 'https://'+SUBSTACK_SLUG+'.substack.com/feed';
-  var proxyUrl = 'https://feed-proxy.v-ishi-olam.workers.dev/?url='+encodeURIComponent(feedUrl);
+  var proxyUrl = 'https://feed-proxy.YOUR-SUBDOMAIN.workers.dev/?url='+encodeURIComponent(feedUrl);
   fetch(proxyUrl)
     .then(function(r){ return r.text(); })
     .then(function(xml){
