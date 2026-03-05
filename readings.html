@@ -363,6 +363,7 @@ function loadAndRender(paramDate){
       var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
       curIdx=i>=0?i:0;
     } else { curIdx=0; }
+    console.log('Posts loaded:', allPosts.length, allPosts.map(function(p){return p.dateKey;}));
     render();
   });
 }
