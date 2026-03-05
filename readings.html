@@ -26,7 +26,9 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .date-nav{display:grid;grid-template-columns:64px 1fr 64px;align-items:start;margin-bottom:72px}
 .nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.2);padding:6px 0;transition:color .3s;line-height:1}
 .nav-btn:hover:not(:disabled){color:var(--gold-dim)}
-.nav-btn:disabled{opacity:.08;cursor:default}
+.nav-btn:disabled{opacity:.08;cursor:default;pointer-events:none}
+.nav-btn.at-end{opacity:.22;cursor:default;pointer-events:none}
+.nav-btn.at-end::after{content:' —';font-size:8px;letter-spacing:0.1em;opacity:0.6}
 .nav-btn.prev{text-align:left}.nav-btn.next{text-align:right}
 .date-center{text-align:center}
 .date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1;min-height:14px}
@@ -183,7 +185,28 @@ function pad(n){ return String(n).padStart(2,'0'); }
 function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function fmtDate(str){ var p=str.split('-'); var dt=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])); return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+parseInt(p[2])+', '+p[0]; }
 function usccbUrl(str){ return 'https://bible.usccb.org/daily-bible-reading/'+str.replace(/-/g,''); }
-function go(delta){ curIdx+=delta; render(); }
+function showToast(msg){
+  var t = document.getElementById('navToast');
+  if(!t){ t = document.createElement('div'); t.id='navToast'; t.style.cssText='position:fixed;bottom:40px;left:50%;transform:translateX(-50%);font-family:Cinzel,serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(197,165,90,0.5);padding:10px 28px;border:1px solid rgba(197,165,90,0.15);background:rgba(10,9,8,0.97);pointer-events:none;opacity:0;transition:opacity 0.4s ease;white-space:nowrap;z-index:200'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._hide);
+  t._hide = setTimeout(function(){ t.style.opacity='0'; }, 2200);
+}
+
+function go(delta){
+  var next = curIdx + delta;
+  if(next < 0){
+    showToast('Most recent entry');
+    return;
+  }
+  if(next >= allPosts.length){
+    showToast('No earlier entries');
+    return;
+  }
+  curIdx = next;
+  render();
+}
 
 function setDate(key){
   document.getElementById('dateTxt').textContent = fmtDate(key);
@@ -266,9 +289,17 @@ function cleanHtml(html){
   html=html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi,'');
   html=html.replace(/<div[^>]*class="[^"]*expand[^"]*"[^>]*>[\s\S]*?<\/div>/gi,'');
 
-  // Nuclear: remove ALL forms and inputs — none belong in a commentary
-  html=html.replace(/<form[\s\S]*?<\/form>/gi,'');
-  html=html.replace(/<input[^>]*>/gi,'');
+  // Remove forms that contain email inputs (subscribe widgets)
+  // Use a loop to handle nested/multiple occurrences
+  var prev;
+  do {
+    prev = html;
+    html = html.replace(/<form[^>]*>(?:(?!<form)[\s\S])*?type=["']email["'][\s\S]*?<\/form>/gi,'');
+  } while(html !== prev);
+  // Remove any remaining standalone email inputs
+  html=html.replace(/<input[^>]*type=["']email["'][^>]*>/gi,'');
+  // Remove standalone Subscribe buttons (not inside our own UI)
+  html=html.replace(/<button[^>]*class="[^"]*subscribe[^"]*"[^>]*>[\s\S]*?<\/button>/gi,'');
 
   // Remove empty paragraphs
   html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
@@ -357,7 +388,8 @@ function init(){
   var paramDate = new URLSearchParams(window.location.search).get('date');
   var startKey  = paramDate || todayKey();
   setDate(startKey);
-  document.getElementById('nextBtn').disabled = !paramDate;
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('prevBtn').disabled = true;
   loadAndRender(paramDate);
 }
 
