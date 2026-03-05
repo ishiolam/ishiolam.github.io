@@ -58,7 +58,26 @@ main{max-width:660px;margin:0 auto;padding:108px 36px 130px}
 .com-body blockquote{border-left:1px solid rgba(197,165,90,0.18);padding-left:22px;margin:28px 0;font-style:italic;color:rgba(197,165,90,0.55)}
 .com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
 .com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
-.com-body img{display:block;max-width:100%;height:auto;margin:36px 0;opacity:0.88;filter:brightness(0.92) contrast(1.05)}
+.com-body img{display:block;max-width:100%;height:auto;margin:36px 0 0;opacity:0.88;filter:brightness(0.92) contrast(1.05)}
+/* Hide Substack's expand/fullscreen button */
+.com-body button{display:none!important}
+.com-body [class*="image-expand"]{display:none!important}
+.com-body [class*="expand"]{display:none!important}
+/* Caption — italic gold, separated from image */
+.com-body figcaption,
+.com-body .image-caption,
+.com-body [class*="caption"]{
+  display:block;
+  font-style:italic;
+  font-size:14px;
+  color:rgba(197,165,90,0.45);
+  letter-spacing:0.02em;
+  margin:10px 0 36px;
+  line-height:1.6;
+}
+/* Wrap img+caption together */
+.com-body figure{margin:36px 0}
+.com-body figure img{margin:0}
 
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .content-loaded{animation:fadein .7s ease forwards}
@@ -242,6 +261,14 @@ function cleanHtml(html){
 
   // Remove horizontal rules Substack adds before subscribe prompts
   html=html.replace(/<hr[^>]*>/gi,'');
+
+  // Remove Substack image expand/fullscreen buttons
+  html=html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi,'');
+  html=html.replace(/<div[^>]*class="[^"]*expand[^"]*"[^>]*>[\s\S]*?<\/div>/gi,'');
+
+  // Nuclear: remove ALL forms and inputs — none belong in a commentary
+  html=html.replace(/<form[\s\S]*?<\/form>/gi,'');
+  html=html.replace(/<input[^>]*>/gi,'');
 
   // Remove empty paragraphs
   html=html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi,'');
