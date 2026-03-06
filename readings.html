@@ -532,7 +532,7 @@ body::before{
   perspective:1200px;
   transform-style:preserve-3d;
   opacity:0;
-  transition:opacity 6s cubic-bezier(0.16,1,0.3,1);
+  
 }
 #contentRegion.turning-out{
   animation:pageOut 0.8s cubic-bezier(0.4,0,1,1) forwards;
@@ -541,7 +541,7 @@ body::before{
   animation:pageIn 3.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 @keyframes pageOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-8px);opacity:0}}100%{opacity:0;transform:translateY(8px) scale(0.99)}}
-@keyframes pageIn{0%{transform:translateY(12px);opacity:0.01}100%{transform:translateY(0);opacity:1}}100%{opacity:1;transform:translateY(0)}}
+@keyframes pageIn{0%{transform:translateY(10px) scale(0.998)}100%{transform:translateY(0) scale(1)}}100%{transform:translateY(0);opacity:1}}100%{opacity:1;transform:translateY(0)}}
 
 /* ── SUBSCRIBE — hidden until earned ── */
 .sub-wrap{
@@ -882,6 +882,7 @@ var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satu
 var allPosts = [];
 var curIdx = 0;
 var _firstRender = true;
+var _isFirstLoad = true;
 var _prefersReducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
 
 function pad(n){ return String(n).padStart(2,'0'); }
@@ -1017,15 +1018,15 @@ function render(){
     var sub = document.querySelector('.sub-wrap');
     if(sub) sub.classList.remove('earned');
     setTimeout(initSubscribeEarn, 400);
-
     // Page turn IN
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      region.style.opacity = '1'; // navigation: always visible, transition on turning-out
+      if(!_isFirstLoad){ region.style.opacity='1'; }
       region.classList.add('turning-in');
       setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
+    _isFirstLoad = false;
   }, _td);
 }
 
@@ -1204,6 +1205,24 @@ function applyTimeOfDay(){
   }
 }
 
+// ── CONTENT FADER — manual ease-in over 10s ──
+// Latin is visible for first ~4s. Content barely perceptible then.
+// Fully visible only after Latin has departed.
+var _fadeTimer = null;
+function startContentFade(){
+  var region = document.getElementById('contentRegion');
+  if(!region) return;
+  if(_prefersReducedMotion){ region.style.opacity='1'; return; }
+  var step=0, total=200; // 200 × 50ms = 10s
+  if(_fadeTimer) clearInterval(_fadeTimer);
+  _fadeTimer = setInterval(function(){
+    step++;
+    var eased = Math.pow(step/total, 1.6);
+    region.style.opacity = Math.min(eased,1).toFixed(4);
+    if(step>=total){ clearInterval(_fadeTimer); _fadeTimer=null; region.style.opacity='1'; }
+  }, 50);
+}
+
 function init(){
   applyCanonicalHour();
   checkAngelus();
@@ -1218,14 +1237,6 @@ function init(){
   // Antiphon and content begin together
   showAntiphon();
   loadAndRender(paramDate);
-  // Double rAF ensures browser paints opacity:0 before transition starts.
-  // This is the only correct way to trigger a CSS transition from 0.
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
-      var region = document.getElementById('contentRegion');
-      if(region) region.style.opacity = '1';
-    });
-  });
 }
 
 function handleSubscribe(){
