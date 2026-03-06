@@ -16,7 +16,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914;--surface:#12100E;--border:#1C1914}
 html{background:var(--bg)}
-body{background:var(--bg);color:rgba(226,217,200,0.92);font-family:'EB Garamond',Georgia,serif;font-size:19px;line-height:1.86;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 1.3s ease}
+body{background:var(--bg);color:rgba(226,217,200,0.97);font-family:'EB Garamond',Georgia,serif;font-size:20px;line-height:1.88;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 1.3s ease}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
 
 /* ── PARCHMENT TEXTURE ── */
@@ -162,15 +162,30 @@ footer{text-align:center;padding:80px 24px 48px}
 
 /* Drop cap */
 .com-body.content-loaded > p:first-of-type::first-letter{
-  float:left;font-family:'Cinzel',serif;font-size:4.8em;line-height:0.78;
-  color:var(--gold);margin:0.06em 0.1em 0 0;font-weight:400;opacity:0.9;
-  /* Ink bleed — gold soaking into vellum */
+  float:left;
+  font-family:'Cinzel',serif;
+  font-size:3.8em;
+  line-height:0.85;
+  color:var(--gold);
+  margin:0.08em 0.13em -0.05em 0;
+  font-weight:400;
+  opacity:0.92;
+  padding-top:0.06em;
   text-shadow:
-    0 0 12px rgba(197,165,90,0.35),
-    0 0 28px rgba(197,165,90,0.12),
-    0 0 1px rgba(197,165,90,0.6);
+    0 0 10px rgba(197,165,90,0.32),
+    0 0 24px rgba(197,165,90,0.10),
+    0 0 1px rgba(197,165,90,0.55);
 }
 /* Reading progress bar */
+/* ── CANDLELIGHT ── */
+#candleCanvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  opacity:1;
+}
+
 #readProgress{position:fixed;top:0;left:0;height:2px;width:0%;
   background:linear-gradient(90deg,rgba(197,165,90,0.3),rgba(197,165,90,0.8));
   z-index:200;transition:width 0.1s linear;pointer-events:none;}
@@ -526,6 +541,7 @@ body.focus-mode main{
 <div id="textureOverlay" aria-hidden="true"></div>
 <div id="vignetteOverlay" aria-hidden="true"></div>
 <div id="veilOverlay" aria-hidden="true"></div>
+<canvas id="candleCanvas" aria-hidden="true"></canvas>
 <div id="agedEdges" aria-hidden="true"></div>
 <div id="readerGlow" aria-hidden="true"></div>
 <canvas id="starCanvas" aria-hidden="true"></canvas>
@@ -595,10 +611,10 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#295f07405a41400746454844694e44484045074a4644" class="f-mail"><span class="__cf_email__" data-cfemail="2b5d05425843420544474a466b4c464a424705484446">[email&#160;protected]</span></a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -612,13 +628,14 @@ function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth
 function fmtDate(str){ var p=str.split('-'); var dt=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])); return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+parseInt(p[2])+', '+p[0]; }
 
 function go(delta){
+  if(!allPosts.length){ showToast('Loading…'); return; }
   var next = curIdx + delta;
   if(next < 0){
-    showToast('Most recent entry');
+    showToast('You are at the most recent entry');
     return;
   }
   if(next >= allPosts.length){
-    showToast('No earlier entries');
+    showToast('No earlier entries in the archive');
     return;
   }
   curIdx = next;
@@ -650,6 +667,18 @@ function typeSubtitle(text, el){
     }
   }
   setTimeout(tick, 320);
+}
+
+function flameDip(){
+  // Page breath — the room darkens between days, then opens again
+  var body = document.body;
+  body.style.transition = 'opacity 0.55s ease';
+  body.style.opacity = '0.32';
+  if(window._candleBreath) _candleBreath(true);
+  setTimeout(function(){
+    body.style.transition = 'opacity 1s ease';
+    body.style.opacity = '1';
+  }, 580);
 }
 
 function render(){
@@ -698,13 +727,7 @@ function render(){
       _dec.innerHTML = _rawSub;
       _rawSub = _dec.value;
     }
-    var _rawSub = post.subtitle || '';
-    if(_rawSub && _rawSub.includes('&')){
-      var _dec = document.createElement('textarea');
-      _dec.innerHTML = _rawSub;
-      _rawSub = _dec.value;
-    }
-    typeSubtitle(_rawSub, subtitle);
+        typeSubtitle(_rawSub, subtitle);
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
     if(post.link){
@@ -833,8 +856,8 @@ function showError(){
 }
 
 function loadAndRender(paramDate){
-  var CACHE_KEY = 'ishi_feed_' + SUBSTACK_SLUG;
-  var CACHE_TS  = 'ishi_feed_ts_' + SUBSTACK_SLUG;
+  var CACHE_KEY = 'ishi_feed_v3_' + SUBSTACK_SLUG;
+  var CACHE_TS  = 'ishi_feed_ts_v3_' + SUBSTACK_SLUG;
   var MAX_AGE   = 15 * 60 * 1000; // 15 minutes
 
   // Try sessionStorage cache first — instant load
@@ -853,6 +876,8 @@ function loadAndRender(paramDate){
           curIdx=ti>=0?ti:0;
         }
         render();
+        document.getElementById('prevBtn').disabled = curIdx >= allPosts.length-1;
+        document.getElementById('nextBtn').disabled = curIdx <= 0;
         // Silently refresh cache in background
         fetchFeed(function(posts){
           if(posts.length){
@@ -1479,7 +1504,7 @@ function checkAngelus(){
 // ── CURSOR ILLUMINATION ──
 document.addEventListener('mousemove',function(e){
   var g=document.getElementById('readerGlow');
-  if(g){ g.style.opacity='1'; g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px'; }
+  if(g){ g.style.opacity='1';  g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px'; }
 });
 document.addEventListener('mouseleave',function(){
   var g=document.getElementById('readerGlow');
