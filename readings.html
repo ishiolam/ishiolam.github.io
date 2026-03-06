@@ -689,10 +689,10 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#c8bee6a1bba0a1e6a7a4a9a588afa5a9a1a4e6aba7a5" class="f-mail"><span class="__cf_email__" data-cfemail="ddabf3b4aeb5b4f3b2b1bcb09dbab0bcb4b1f3beb2b0">[email&#160;protected]</span></a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ════════════════════════════════════════════════════════
 // CANDLELIGHT — a real flame just below the frame
 // The source is located. The warmth falls off correctly.
@@ -1023,10 +1023,10 @@ function render(){
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      region.classList.add('turning-in');
-      // Fade into existence — first render or navigation
+      // Opacity transition (3.8s) fires here — content rises from dark
       region.style.opacity = '1';
-      setTimeout(function(){ region.classList.remove('turning-in'); }, 880);
+      region.classList.add('turning-in');
+      setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
   }, _td);
 }
@@ -1787,7 +1787,7 @@ function checkAngelus(){
 // ── CURSOR ILLUMINATION ──
 document.addEventListener('mousemove',function(e){
   var g=document.getElementById('readerGlow');
-  if(g){ g.style.opacity='1';  g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px'; }
+  if(g){ g.style.opacity='1';   g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px'; }
 });
 document.addEventListener('mouseleave',function(){
   var g=document.getElementById('readerGlow');
