@@ -13,188 +13,122 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
+/* ── THE ETHEAREAL VOID ── */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914;--surface:#12100E;--border:#1C1914}
+:root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914}
 html{background:var(--bg)}
-body{background:var(--bg);color:rgba(226,217,200,0.92);font-family:'EB Garamond',Georgia,serif;font-size:19px;line-height:1.86;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 1.3s ease}
+body{background:var(--bg);color:rgba(226,217,200,0.92);font-family:'EB Garamond',Georgia,serif;font-size:19px;line-height:1.86;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;text-rendering:optimizeLegibility;opacity:0;transition:opacity 2s ease}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
 
-/* The Texture of Ancient Vellum */
+/* ── SACRED TEXTURES & LIGHTING ── */
 #textureOverlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  mix-blend-mode: overlay;
-  opacity: 0.035;
+  position: fixed; inset: 0; pointer-events: none; z-index: 999; mix-blend-mode: overlay; opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
-
-/* The Sanctuary Vignette (Intimacy) */
 #vignetteOverlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 40%, rgba(5, 4, 3, 0.85) 100%);
-  pointer-events: none;
-  z-index: 80;
-  animation: shadowBreath 8s ease-in-out infinite alternate;
+  position: fixed; inset: 0; pointer-events: none; z-index: 80;
+  background: radial-gradient(circle at center, transparent 35%, rgba(5, 4, 3, 0.9) 100%);
+  animation: shadowBreath 10s ease-in-out infinite alternate;
 }
-@keyframes shadowBreath {
-  0%   { opacity: 0.8; }
-  100% { opacity: 1; }
-}
+@keyframes shadowBreath { 0% { opacity: 0.8; } 100% { opacity: 1; } }
 
-/* The Candlelight Cursor */
 #readerGlow {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(197, 165, 90, 0.04) 0%, transparent 60%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 70;
-  transform: translate(-50%, -50%);
-  mix-blend-mode: screen;
-  opacity: 0;
-  transition: opacity 1.5s ease;
+  position: fixed; top: 0; left: 0; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(197, 165, 90, 0.05) 0%, transparent 60%);
+  border-radius: 50%; pointer-events: none; z-index: 70; transform: translate(-50%, -50%);
+  mix-blend-mode: screen; opacity: 0; transition: opacity 1.5s ease;
 }
 
-/* Ethereal Toast Notification */
-#toast {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(10, 9, 8, 0.85);
-  border: 1px solid rgba(197, 165, 90, 0.15);
-  color: rgba(197, 165, 90, 0.7);
-  padding: 12px 28px;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  border-radius: 2px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  z-index: 1000;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-#toast.show { opacity: 1; }
-
-nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(10,9,8,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 40px;z-index:100;border-bottom:1px solid rgba(197,165,90,0.05);transition:transform 0.4s ease,opacity 0.4s ease}
-nav.hidden{transform:translateY(-100%);opacity:0}
-.nav-home{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.22em;color:rgba(197,165,90,0.32);text-transform:uppercase;text-decoration:none;transition:color .3s}
-.nav-home:hover{color:var(--gold)}
-.nav-section{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.2)}
-
-main{max-width:620px;margin:0 auto;padding:108px 36px 160px}
-
-/* DATE NAV */
-.date-nav{display:grid;grid-template-columns:76px 1fr 76px;align-items:start;margin-bottom:72px}
-.nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.2);padding:6px 0;transition:color .3s;line-height:1}
-.nav-btn:hover:not(:disabled){color:var(--gold-dim)}
-.nav-btn:disabled{opacity:.08;cursor:default;pointer-events:none}
-.nav-btn.prev{text-align:left}.nav-btn.next{text-align:right}
-.date-center{text-align:center}
-.date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1;min-height:14px}
-.lit-day{margin-top:12px;font-style:italic;font-size:15px;color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
-
-/* SUBTITLE */
-.com-subtitle{font-style:italic;font-size:23px;color:rgba(197,165,90,0.65);line-height:1.6;margin-bottom:10px;text-align:center;letter-spacing:0.01em;cursor:default}
-.com-subtitle:empty{display:none}
-
-/* BODY & INK FLICKER */
-.com-body{font-size:19.5px;line-height:1.92}
-.com-body.content-loaded {
-  animation: inkFlicker 5.5s ease-in-out infinite alternate;
-}
-@keyframes inkFlicker {
-  0%   { text-shadow: 0 1px 8px rgba(197, 165, 90, 0.05); color: rgba(226, 217, 200, 0.88); }
-  50%  { text-shadow: 0 2px 14px rgba(197, 165, 90, 0.18); color: rgba(226, 217, 200, 0.98); }
-  100% { text-shadow: 0 1px 10px rgba(197, 165, 90, 0.08); color: rgba(226, 217, 200, 0.92); }
-}
-
-.com-body p{margin-bottom:40px}
-.com-body p:last-child{margin-bottom:0}
-.com-body em{color:var(--gold);font-style:italic}
-.com-body strong{color:rgba(226,217,200,0.9);font-weight:500}
-.com-body h2,.com-body h3{font-family:'Cinzel',serif;font-weight:400;color:var(--gold);font-size:16px;letter-spacing:0.05em;margin:36px 0 18px}
-.com-body blockquote{border:none;padding:8px 0;margin:44px 0;font-style:italic;color:rgba(197,165,90,0.58);font-size:1.18em;line-height:1.7;text-align:center;position:relative}
-.com-body blockquote::before,.com-body blockquote::after{content:"";display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(197,165,90,0.2),transparent);margin:16px auto;width:60%}
-.com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
-.com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
-
-.substack-link{display:inline-block;margin-top:52px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.22);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.1);padding-bottom:2px;transition:color .3s,border-color .3s}
-.substack-link:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
-.substack-link::before{content:'✠';display:block;font-size:11px;color:rgba(197,165,90,0.2);margin-bottom:18px;letter-spacing:0.3em;text-align:center;border-bottom:none}
-
-.sk{display:block;background:linear-gradient(90deg,rgba(197,165,90,0.08) 0%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.08) 100%);background-size:200% 100%;animation:shim 1.6s ease-in-out infinite;border-radius:2px;height:15px;margin-bottom:15px}
-@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
-
-.sub-wrap{margin-top:130px;padding-top:0;border-top:none;text-align:center;visibility:visible;opacity:1;transition:opacity 1.4s ease;}
-.sub-cta{font-style:italic;color:rgba(197,165,90,0.32);font-size:16px;line-height:1.8;margin-bottom:28px;font-weight:400}
-.sub-form{display:flex;flex-direction:column;align-items:center;gap:14px}
-.sub-form input[type="email"]{width:260px;max-width:82vw;padding:10px 0;background:transparent;border:none;border-bottom:1px solid rgba(197,165,90,0.12);color:rgba(226,217,200,0.6);font-family:'EB Garamond',serif;font-size:15px;font-style:italic;outline:none;transition:border-color .4s;border-radius:0;-webkit-appearance:none;text-align:center}
-.sub-form input::placeholder{color:rgba(226,217,200,0.2);font-style:italic;letter-spacing:0.05em}
-.sub-form input:focus{border-color:rgba(197,165,90,0.3)}
-.sub-form button{font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(197,165,90,0.25);border:none;background:transparent;padding:10px 0;cursor:pointer;transition:color .3s;display:block;margin:14px auto 0}
-.sub-form button:hover{color:rgba(197,165,90,0.55)}
-.sub-confirm{display:none;font-style:italic;color:rgba(197,165,90,0.42);font-size:16px;line-height:2;}
-.sub-confirm.visible{display:block;animation: fadeIn 1s ease forwards;}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.sub-confirm .ref-mark{display:block;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.16em;margin-top:6px;opacity:.5}
-
-footer{text-align:center;padding:80px 24px 48px}
-.f-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.16)}
-
-.com-body.content-loaded > p:first-of-type::first-letter{float:left;font-family:'Cinzel',serif;font-size:4.8em;line-height:0.78;color:var(--gold);margin:0.06em 0.1em 0 0;font-weight:400;opacity:0.9;}
-
-.date-center{position:relative;padding:0 8px}
-.date-center::before,.date-center::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(197,165,90,0.25),transparent);margin:0 auto;width:80%;}
-.date-center::before{margin-bottom:14px}
-.date-center::after{margin-top:14px}
-
-.incipit{display:block;text-align:center;font-size:13px;color:rgba(197,165,90,0.28);letter-spacing:0.5em;margin:32px 0 40px;user-select:none;}
-
-/* ── THE SACRED FIRE ── */
 #fireGlow {
-  position: fixed;
-  bottom: -20vh; 
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150vw; 
-  height: 80vh;
-  pointer-events: none;
-  z-index: 50; 
-  mix-blend-mode: color-dodge; 
-  background: 
-    radial-gradient(ellipse at 50% 100%, rgba(255, 175, 30, 0.12) 0%, transparent 40%),
-    radial-gradient(ellipse at 50% 100%, rgba(210, 125, 15, 0.08) 20%, transparent 60%),
-    radial-gradient(ellipse at 50% 100%, rgba(160, 85, 8, 0.04) 40%, transparent 80%);
-  animation: holyBreath 5.5s ease-in-out infinite alternate;
+  position: fixed; bottom: -20vh; left: 50%; transform: translateX(-50%); width: 150vw; height: 80vh;
+  pointer-events: none; z-index: 50; mix-blend-mode: color-dodge; 
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 175, 30, 0.08) 0%, transparent 40%),
+              radial-gradient(ellipse at 50% 100%, rgba(210, 125, 15, 0.05) 20%, transparent 60%);
+  animation: holyBreath 6s ease-in-out infinite alternate;
 }
 @keyframes holyBreath {
   0%   { opacity: 0.6; transform: translateX(-50%) scale(0.98); filter: brightness(0.9); }
-  50%  { opacity: 0.95; transform: translateX(-50%) scale(1.02); filter: brightness(1.15); }
-  100% { opacity: 0.7; transform: translateX(-50%) scale(1); filter: brightness(1); }
+  100% { opacity: 0.9; transform: translateX(-50%) scale(1.02); filter: brightness(1.1); }
 }
 
-#contentRegion{perspective:1200px;transform-style:preserve-3d;}
-#contentRegion.turning-out{animation:pageOut 0.42s cubic-bezier(0.4,0,1,1) forwards;}
-#contentRegion.turning-in{animation:pageIn 0.44s cubic-bezier(0,0,0.2,1) forwards;}
-@keyframes pageOut{0%{opacity:1;transform:rotateX(0deg) translateY(0)}100%{opacity:0;transform:rotateX(6deg) translateY(12px) scale(0.98)}}
-@keyframes pageIn{0%{opacity:0;transform:rotateX(-5deg) translateY(-10px) scale(0.985)}100%{opacity:1;transform:rotateX(0deg) translateY(0) scale(1)}}
+/* ── PARTICLE CANVASES ── */
+#dustCanvas, #emberCanvas { position: fixed; inset: 0; pointer-events: none; }
+#dustCanvas { z-index: 1; opacity: 0.8; }
+#emberCanvas { z-index: 60; opacity: 0.9; mix-blend-mode: screen; }
 
-#bellBtn{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.22;padding:4px 2px;transition:opacity .3s;line-height:1;color:inherit}
-#bellBtn:hover{opacity:0.5}
-#bellBtn.on{opacity:0.8}
+/* ── NAVIGATION ── */
+nav{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(10,9,8,0.8);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:0 40px;z-index:100;border-bottom:1px solid rgba(197,165,90,0.05);}
+.nav-home{font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.22em;color:rgba(197,165,90,0.32);text-transform:uppercase;text-decoration:none;transition:color .3s}
+.nav-home:hover{color:var(--gold)}
+.nav-section{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.2)}
+#bellBtn{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.22;padding:4px 2px;transition:opacity .3s, transform 0.3s; color:inherit}
+#bellBtn:hover{opacity:0.6; transform: scale(1.1);}
+#bellBtn.on{opacity:0.9; text-shadow: 0 0 8px rgba(197,165,90,0.5);}
 
-@media(max-width:680px){main{padding:88px 22px 100px}nav{padding:0 22px}.date-nav{grid-template-columns:68px 1fr 68px}.com-body{font-size:17.5px}.sub-cta{font-size:15px}}
-@media(max-width:420px){body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}}
+/* ── MAIN CONTENT ── */
+main{max-width:620px;margin:0 auto;padding:120px 36px 160px; position:relative; z-index: 40;}
+.date-nav{display:grid;grid-template-columns:76px 1fr 76px;align-items:start;margin-bottom:72px}
+.nav-btn{background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.2);padding:6px 0;transition:color .3s;}
+.nav-btn:hover:not(:disabled){color:var(--gold-dim)}
+.nav-btn:disabled{opacity:.05;cursor:default;}
+.nav-btn.prev{text-align:left}.nav-btn.next{text-align:right}
+.date-center{text-align:center; position:relative;}
+.date-center::before, .date-center::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(197,165,90,0.2),transparent);margin:0 auto;width:60%;}
+.date-center::before{margin-bottom:14px} .date-center::after{margin-top:14px}
+.date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.5);}
+.lit-day{margin-top:12px;font-style:italic;font-size:15px;color:rgba(197,165,90,0.3);}
+
+/* ── THE LIVING WORD ── */
+#contentRegion{perspective:1200px; transform-style:preserve-3d;}
+.incipit{display:block;text-align:center;font-size:13px;color:rgba(197,165,90,0.28);letter-spacing:0.5em;margin:32px 0 40px;user-select:none;}
+.com-subtitle{font-style:italic;font-size:23px;color:rgba(197,165,90,0.7);line-height:1.6;margin-bottom:10px;text-align:center;letter-spacing:0.01em;}
+.com-subtitle:empty{display:none}
+
+.com-body{font-size:19.5px;line-height:1.92;}
+.com-body.content-loaded { animation: inkFlicker 5.5s ease-in-out infinite alternate; }
+@keyframes inkFlicker {
+  0%   { text-shadow: 0 1px 8px rgba(197, 165, 90, 0.05); color: rgba(226, 217, 200, 0.88); }
+  100% { text-shadow: 0 1px 12px rgba(197, 165, 90, 0.15); color: rgba(226, 217, 200, 0.98); }
+}
+
+.com-body p{margin-bottom:40px}
+.com-body em{color:var(--gold);font-style:italic}
+.com-body h2,.com-body h3{font-family:'Cinzel',serif;font-weight:400;color:var(--gold);font-size:16px;letter-spacing:0.05em;margin:36px 0 18px}
+.com-body blockquote{border:none;padding:8px 0;margin:44px 0;font-style:italic;color:rgba(197,165,90,0.58);font-size:1.18em;line-height:1.7;text-align:center;}
+.com-body > p:first-of-type::first-letter{float:left;font-family:'Cinzel',serif;font-size:4.8em;line-height:0.78;color:var(--gold);margin:0.06em 0.1em 0 0;}
+.com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:all .3s}
+.com-body a:hover{color:var(--gold); border-bottom-color: var(--gold);}
+
+/* ── PAGE TRANSITIONS ── */
+#contentRegion.turning-out{animation:pageOut 0.5s cubic-bezier(0.4,0,1,1) forwards;}
+#contentRegion.turning-in{animation:pageIn 0.5s cubic-bezier(0,0,0.2,1) forwards;}
+@keyframes pageOut{0%{opacity:1;transform:rotateX(0deg) translateY(0)}100%{opacity:0;transform:rotateX(4deg) translateY(15px) scale(0.98)}}
+@keyframes pageIn{0%{opacity:0;transform:rotateX(-4deg) translateY(-15px) scale(0.98)}100%{opacity:1;transform:rotateX(0deg) translateY(0) scale(1)}}
+
+/* ── SURREAL TOAST NOTIFICATION ── */
+#toast {
+  position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+  background: rgba(10, 9, 8, 0.7); border: 1px solid rgba(197, 165, 90, 0.15);
+  color: rgba(197, 165, 90, 0.8); padding: 12px 28px; font-family: 'Cinzel', serif;
+  font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; border-radius: 2px;
+  pointer-events: none; opacity: 0; transition: opacity 0.8s ease; z-index: 1000;
+  backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+#toast.show { opacity: 1; }
+
+/* ── SUBSCRIPTION & FOOTER ── */
+.sub-wrap{margin-top:140px;text-align:center;opacity:1;transition:opacity 1.4s ease;}
+.sub-cta{font-style:italic;color:rgba(197,165,90,0.32);font-size:16px;margin-bottom:28px;}
+.sub-form input[type="email"]{width:260px;padding:10px 0;background:transparent;border:none;border-bottom:1px solid rgba(197,165,90,0.15);color:rgba(226,217,200,0.8);font-family:'EB Garamond',serif;font-size:15px;font-style:italic;outline:none;text-align:center;transition:border-color .4s;}
+.sub-form input:focus{border-color:rgba(197,165,90,0.4)}
+.sub-form button{font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.28em;text-transform:uppercase;color:rgba(197,165,90,0.3);border:none;background:transparent;padding:10px 0;cursor:pointer;display:block;margin:14px auto 0;transition:color .3s}
+.sub-form button:hover{color:var(--gold)}
+.sub-confirm{display:none;font-style:italic;color:rgba(197,165,90,0.5);font-size:16px;line-height:2;}
+.sub-confirm.visible{display:block;animation: fadeIn 1.5s ease forwards;}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+footer{text-align:center;padding:80px 24px 48px}
+.f-name{font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.2)}
 </style>
 </head>
 <body>
@@ -203,6 +137,9 @@ footer{text-align:center;padding:80px 24px 48px}
 <div id="vignetteOverlay"></div>
 <div id="readerGlow" aria-hidden="true"></div>
 <div id="fireGlow" aria-hidden="true"></div>
+
+<canvas id="dustCanvas" aria-hidden="true"></canvas>
+<canvas id="emberCanvas" aria-hidden="true"></canvas>
 
 <nav>
   <a href="index.html" class="nav-home">Ishi Olam</a>
@@ -224,15 +161,9 @@ footer{text-align:center;padding:80px 24px 48px}
     <div class="incipit" id="incipit">✠</div>
     <div class="com-subtitle" id="comSubtitle"></div>
     <div class="com-body" id="comBody">
-      <span class="sk" style="width:100%"></span>
-      <span class="sk" style="width:91%"></span>
-      <span class="sk" style="width:96%"></span>
-      <span class="sk" style="width:85%"></span>
-      <span class="sk" style="width:99%"></span>
-      <span class="sk" style="width:70%"></span>
-      <span class="sk" style="width:0%;height:8px;background:none"></span>
-      <span class="sk" style="width:98%"></span>
-      <span class="sk" style="width:93%"></span>
+      <div style="height:200px; display:flex; align-items:center; justify-content:center; opacity:0.2;">
+         <span style="font-family:'Cinzel', serif; font-size:10px; letter-spacing:0.3em; color:var(--gold);">Seeking the Word...</span>
+      </div>
     </div>
   </div>
 
@@ -243,8 +174,8 @@ footer{text-align:center;padding:80px 24px 48px}
       <button onclick="handleSubscribe()">Enter</button>
     </div>
     <div class="sub-confirm" id="subConf">
-      “There is a white stone with a name on it<br>that no one knows except the one who receives it.”
-      <span class="ref-mark">Revelation 2:17</span>
+      “There is a white stone with a name on it<br>that no one knows except the one who receives it.”<br>
+      <span style="font-family:'Cinzel',serif; font-size:9px; letter-spacing:0.2em; opacity:0.5; display:block; margin-top:10px;">Revelation 2:17</span>
     </div>
   </div>
 </main>
@@ -256,7 +187,7 @@ footer{text-align:center;padding:80px 24px 48px}
 <div id="toast" aria-hidden="true"></div>
 
 <script>
-// --- CORE VARIABLES ---
+/* ── CORE VARIABLES ── */
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -264,8 +195,61 @@ var allPosts = [];
 var curIdx = 0;
 var _firstRender = true;
 var _bellEnabled = false;
+var audioCtx;
 
-// --- TOAST NOTIFICATIONS ---
+/* ── PURE MATH SYNTHESIZER (THE BELL) ── */
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function ringSacredBell() {
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  
+  // Creates a deep, singing bowl resonance
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+  var filter = audioCtx.createBiquadFilter();
+
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(174, audioCtx.currentTime); // Solfeggio healing frequency
+  osc.frequency.exponentialRampToValueAtTime(170, audioCtx.currentTime + 6);
+
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+  filter.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 6);
+
+  gain.gain.setValueAtTime(0, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.05); // Soft strike
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 7); // Long echo
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 7);
+}
+
+function toggleBell() {
+  initAudio();
+  _bellEnabled = !_bellEnabled;
+  var btn = document.getElementById('bellBtn');
+  if(_bellEnabled) {
+    btn.classList.add('on');
+    btn.innerHTML = '<span aria-hidden="true">🔔</span>';
+    showToast("Sanctuary bell enabled.");
+    ringSacredBell();
+  } else {
+    btn.classList.remove('on');
+    btn.innerHTML = '<span aria-hidden="true">🔕</span>';
+    showToast("Sanctuary bell silenced.");
+  }
+}
+
+/* ── TOAST NOTIFICATIONS ── */
 var toastTimeout;
 function showToast(message) {
   var toast = document.getElementById('toast');
@@ -273,12 +257,10 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(function() {
-    toast.classList.remove('show');
-  }, 3500);
+  toastTimeout = setTimeout(function() { toast.classList.remove('show'); }, 3500);
 }
 
-// --- CURSOR ILLUMINATION ---
+/* ── CURSOR ILLUMINATION ── */
 document.addEventListener('mousemove', function(e) {
   var glow = document.getElementById('readerGlow');
   if (glow) {
@@ -292,34 +274,19 @@ document.addEventListener('mouseleave', function() {
   if (glow) glow.style.opacity = '0';
 });
 
-// --- AUDIO/BELL STUB ---
-function toggleBell() {
-  _bellEnabled = !_bellEnabled;
-  var btn = document.getElementById('bellBtn');
-  if(_bellEnabled) {
-    btn.classList.add('on');
-    btn.innerHTML = '<span aria-hidden="true">🔔</span>';
-    showToast("Sanctuary bell enabled.");
-    // Audio logic would go here
-  } else {
-    btn.classList.remove('on');
-    btn.innerHTML = '<span aria-hidden="true">🔕</span>';
-    showToast("Sanctuary bell silenced.");
-  }
-}
-
-// --- SUBSCRIPTION STUB ---
+/* ── SUBSCRIPTION ── */
 function handleSubscribe() {
   var email = document.getElementById('subEmail').value;
   if(email && email.includes('@')) {
     document.getElementById('subForm').style.display = 'none';
     document.getElementById('subConf').classList.add('visible');
+    if(_bellEnabled) ringSacredBell();
   } else {
-    showToast("Please enter a valid email to enter the sanctuary.");
+    showToast("Please enter a valid email to enter.");
   }
 }
 
-// --- HELPER FUNCTIONS ---
+/* ── RSS & NAVIGATION LOGIC ── */
 function pad(n){ return String(n).padStart(2,'0'); }
 function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
 function fmtDate(str){ 
@@ -330,26 +297,14 @@ function fmtDate(str){
   return WEEKDAY[dt.getDay()]+', '+MONTHS[dt.getMonth()]+' '+parseInt(p[2])+', '+p[0]; 
 }
 
-// --- NAVIGATION LOGIC ---
 function go(delta){
   var next = curIdx + delta;
-  if(next < 0) {
-    showToast("You have reached the newest reading.");
-    return;
-  }
-  if(next >= allPosts.length) {
-    showToast("You have reached the oldest reading.");
-    return;
-  }
+  if(next < 0) { showToast("You have reached the newest reading."); return; }
+  if(next >= allPosts.length) { showToast("You have reached the oldest reading."); return; }
   curIdx = next;
   render();
 }
 
-function setDate(key){
-  document.getElementById('dateTxt').textContent = fmtDate(key);
-}
-
-// --- RENDER LOGIC ---
 function render(){
   var post = allPosts[curIdx];
   if(!post) return;
@@ -361,22 +316,18 @@ function render(){
     region.classList.add('turning-out');
   }
   
-  var _td = _firstRender ? 0 : 400;
+  var _td = _firstRender ? 0 : 500;
   _firstRender = false;
 
   setTimeout(function(){
-    window.scrollTo(0,0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Manage Buttons
     document.getElementById('prevBtn').disabled = curIdx >= allPosts.length - 1;
     document.getElementById('nextBtn').disabled = curIdx <= 0;
     
-    // Set Text
-    setDate(post.dateKey);
+    document.getElementById('dateTxt').textContent = fmtDate(post.dateKey);
     document.getElementById('litDay').textContent = post.litDay || '\u00a0';
-    document.title = (post.litDay ? post.litDay + ' \u2014 ' : '') + 'Ishi Olam';
-    
-    // Update URL gently
+    document.title = (post.litDay ? post.litDay + ' — ' : '') + 'Ishi Olam';
     try{ history.replaceState(null,'','?date='+post.dateKey); }catch(e){}
 
     var subtitle = document.getElementById('comSubtitle');
@@ -386,13 +337,6 @@ function render(){
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
     
-    if(post.link){
-      var a = document.createElement('a');
-      a.href=post.link; a.target='_blank'; a.rel='noopener';
-      a.className='substack-link'; a.textContent='Read on Substack \u2192';
-      body.appendChild(a);
-    }
-    
     void body.offsetWidth;
     body.classList.add('content-loaded');
 
@@ -400,34 +344,15 @@ function render(){
       region.classList.remove('turning-out');
       void region.offsetWidth;
       region.classList.add('turning-in');
-      setTimeout(function(){ region.classList.remove('turning-in'); }, 460);
     }
-  }, _td);
-}
 
-// --- RSS PARSING ---
-function getTag(item,tag){ var el=item.getElementsByTagName(tag)[0]; return el?(el.textContent||''):''; }
-function getEncoded(item){ var el=item.getElementsByTagName('content:encoded')[0]||item.getElementsByTagName('encoded')[0]; return el?(el.textContent||''):''; }
-function getLink(item){
-  var el=item.getElementsByTagName('link')[0];
-  if(!el) return '';
-  if(el.textContent&&el.textContent.trim()) return el.textContent.trim();
-  var n=el.nextSibling; if(n&&n.nodeType===3) return n.textContent.trim();
-  return '';
+    if(_bellEnabled) ringSacredBell();
+
+  }, _td);
 }
 
 function cleanHtml(html){
   if(!html) return '';
-  var inputIdx = html.search(/<input/i);
-  if(inputIdx !== -1){
-    var before = html.substring(0, inputIdx);
-    var lastClose = Math.max(
-      before.lastIndexOf('</p>'), before.lastIndexOf('</figure>'), before.lastIndexOf('</blockquote>'),
-      before.lastIndexOf('</h1>'), before.lastIndexOf('</h2>'), before.lastIndexOf('</h3>')
-    );
-    if(lastClose !== -1) html = before.substring(0, lastClose + before.substring(lastClose).indexOf('>') + 1);
-    else html = before;
-  }
   html = html.replace(/<hr[^>]*>/gi, '');
   html = html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi, '');
   html = html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi, '');
@@ -435,68 +360,100 @@ function cleanHtml(html){
 }
 
 function parseItem(item){
-  var title=getTag(item,'title');
+  var getTag = function(t){ var e=item.getElementsByTagName(t)[0]; return e?(e.textContent||''):''; };
+  var title=getTag('title');
   var m=title.match(/^(\d{4}-\d{2}-\d{2})\s*[-—–]\s*(.*)/);
-  var rawHtml=cleanHtml(getEncoded(item)||getTag(item,'description'));
-  var sub = getTag(item,'subtitle') || getTag(item,'itunes:subtitle') || '';
-
-  return {
-    dateKey: m?m[1]:null, litDay: m?m[2]?m[2].trim():'', subtitle: sub, html: rawHtml, link: getLink(item)
-  };
+  var enc = item.getElementsByTagName('content:encoded')[0];
+  var rawHtml=cleanHtml(enc ? enc.textContent : getTag('description'));
+  return { dateKey: m?m[1]:null, litDay: m?m[2]?m[2].trim():'', subtitle: getTag('subtitle'), html: rawHtml };
 }
 
-// --- FETCH & INIT LOGIC ---
-function fetchFeed(callback) {
+function fetchFeed() {
   var url = 'https://' + SUBSTACK_SLUG + '.substack.com/feed';
-  // Using an open CORS proxy to fetch the XML feed directly into the browser
   fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url))
-    .then(function(response) {
-      if (!response.ok) throw new Error("Network response was not ok");
-      return response.json();
-    })
-    .then(function(data) {
-      var parser = new DOMParser();
-      var xmlDoc = parser.parseFromString(data.contents, "text/xml");
+    .then(r => r.json())
+    .then(data => {
+      var xmlDoc = new DOMParser().parseFromString(data.contents, "text/xml");
       var items = Array.from(xmlDoc.querySelectorAll('item'));
-      var posts = items.map(parseItem).filter(function(p) { return p.dateKey; });
+      allPosts = items.map(parseItem).filter(p => p.dateKey).sort((a,b) => b.dateKey.localeCompare(a.dateKey));
       
-      // Sort newest first
-      posts.sort(function(a,b){ return b.dateKey.localeCompare(a.dateKey); });
-      callback(posts);
-    })
-    .catch(function(err) {
-      console.error('Feed error:', err);
-      showToast("The sanctuary archives are currently resting.");
-    });
-}
-
-function init() {
-  document.body.style.opacity = '1';
-  
-  // Check URL for specific date
-  var params = new URLSearchParams(window.location.search);
-  var paramDate = params.get('date');
-
-  fetchFeed(function(posts) {
-    if(!posts || !posts.length) return;
-    allPosts = posts;
-    
-    if(paramDate){
-      var i = allPosts.findIndex(function(p){ return p.dateKey === paramDate; });
+      var paramDate = new URLSearchParams(window.location.search).get('date');
+      var i = allPosts.findIndex(p => p.dateKey === (paramDate || todayKey()));
       curIdx = i >= 0 ? i : 0;
-    } else {
-      var today = todayKey();
-      var ti = allPosts.findIndex(function(p){ return p.dateKey === today; });
-      curIdx = ti >= 0 ? ti : 0;
-    }
-    
-    render();
-  });
+      render();
+    })
+    .catch(() => showToast("The archives are resting."));
 }
 
-// Run when document is ready
-document.addEventListener('DOMContentLoaded', init);
+/* ── SURREAL PHYSICS ENGINE (DUST & EMBERS) ── */
+const dCv = document.getElementById('dustCanvas');
+const eCv = document.getElementById('emberCanvas');
+const dCtx = dCv.getContext('2d');
+const eCtx = eCv.getContext('2d');
+let w, h, dustArray = [], emberArray = [];
 
+function resize() {
+  w = window.innerWidth; h = window.innerHeight;
+  dCv.width = w; dCv.height = h; eCv.width = w; eCv.height = h;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Dust {
+  constructor() {
+    this.x = Math.random() * w; this.y = Math.random() * h;
+    this.size = Math.random() * 1.5;
+    this.speedY = Math.random() * 0.3 + 0.1;
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random() * 0.5;
+  }
+  update() {
+    this.y += this.speedY; this.x += this.speedX;
+    if (this.y > h) { this.y = 0; this.x = Math.random() * w; }
+  }
+  draw() {
+    dCtx.fillStyle = `rgba(255, 250, 240, ${this.opacity})`;
+    dCtx.beginPath(); dCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); dCtx.fill();
+  }
+}
+
+class Ember {
+  constructor() {
+    this.x = Math.random() * w; this.y = h + Math.random() * 200;
+    this.size = Math.random() * 2 + 1;
+    this.speedY = -(Math.random() * 1.5 + 0.5);
+    this.speedX = (Math.random() - 0.5) * 1.5;
+    this.life = Math.random() * 0.8 + 0.2;
+  }
+  update() {
+    this.y += this.speedY; this.x += this.speedX + Math.sin(this.y * 0.02) * 0.5;
+    this.life -= 0.002;
+    if (this.life <= 0 || this.y < 0) {
+      this.y = h + 10; this.x = Math.random() * w; this.life = Math.random() * 0.8 + 0.2;
+    }
+  }
+  draw() {
+    eCtx.fillStyle = `rgba(255, 140, 20, ${this.life})`;
+    eCtx.beginPath(); eCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2); eCtx.fill();
+  }
+}
+
+for (let i = 0; i < 70; i++) dustArray.push(new Dust());
+for (let i = 0; i < 30; i++) emberArray.push(new Ember());
+
+function animateParticles() {
+  dCtx.clearRect(0, 0, w, h); eCtx.clearRect(0, 0, w, h);
+  dustArray.forEach(d => { d.update(); d.draw(); });
+  emberArray.forEach(e => { e.update(); e.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+
+/* ── IGNITE ── */
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.style.opacity = '1';
+  animateParticles();
+  fetchFeed();
+});
 </script>
 </body>
 </html>
