@@ -16,7 +16,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914;--surface:#12100E;--border:#1C1914}
 html{background:var(--bg)}
-body{background:var(--bg);color:rgba(226,217,200,0.97);font-family:'EB Garamond',Georgia,serif;font-size:20px;line-height:1.88;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 1.3s ease}
+body{background:var(--bg);color:rgba(226,217,200,0.97);font-family:'EB Garamond',Georgia,serif;font-size:20px;line-height:1.88;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 2.2s cubic-bezier(0.4,0,0.2,1)}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
 
 /* ── PARCHMENT TEXTURE ── */
@@ -136,8 +136,6 @@ main{
 .substack-link::before{content:'✠';display:block;font-size:11px;color:rgba(197,165,90,0.2);margin-bottom:18px;letter-spacing:0.3em;text-align:center;border-bottom:none}
 
 /* SKELETON - clearly visible against dark bg */
-.sk{display:block;background:linear-gradient(90deg,rgba(197,165,90,0.08) 0%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.08) 100%);background-size:200% 100%;animation:shim 1.6s ease-in-out infinite;border-radius:2px;height:15px;margin-bottom:15px}
-@keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* SUBSCRIBE */
 .sub-wrap{margin-top:130px;padding-top:0;border-top:none;text-align:center}
@@ -364,7 +362,7 @@ body::after{
   position:fixed;inset:0;
   display:flex;align-items:center;justify-content:center;
   z-index:500;pointer-events:none;
-  opacity:0;transition:opacity 2.2s ease;
+  opacity:0;transition:opacity 1.6s ease;
 }
 #antiphon span{
   font-family:'EB Garamond',serif;
@@ -437,12 +435,14 @@ body::before{
 #contentRegion{
   perspective:1200px;
   transform-style:preserve-3d;
+  opacity:0;
+  transition:opacity 2.2s ease;
 }
 #contentRegion.turning-out{
-  animation:pageOut 0.42s cubic-bezier(0.4,0,1,1) forwards;
+  animation:pageOut 0.65s cubic-bezier(0.4,0,0.6,1) forwards;
 }
 #contentRegion.turning-in{
-  animation:pageIn 0.44s cubic-bezier(0,0,0.2,1) forwards;
+  animation:pageIn 0.85s cubic-bezier(0,0,0.2,1) forwards;
 }
 @keyframes pageOut{
   0%  {opacity:1;transform:rotateX(0deg) translateY(0)}
@@ -579,19 +579,7 @@ body.focus-mode main{
   <div class="com-subtitle" id="comSubtitle"></div>
   <div class="reading-time" id="readingTime"></div>
   <div class="com-body" id="comBody">
-    <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:91%"></span>
-    <span class="sk" style="width:96%"></span>
-    <span class="sk" style="width:85%"></span>
-    <span class="sk" style="width:99%"></span>
-    <span class="sk" style="width:70%"></span>
-    <span class="sk" style="width:0%;height:8px;background:none"></span>
-    <span class="sk" style="width:98%"></span>
-    <span class="sk" style="width:93%"></span>
-    <span class="sk" style="width:87%"></span>
-    <span class="sk" style="width:100%"></span>
-    <span class="sk" style="width:62%"></span>
-  </div>
+    </div>
   <div id="endMark">✶</div>
   </div><!-- /contentRegion -->
 
@@ -930,6 +918,12 @@ function render(){
     showEndMark();
     hapticPulse();
     ringBell();
+    // Light the candle when word first arrives
+    if(document.getElementById('candleCanvas') && document.getElementById('candleCanvas').style.opacity!=='1'){
+      var cc=document.getElementById('candleCanvas');
+      cc.style.transition='opacity 3.5s ease';
+      setTimeout(function(){ cc.style.opacity='1'; }, 300);
+    }
     _subEarned = false;
     var sub = document.querySelector('.sub-wrap');
     if(sub) sub.classList.remove('earned');
@@ -940,7 +934,9 @@ function render(){
       region.classList.remove('turning-out');
       void region.offsetWidth;
       region.classList.add('turning-in');
-      setTimeout(function(){ region.classList.remove('turning-in'); }, 460);
+      // Fade into existence — first render or navigation
+      region.style.opacity = '1';
+      setTimeout(function(){ region.classList.remove('turning-in'); }, 880);
     }
   }, _td);
 }
@@ -1316,11 +1312,7 @@ document.addEventListener('keydown',function(e){
 // Entry ceremony
 document.fonts.ready.then(function(){
   document.body.style.opacity='1';
-  // Candle lights slowly after the word arrives
-  setTimeout(function(){
-    var cc=document.getElementById('candleCanvas');
-    if(cc) cc.style.opacity='1';
-  }, 800);
+  // Candle lights after the word arrives — triggered from render()
 });
 setTimeout(function(){ document.body.style.opacity='1'; }, 900);
 
@@ -1634,18 +1626,18 @@ function showAntiphon(onDone){
   if(!wrap||!sp){ if(onDone) onDone(); return; }
   var ch = getCanonicalHour();
   sp.textContent = ch.latin;
-  // Appear after body fades in (page dark, antiphon alone)
+  // Page is dark. Antiphon surfaces slowly.
   setTimeout(function(){
     wrap.style.opacity = '1';
-    // Hold in silence, then dissolve
+    // Hold in complete silence
     setTimeout(function(){
       wrap.style.opacity = '0';
-      // After transition completes, signal content can arrive
+      // Word arrives after antiphon fully dissolves
       setTimeout(function(){
         if(onDone) onDone();
-      }, 2400); // matches opacity transition 2.2s
-    }, 2600);
-  }, 900);
+      }, 1700); // 1.6s transition + small buffer
+    }, 1800); // hold duration
+  }, 800); // wait for page to be mostly dark/settled
 }
 
 // ════════════════════════════════════════════════════════
