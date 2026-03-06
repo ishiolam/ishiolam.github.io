@@ -1015,12 +1015,15 @@ function render(){
     var sub = document.querySelector('.sub-wrap');
     if(sub) sub.classList.remove('earned');
     setTimeout(initSubscribeEarn, 400);
-    // Page turn IN
+    // Page turn IN — skip animation on first load (rAF owns opacity)
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      region.classList.add('turning-in');
-      setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
+      if(!_isFirstLoad){
+        region.style.opacity = '1';
+        region.classList.add('turning-in');
+        setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
+      }
     }
     _isFirstLoad = false;
   }, _td);
@@ -1228,6 +1231,10 @@ function startPhasedEntrance(){
     return;
   }
 
+  // Force invisible before first tick — no CSS or animation can override inline style
+  region.style.opacity = '0';
+  wrap.style.opacity   = '0';
+
   var startTime = null;
   var TOTAL     = 9000; // 9 seconds total
 
@@ -1281,6 +1288,9 @@ function init(){
   applyTimeOfDay();
   handleReturnRecognition();
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
+  // Lock contentRegion invisible before any render or animation touches it
+  var _rgn = document.getElementById('contentRegion');
+  if(_rgn) _rgn.style.opacity = '0';
   // Antiphon and content begin together
   showAntiphon();
   setTimeout(startPhasedEntrance, 200);
