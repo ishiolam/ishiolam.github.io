@@ -664,6 +664,29 @@ function setDate(key){
   document.getElementById('dateTxt').textContent = fmtDate(key);
 }
 
+// ── TYPEWRITER SUBTITLE ──
+var _typeGen = 0;
+var _typeTimer;
+function typeSubtitle(text, el){
+  _typeGen++;
+  var gen = _typeGen;
+  if(!el) return;
+  el.textContent = '';
+  el.style.display = text ? '' : 'none';
+  if(!text) return;
+  if(_prefersReducedMotion){ el.textContent = text; return; }
+  var i = 0;
+  function tick(){
+    if(gen !== _typeGen) return; // navigation happened — abort
+    if(i <= text.length){
+      el.textContent = text.slice(0, i);
+      i++;
+      _typeTimer = setTimeout(tick, 38 + Math.random()*22);
+    }
+  }
+  setTimeout(tick, 320);
+}
+
 function render(){
   var post = allPosts[curIdx];
   if(!post) return;
