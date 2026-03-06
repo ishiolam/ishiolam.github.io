@@ -16,7 +16,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#0A0908;--text:#E2D9C8;--gold:#C5A55A;--gold-dim:rgba(197,165,90,0.42);--fire:#8B6914;--surface:#12100E;--border:#1C1914}
 html{background:var(--bg)}
-body{background:var(--bg);color:rgba(226,217,200,0.97);font-family:'EB Garamond',Georgia,serif;font-size:20px;line-height:1.88;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility;opacity:0;transition:opacity 2.2s cubic-bezier(0.4,0,0.2,1)}
+body{background:var(--bg);color:rgba(226,217,200,0.97);font-family:'EB Garamond',Georgia,serif;font-size:20px;line-height:1.88;letter-spacing:0.012em;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-feature-settings:'liga' 1,'kern' 1,'onum' 1;text-rendering:optimizeLegibility}
 ::selection{background:rgba(197,165,90,0.15);color:var(--text)}
 
 /* ── PARCHMENT TEXTURE ── */
@@ -540,7 +540,7 @@ body::before{
 #contentRegion.turning-in{
   animation:pageIn 3.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-@keyframes pageOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-8px);opacity:0}}100%{opacity:0;transform:translateY(8px) scale(0.99)}}
+@keyframes pageOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-8px);opacity:0}}
 @keyframes pageIn{0%{transform:translateY(10px) scale(0.998)}100%{transform:translateY(0) scale(1)}}
 
 
