@@ -532,7 +532,7 @@ body::before{
   perspective:1200px;
   transform-style:preserve-3d;
   opacity:0;
-  transition:opacity 4s cubic-bezier(0.16,1,0.3,1);
+  transition:opacity 6s cubic-bezier(0.16,1,0.3,1);
 }
 #contentRegion.turning-out{
   animation:pageOut 0.8s cubic-bezier(0.4,0,1,1) forwards;
@@ -952,7 +952,7 @@ function render(){
     void region.offsetWidth;
     region.classList.add('turning-out');
   }
-  var _td = _firstRender ? 80 : 480;
+  var _td = _firstRender ? 0 : 480;
   _firstRender = false;
 
   setTimeout(function(){
@@ -1022,9 +1022,9 @@ function render(){
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      // Opacity transition (3.8s) fires here — content rises from dark
-      region.style.opacity = '1';
       region.classList.add('turning-in');
+      // Fade in — content rises slowly from darkness
+      region.style.opacity = '1';
       setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
   }, _td);
@@ -1216,10 +1216,10 @@ function init(){
   applyTimeOfDay();
   handleReturnRecognition();
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
-  // Show antiphon first, alone — then content arrives
-  showAntiphon(function(){
-    loadAndRender(paramDate);
-  });
+  // Antiphon and content begin together —
+  // antiphon appears in foreground while content fades slowly behind it
+  showAntiphon();
+  loadAndRender(paramDate);
 }
 
 function handleSubscribe(){
@@ -1714,24 +1714,20 @@ function applyCanonicalHour(){
 // ════════════════════════════════════════════════════════
 // OPENING ANTIPHON — the intonation before the word
 // ════════════════════════════════════════════════════════
-function showAntiphon(onDone){
+function showAntiphon(){
   var wrap = document.getElementById('antiphon');
   var sp   = wrap ? wrap.querySelector('span') : null;
-  if(!wrap||!sp){ if(onDone) onDone(); return; }
+  if(!wrap||!sp) return;
   var ch = getCanonicalHour();
   sp.textContent = ch.latin;
-  // Page is dark. Antiphon surfaces slowly.
+  // Antiphon surfaces alone in the dark
   setTimeout(function(){
     wrap.style.opacity = '1';
-    // Hold in complete silence
+    // Hold, then dissolve on its own — content is already rising behind it
     setTimeout(function(){
       wrap.style.opacity = '0';
-      // Word arrives after antiphon fully dissolves
-      setTimeout(function(){
-        if(onDone) onDone();
-      }, 1700); // 1.6s transition + small buffer
-    }, 1800); // hold duration
-  }, 800); // wait for page to be mostly dark/settled
+    }, 1800);
+  }, 800);
 }
 
 // ════════════════════════════════════════════════════════
