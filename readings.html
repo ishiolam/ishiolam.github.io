@@ -424,7 +424,7 @@ body::after{
 #antiphon{
   position:fixed;inset:0;
   display:flex;align-items:center;justify-content:center;
-  z-index:500;pointer-events:none;
+  z-index:400;pointer-events:none;
   opacity:0;transition:opacity 1.6s ease;
 }
 #antiphon span{
@@ -524,10 +524,14 @@ body::before{
 #revealOverlay{
   position:fixed;
   inset:0;
-  background:var(--bg);
-  z-index:45; /* above content (40), below nav (100) */
+  background:#0A0908;
+  z-index:200;
   pointer-events:none;
   opacity:1;
+  transition:opacity 5s ease;
+}
+#revealOverlay.fading{
+  opacity:0;
 }
 /* ── SUBSCRIBE — hidden until earned ── */
 .sub-wrap{
@@ -673,7 +677,7 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.
 <div id="revealOverlay"></div>
 <script>
 
@@ -1205,34 +1209,10 @@ function showAntiphon(){
 function startRevealOverlay(){
   var overlay = document.getElementById('revealOverlay');
   if(!overlay) return;
-  if(_prefersReducedMotion){ overlay.style.opacity='0'; return; }
-
-  overlay.style.opacity = '1';
-  var startTime = null;
-  var FADE_START = 2400;  // ms — wait for antiphon to peak
-  var FADE_DUR   = 6000;  // ms — fade duration
-
-  function tick(now){
-    if(!startTime) startTime = now;
-    var elapsed = now - startTime;
-
-    if(elapsed < FADE_START){
-      overlay.style.opacity = '1';
-    } else {
-      var p = Math.min((elapsed - FADE_START) / FADE_DUR, 1);
-      // ease-in-out: slow start (Latin still visible), accelerates, then settles
-      var eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
-      overlay.style.opacity = (1 - eased).toFixed(4);
-    }
-
-    if(elapsed < FADE_START + FADE_DUR){
-      requestAnimationFrame(tick);
-    } else {
-      overlay.style.opacity = '0';
-      overlay.style.display = 'none';
-    }
-  }
-  requestAnimationFrame(tick);
+  // 2s delay (antiphon visible), then CSS transition fades it over 5s
+  setTimeout(function(){
+    overlay.classList.add('fading');
+  }, 2000);
 }
 
 
