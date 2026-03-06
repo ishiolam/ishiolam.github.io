@@ -226,10 +226,11 @@ body::after{
 
 /* ── FLAME ── */
 #flameWrap{
-  position:fixed;bottom:28px;right:28px;
-  width:20px;height:36px;
+  position:fixed;bottom:20px;right:20px;
+  width:32px;height:56px;
   pointer-events:none;z-index:60;
-  opacity:0.55;
+  opacity:0.92;
+  filter:drop-shadow(0 0 6px rgba(210,140,40,0.85)) drop-shadow(0 0 14px rgba(190,110,20,0.5));
 }
 #flameWrap svg{overflow:visible}
 
@@ -360,7 +361,7 @@ body.focus-mode .sub-wrap{
   transition:opacity 0.6s ease !important;
 }
 body.focus-mode #flameWrap{
-  opacity:0.35 !important;
+  opacity:0.42 !important;
 }
 body.focus-mode #marginWhisper{
   opacity:0 !important;
@@ -415,7 +416,7 @@ body.focus-mode main{
 <div id="readProgress"></div>
 <canvas id="dustCanvas"></canvas>
 <div id="marginWhisper" lang="he" dir="rtl" aria-hidden="true">אהבה</div>
-<div id="flameWrap"><svg viewBox="0 0 20 36" width="20" height="36"><path id="flamePath" d="M10,34 C4,30 2,22 6,16 C7,13 8,10 10,2 C12,10 13,13 14,16 C18,22 16,30 10,34 Z" fill="rgba(197,150,60,0.7)"/></svg></div>
+<div id="flameWrap"><svg viewBox="0 0 20 36" width="32" height="56"><path id="flamePath" d="M10,34 C4,30 2,22 6,16 C7,13 8,10 10,2 C12,10 13,13 14,16 C18,22 16,30 10,34 Z" fill="rgba(210,148,55,0.72)"/></svg></div>
 <div id="returnGreet"></div>
 <div id="focusHint">F — focus</div>
 <nav>
@@ -474,10 +475,10 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="/cdn-cgi/l/email-protection#6b1d45021803024504070a062b0c060a020745080406" class="f-mail"><span class="__cf_email__" data-cfemail="5a2c74332932337435363b371a3d373b333674393537">[email&#160;protected]</span></a>
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -1098,8 +1099,8 @@ function typeSubtitle(text, el){
       + 'C'+(10+3+lean*0.3)+','+(20+noise(t*1.0)) + ' '
       + (10+baseSpread)+',30 10,34 Z';
     path.setAttribute('d', d);
-    var intensity = 0.5 + noise(t*0.8)*0.12;
-    path.setAttribute('fill','rgba(197,'+(Math.floor(140+noise(t*1.5)*18))+',50,'+intensity.toFixed(2)+')');
+    var intensity = 0.68 + noise(t*0.8)*0.14;
+    path.setAttribute('fill','rgba(210,'+(Math.floor(148+noise(t*1.5)*22))+',55,'+intensity.toFixed(2)+')');
     requestAnimationFrame(flickerFlame);
   }
   flickerFlame();
@@ -1113,7 +1114,7 @@ function flameDip(){
   if(!fw) return;
   fw.style.transition='opacity 0.3s ease';
   fw.style.opacity='0.12';
-  setTimeout(function(){ fw.style.opacity=_focusMode?'0.35':'0.55'; },420);
+  setTimeout(function(){ fw.style.opacity=_focusMode?'0.42':'0.92'; },420);
 }
 
 // ════════════════════════════════════════════════════════
