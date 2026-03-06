@@ -532,16 +532,16 @@ body::before{
   perspective:1200px;
   transform-style:preserve-3d;
   opacity:0;
-  transition:opacity 2.2s ease;
+  transition:opacity 4s cubic-bezier(0.16,1,0.3,1);
 }
 #contentRegion.turning-out{
-  animation:pageOut 0.65s cubic-bezier(0.4,0,0.6,1) forwards;
+  animation:pageOut 0.8s cubic-bezier(0.4,0,1,1) forwards;
 }
 #contentRegion.turning-in{
-  animation:pageIn 0.85s cubic-bezier(0,0,0.2,1) forwards;
+  animation:pageIn 3.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
-@keyframes pageOut{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(8px) scale(0.99)}}
-@keyframes pageIn{0%{opacity:0;transform:translateY(-8px) scale(0.99)}100%{opacity:1;transform:translateY(0)}}
+@keyframes pageOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-8px);opacity:0}}100%{opacity:0;transform:translateY(8px) scale(0.99)}}
+@keyframes pageIn{0%{transform:translateY(12px);opacity:0.01}100%{transform:translateY(0);opacity:1}}100%{opacity:1;transform:translateY(0)}}
 
 /* ── SUBSCRIBE — hidden until earned ── */
 .sub-wrap{
@@ -692,7 +692,7 @@ body.focus-mode main{
   <a href="/cdn-cgi/l/email-protection#c8bee6a1bba0a1e6a7a4a9a588afa5a9a1a4e6aba7a5" class="f-mail"><span class="__cf_email__" data-cfemail="ddabf3b4aeb5b4f3b2b1bcb09dbab0bcb4b1f3beb2b0">[email&#160;protected]</span></a>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ════════════════════════════════════════════════════════
 // CANDLELIGHT — a real flame just below the frame
 // The source is located. The warmth falls off correctly.
@@ -902,7 +902,6 @@ function go(delta){
   curIdx = next;
   render();
 }
-
 function setDate(key){
   document.getElementById('dateTxt').textContent = fmtDate(key);
 }
@@ -953,7 +952,7 @@ function render(){
     void region.offsetWidth;
     region.classList.add('turning-out');
   }
-  var _td = _firstRender ? 0 : 400;
+  var _td = _firstRender ? 80 : 480;
   _firstRender = false;
 
   setTimeout(function(){
@@ -1796,6 +1795,7 @@ document.addEventListener('mouseleave',function(){
 
 setFooterVerse();
 init();
+
 </script>
 </body>
 </html>
