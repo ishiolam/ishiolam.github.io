@@ -365,7 +365,13 @@ function parseItem(item){
   var m=title.match(/^(\d{4}-\d{2}-\d{2})\s*[-—–]\s*(.*)/);
   var enc = item.getElementsByTagName('content:encoded')[0];
   var rawHtml=cleanHtml(enc ? enc.textContent : getTag('description'));
-  return { dateKey: m?m[1]:null, litDay: m?m[2]?m[2].trim():'', subtitle: getTag('subtitle'), html: rawHtml };
+  
+  return { 
+    dateKey: m ? m[1] : null, 
+    litDay: (m && m[2]) ? m[2].trim() : '', 
+    subtitle: getTag('subtitle'), 
+    html: rawHtml 
+  };
 }
 
 function fetchFeed() {
