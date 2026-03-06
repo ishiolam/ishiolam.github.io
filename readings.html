@@ -362,36 +362,11 @@ body::after{
 }
 
 /* ── MANUSCRIPT MARGINALIA ── */
-.marginalia{
-  position:fixed;
-  right:calc(50% + 330px); /* outer left margin */
-  font-family:'EB Garamond',serif;
-  font-style:italic;
-  font-size:9.5px;
-  color:rgba(197,165,90,0.12);
-  letter-spacing:0.04em;
-  line-height:1.5;
-  writing-mode:horizontal-tb;
-  pointer-events:none;
-  z-index:5;
-  max-width:90px;
-  text-align:right;
-  transition:opacity 3s ease;
-  user-select:none;
-}
-@media(max-width:1100px){ .marginalia{ display:none; } }
+
+@media(max-width:1100px){  }
 
 /* ── MARGIN WHISPER ── */
-#marginWhisper{
-  position:fixed;left:18px;top:50%;
-  transform:translateY(-50%) rotate(-90deg);
-  font-family:'EB Garamond',serif;font-size:11px;
-  color:rgba(197,165,90,0.06);
-  letter-spacing:0.25em;pointer-events:none;
-  z-index:2;white-space:nowrap;
-  transition:opacity 3s ease;
-  user-select:none;
-}
+
 
 /* ── GOLD DUST CANVAS ── */
 #dustCanvas{
@@ -533,9 +508,7 @@ body::before{
 #contentRegion{
   perspective:1200px;
   transform-style:preserve-3d;
-  opacity:0;
-  
-}
+  }
 #contentRegion.turning-out{
   animation:pageOut 0.8s cubic-bezier(0.4,0,1,1) forwards;
 }
@@ -546,6 +519,16 @@ body::before{
 @keyframes pageIn{0%{transform:translateY(10px) scale(0.998)}100%{transform:translateY(0) scale(1)}}
 
 
+
+/* ── CONTENT REVEAL OVERLAY ── */
+#revealOverlay{
+  position:fixed;
+  inset:0;
+  background:var(--bg);
+  z-index:45; /* above content (40), below nav (100) */
+  pointer-events:none;
+  opacity:1;
+}
 /* ── SUBSCRIBE — hidden until earned ── */
 .sub-wrap{
   visibility:hidden;opacity:0;
@@ -581,9 +564,7 @@ body.focus-mode .sub-wrap{
   transition:opacity 0.6s ease !important;
 }
 
-body.focus-mode #marginWhisper{
-  opacity:0 !important;
-}
+body.focus-mode 
 body.focus-mode main{
   padding-top:60px;
 }
@@ -640,10 +621,10 @@ body.focus-mode main{
 <div id="readerGlow" aria-hidden="true"></div>
 <canvas id="starCanvas" aria-hidden="true"></canvas>
 <canvas id="dustCanvas"></canvas>
-<div class="marginalia" id="margin1" style="top:28vh" aria-hidden="true"></div>
-<div class="marginalia" id="margin2" style="top:52vh" aria-hidden="true"></div>
-<div class="marginalia" id="margin3" style="top:74vh" aria-hidden="true"></div>
-<div id="marginWhisper" lang="he" dir="rtl" aria-hidden="true">אהבה</div>
+
+
+
+
 <div id="returnGreet"></div>
 <div id="focusHint">F — focus</div>
 <div id="antiphon" aria-hidden="true"><span></span></div>
@@ -693,6 +674,7 @@ body.focus-mode main{
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
   <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
+<div id="revealOverlay"></div>
 <script>
 
 (function(){
@@ -879,7 +861,6 @@ var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satu
 var allPosts = [];
 var curIdx = 0;
 var _firstRender = true;
-var _isFirstLoad = true;
 var _prefersReducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
 
 function pad(n){ return String(n).padStart(2,'0'); }
@@ -1019,13 +1000,10 @@ function render(){
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      if(!_isFirstLoad){
-        region.style.opacity = '1';
-        region.classList.add('turning-in');
-        setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
-      }
+      region.style.opacity = '1';
+      region.classList.add('turning-in');
+      setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
-    _isFirstLoad = false;
   }, _td);
 }
 
@@ -1204,76 +1182,57 @@ function applyTimeOfDay(){
   }
 }
 
-// ── PHASED ENTRANCE — antiphon and reading are inversely linked ──
-// Single rAF loop drives both. As antiphon fades out, reading fades in.
-// Phase 1 (0–2s):   antiphon rises alone, reading stays dark
-// Phase 2 (2–4.5s): antiphon holds, reading begins very slowly
-// Phase 3 (4.5–7s): antiphon falls, reading accelerates
-// Phase 4 (7–9s):   antiphon gone, reading finishes arriving
-var _entranceRAF = null;
+
+
 
 function showAntiphon(){
   var wrap = document.getElementById('antiphon');
   var sp   = wrap ? wrap.querySelector('span') : null;
-  if(!wrap||!sp) return;
+  if(!wrap || !sp) return;
   var ch = getCanonicalHour();
   sp.textContent = ch.latin;
+  // Surface alone in darkness
+  setTimeout(function(){
+    wrap.style.opacity = '1';
+    setTimeout(function(){ wrap.style.opacity = '0'; }, 1800);
+  }, 600);
 }
 
-function startPhasedEntrance(){
-  var wrap   = document.getElementById('antiphon');
-  var region = document.getElementById('contentRegion');
-  if(!wrap || !region) return;
+// ── REVEAL OVERLAY — dark screen fades away, revealing the reading beneath ──
+// Latin antiphon shows through (antiphon z-index 500, overlay z-index 45).
+// Overlay starts fully opaque. After antiphon peaks (t≈2.4s), overlay begins
+// fading. Fully transparent by t≈8s. Content never changes its own opacity.
+function startRevealOverlay(){
+  var overlay = document.getElementById('revealOverlay');
+  if(!overlay) return;
+  if(_prefersReducedMotion){ overlay.style.opacity='0'; return; }
 
-  if(_prefersReducedMotion){
-    wrap.style.opacity   = '0';
-    region.style.opacity = '1';
-    return;
-  }
-
-  // Force invisible before first tick — no CSS or animation can override inline style
-  region.style.opacity = '0';
-  wrap.style.opacity   = '0';
-
+  overlay.style.opacity = '1';
   var startTime = null;
-  var TOTAL     = 9000; // 9 seconds total
-
-  function easeIn(t){ return t * t * t; }
-  function easeOut(t){ return 1 - Math.pow(1-t, 2); }
+  var FADE_START = 2400;  // ms — wait for antiphon to peak
+  var FADE_DUR   = 6000;  // ms — fade duration
 
   function tick(now){
     if(!startTime) startTime = now;
     var elapsed = now - startTime;
-    var t = Math.min(elapsed / TOTAL, 1);
 
-    // ── Antiphon opacity ──
-    // Rise over first 2s, hold to 4.5s, fall by 7s
-    var aT;
-    if(t < 0.22)       aT = easeOut(t / 0.22);          // 0→1 rise
-    else if(t < 0.50)  aT = 1;                            // hold
-    else if(t < 0.78)  aT = easeIn(1 - (t-0.50)/0.28);  // 1→0 fall
-    else               aT = 0;
-    wrap.style.opacity = aT.toFixed(4);
-
-    // ── Reading opacity ──
-    // Invisible until antiphon starts falling (t=0.50)
-    // Then eases in and finishes as antiphon is gone
-    var rT;
-    if(t < 0.42)      rT = 0;
-    else if(t < 1.0)  rT = easeOut((t - 0.42) / 0.58);
-    else               rT = 1;
-    region.style.opacity = rT.toFixed(4);
-
-    if(t < 1){
-      _entranceRAF = requestAnimationFrame(tick);
+    if(elapsed < FADE_START){
+      overlay.style.opacity = '1';
     } else {
-      wrap.style.opacity   = '0';
-      region.style.opacity = '1';
-      _entranceRAF = null;
+      var p = Math.min((elapsed - FADE_START) / FADE_DUR, 1);
+      // ease-in-out: slow start (Latin still visible), accelerates, then settles
+      var eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2,2)/2;
+      overlay.style.opacity = (1 - eased).toFixed(4);
+    }
+
+    if(elapsed < FADE_START + FADE_DUR){
+      requestAnimationFrame(tick);
+    } else {
+      overlay.style.opacity = '0';
+      overlay.style.display = 'none';
     }
   }
-
-  _entranceRAF = requestAnimationFrame(tick);
+  requestAnimationFrame(tick);
 }
 
 
@@ -1288,12 +1247,8 @@ function init(){
   applyTimeOfDay();
   handleReturnRecognition();
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
-  // Lock contentRegion invisible before any render or animation touches it
-  var _rgn = document.getElementById('contentRegion');
-  if(_rgn) _rgn.style.opacity = '0';
-  // Antiphon and content begin together
   showAntiphon();
-  setTimeout(startPhasedEntrance, 200);
+  startRevealOverlay();
   loadAndRender(paramDate);
 }
 
@@ -1789,21 +1744,6 @@ function applyCanonicalHour(){
 // ════════════════════════════════════════════════════════
 // OPENING ANTIPHON — the intonation before the word
 // ════════════════════════════════════════════════════════
-function showAntiphon(){
-  var wrap = document.getElementById('antiphon');
-  var sp   = wrap ? wrap.querySelector('span') : null;
-  if(!wrap||!sp) return;
-  var ch = getCanonicalHour();
-  sp.textContent = ch.latin;
-  // Antiphon surfaces alone in the dark
-  setTimeout(function(){
-    wrap.style.opacity = '1';
-    // Hold, then dissolve on its own — content is already rising behind it
-    setTimeout(function(){
-      wrap.style.opacity = '0';
-    }, 1800);
-  }, 800);
-}
 
 // ════════════════════════════════════════════════════════
 // ANGELUS — rings at 6am, noon, 6pm if bell is on
