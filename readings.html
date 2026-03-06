@@ -183,7 +183,8 @@ footer{text-align:center;padding:80px 24px 48px}
   inset:0;
   pointer-events:none;
   z-index:2;
-  opacity:1;
+  opacity:0;
+  transition:opacity 3.5s ease;
 }
 
 #readProgress{position:fixed;top:0;left:0;height:2px;width:0%;
@@ -1129,7 +1130,14 @@ document.addEventListener('keydown',function(e){
 });
 
 // Entry ceremony
-document.fonts.ready.then(function(){ document.body.style.opacity='1'; });
+document.fonts.ready.then(function(){
+  document.body.style.opacity='1';
+  // Candle lights slowly after the word arrives
+  setTimeout(function(){
+    var cc=document.getElementById('candleCanvas');
+    if(cc) cc.style.opacity='1';
+  }, 800);
+});
 setTimeout(function(){ document.body.style.opacity='1'; }, 900);
 
 // Nav — dissolves while reading, returns when you look up
