@@ -183,11 +183,6 @@ body::after{
   pointer-events:none;z-index:50;
 }
 
-.f-verse{font-style:italic;font-size:14px;color:rgba(197,165,90,0.22);
-  line-height:1.8;margin-bottom:18px;max-width:380px;margin-left:auto;margin-right:auto}
-.f-verse-ref{display:block;font-family:'Cinzel',serif;font-size:8.5px;
-  letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.14);
-  margin-top:8px}
 
 
 /* Incipit — the mark that says: here it begins */
@@ -233,7 +228,7 @@ body::after{
 #flameWrap{
   position:fixed;bottom:28px;right:28px;
   width:20px;height:36px;
-  pointer-events:none;z-index:3;
+  pointer-events:none;z-index:60;
   opacity:0.55;
 }
 #flameWrap svg{overflow:visible}
@@ -489,6 +484,7 @@ var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satu
 var allPosts = [];
 var curIdx = 0;
 var _firstRender = true;
+var _prefersReducedMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
 
 function pad(n){ return String(n).padStart(2,'0'); }
 function todayKey(){ var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
@@ -515,6 +511,7 @@ function setDate(key){
 function render(){
   var post = allPosts[curIdx];
   if(!post) return;
+  if(!_firstRender) flameDip();
 
   var region = document.getElementById('contentRegion');
   if(region && !_firstRender){
@@ -526,8 +523,9 @@ function render(){
   _firstRender = false;
 
   setTimeout(function(){
-    // Instant scroll
+    // Instant scroll + reset progress
     window.scrollTo(0,0);
+    var rp=document.getElementById('readProgress'); if(rp) rp.style.width='0%';
 
     // Nav state
     document.getElementById('prevBtn').disabled = curIdx >= allPosts.length-1;
@@ -549,7 +547,14 @@ function render(){
     // Populate content
     var subtitle = document.getElementById('comSubtitle');
     var body = document.getElementById('comBody');
-    typeSubtitle(post.subtitle || '', subtitle);
+    // Decode any HTML entities in subtitle (RSS may contain &#8217; etc.)
+  var _rawSub = post.subtitle || '';
+  if(_rawSub && _rawSub.includes('&')){
+    var _dec = document.createElement('textarea');
+    _dec.innerHTML = _rawSub;
+    _rawSub = _dec.value;
+  }
+  typeSubtitle(_rawSub, subtitle);
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
     if(post.link){
@@ -581,7 +586,7 @@ function render(){
       region.classList.add('turning-in');
       setTimeout(function(){ region.classList.remove('turning-in'); }, 460);
     }
-  }, 400);
+  }, _td);
 }
 
 
@@ -641,10 +646,7 @@ function parseItem(item){
   // Subtitle: try explicit tag first, then itunes:subtitle, then
   // first <em> or <i> block in content that stands alone as a short phrase
   var sub = getTag(item,'subtitle') || getTag(item,'itunes:subtitle') || '';
-  if(!sub){
-    var em = rawHtml.match(/<(?:em|i)[^>]*>([^<]{10,120})<\/(?:em|i)>/);
-    if(em && em[1] && em[1].split(' ').length <= 18) sub = em[1];
-  }
+
   return {
     dateKey: m?m[1]:null,
     litDay:  m?m[2].trim():'',
@@ -870,7 +872,8 @@ function applySeasonStripe(dateStr){
   var lbl=document.getElementById('seasonLabel');
   if(lbl){
     lbl.textContent=SEASON_NAMES[season]||'';
-    lbl.style.color=SEASON_NAMES[season] ? SEASON_COLOR[season].replace('0.55','0.28').replace('0.65','0.28').replace('0.35','0.2') : 'transparent';
+    var SEASON_LABEL_COLOR={lent:'rgba(120,80,160,0.22)',easter:'rgba(220,190,80,0.22)',advent:'rgba(90,65,130,0.22)',ordinary:'transparent'};
+    lbl.style.color=SEASON_LABEL_COLOR[season]||'transparent';
   }
 }
 
@@ -880,16 +883,14 @@ function initReveal(){
   if(_revealObserver) _revealObserver.disconnect();
   var targets=document.querySelectorAll('.com-body p, .com-body blockquote, .com-body figure, .com-body h2, .com-body h3');
   if(!targets.length) return;
-  // First paragraph already full opacity
-  if(targets[0]) targets[0].classList.add('revealed');
   _revealObserver=new IntersectionObserver(function(entries){
     entries.forEach(function(e){
       if(e.isIntersecting) e.target.classList.add('revealed');
     });
   },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
   targets.forEach(function(el,i){
-    if(i>0) _revealObserver.observe(el);
-    else el.classList.add('revealed');
+    if(i===0){ el.classList.add('revealed'); }
+    else { _revealObserver.observe(el); }
   });
 }
 
@@ -907,7 +908,7 @@ function setFooterVerse(){
   var el=document.getElementById('footerVerse');
   if(!el) return;
   var v=FOOTER_VERSES[Math.floor(Math.random()*FOOTER_VERSES.length)];
-  el.innerHTML='“'+v[0]+'”<span class="f-verse-ref">'+v[1]+'</span>';
+  el.innerHTML='“'+v[0]+'”<span class="f-verse-ref">'+v[1]+'<span class="f-verse-still" style="display:none"> — still.</span></span>';
 }
 
 // Keyboard navigation — left/right arrows
@@ -1038,7 +1039,7 @@ function typeSubtitle(text, el){
   if(_prefersReducedMotion) return;
   for(var i=0; i<11; i++){
     particles.push({
-      x: Math.random()*1400 - 200,
+      x: Math.random()*(W+400) - 200,
       y: Math.random()*H,
       r: 0.6 + Math.random()*0.9,
       vy: -(0.12 + Math.random()*0.22),
@@ -1055,7 +1056,7 @@ function typeSubtitle(text, el){
       p.y += p.vy;
       p.x += p.vx + Math.sin(p.drift)*0.15;
       p.drift += p.driftSpeed;
-      if(p.y < -10){ p.y = H + 10; p.x = Math.random()*1400-200; }
+      if(p.y < -10){ p.y = H + 10; p.x = Math.random()*(W+400)-200; }
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
       ctx.fillStyle = 'rgba(197,165,90,'+p.o.toFixed(3)+')';
@@ -1266,7 +1267,6 @@ document.addEventListener('keydown', function(e){
 // ═══════════════════════════════════════════════════════
 var _bellEnabled = false;
 var _audioCtx = null;
-var _prefersReducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches);
 
 function getAudioCtx(){
   if(!_audioCtx){
