@@ -227,17 +227,36 @@ body::after{
 /* ── BURNING BUSH ── */
 #fireWrap{
   position:fixed;
-  bottom:-30px;right:-20px;
-  width:260px;height:360px;
+  bottom:-40px;right:-30px;
+  width:300px;height:420px;
   pointer-events:none;
   z-index:60;
+  /* Mask fades all edges — no visible rectangle */
+  -webkit-mask-image:radial-gradient(
+    ellipse 75% 72% at 68% 62%,
+    black 28%,
+    rgba(0,0,0,0.85) 42%,
+    rgba(0,0,0,0.5) 58%,
+    rgba(0,0,0,0.15) 72%,
+    transparent 88%
+  );
+  mask-image:radial-gradient(
+    ellipse 75% 72% at 68% 62%,
+    black 28%,
+    rgba(0,0,0,0.85) 42%,
+    rgba(0,0,0,0.5) 58%,
+    rgba(0,0,0,0.15) 72%,
+    transparent 88%
+  );
 }
 #fireImg{
   width:100%;height:100%;
   object-fit:cover;
   mix-blend-mode:screen;
-  opacity:0.92;
+  opacity:0.95;
   transition:opacity 0.4s ease;
+  /* Deepen the blacks so screen blend removes background cleanly */
+  filter:contrast(1.15) brightness(0.9);
 }
 #emberCanvas{
   position:fixed;inset:0;
