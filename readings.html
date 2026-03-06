@@ -541,7 +541,8 @@ body::before{
   animation:pageIn 3.5s cubic-bezier(0.16,1,0.3,1) forwards;
 }
 @keyframes pageOut{0%{transform:translateY(0);opacity:1}100%{transform:translateY(-8px);opacity:0}}100%{opacity:0;transform:translateY(8px) scale(0.99)}}
-@keyframes pageIn{0%{transform:translateY(10px) scale(0.998)}100%{transform:translateY(0) scale(1)}}100%{transform:translateY(0);opacity:1}}100%{opacity:1;transform:translateY(0)}}
+@keyframes pageIn{0%{transform:translateY(10px) scale(0.998)}100%{transform:translateY(0) scale(1)}}
+
 
 /* ── SUBSCRIBE — hidden until earned ── */
 .sub-wrap{
@@ -1236,6 +1237,7 @@ function init(){
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
   // Antiphon and content begin together
   showAntiphon();
+  setTimeout(startContentFade, 600);
   loadAndRender(paramDate);
 }
 
