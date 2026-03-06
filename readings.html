@@ -453,13 +453,15 @@ body::after{
   opacity:0;transition:opacity 1.6s ease;
 }
 #antiphon span{
-  font-family:'EB Garamond',serif;
-  font-style:italic;
-  font-size:clamp(15px,2.2vw,22px);
-  color:rgba(197,165,90,0.55);
-  letter-spacing:0.08em;
+  font-family:'Cinzel',serif;
+  font-style:normal;
+  font-size:clamp(13px,1.8vw,20px);
+  color:rgba(197,165,90,0.82);
+  letter-spacing:0.38em;
   text-align:center;
-  line-height:1.8;
+  line-height:2;
+  text-transform:uppercase;
+  text-shadow:0 0 28px rgba(197,165,90,0.25);
 }
 
 /* ── RETURN RECOGNITION ── */
@@ -690,15 +692,9 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="/cdn-cgi/l/email-protection#c8bee6a1bba0a1e6a7a4a9a588afa5a9a1a4e6aba7a5" class="f-mail"><span class="__cf_email__" data-cfemail="ddabf3b4aeb5b4f3b2b1bcb09dbab0bcb4b1f3beb2b0">[email&#160;protected]</span></a>
-</footer>
-
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
 <script>
-// ════════════════════════════════════════════════════════
-// CANDLELIGHT — a real flame just below the frame
-// The source is located. The warmth falls off correctly.
-// Color temperature shifts as real candlelight does.
-// ════════════════════════════════════════════════════════
+
 (function(){
   var cv=document.getElementById('candleCanvas');
   if(!cv) return;
@@ -1023,7 +1019,6 @@ function render(){
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
-      if(!_isFirstLoad){ region.style.opacity='1'; }
       region.classList.add('turning-in');
       setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
@@ -1206,23 +1201,74 @@ function applyTimeOfDay(){
   }
 }
 
-// ── CONTENT FADER — manual ease-in over 10s ──
-// Latin is visible for first ~4s. Content barely perceptible then.
-// Fully visible only after Latin has departed.
-var _fadeTimer = null;
-function startContentFade(){
-  var region = document.getElementById('contentRegion');
-  if(!region) return;
-  if(_prefersReducedMotion){ region.style.opacity='1'; return; }
-  var step=0, total=200; // 200 × 50ms = 10s
-  if(_fadeTimer) clearInterval(_fadeTimer);
-  _fadeTimer = setInterval(function(){
-    step++;
-    var eased = Math.pow(step/total, 1.6);
-    region.style.opacity = Math.min(eased,1).toFixed(4);
-    if(step>=total){ clearInterval(_fadeTimer); _fadeTimer=null; region.style.opacity='1'; }
-  }, 50);
+// ── PHASED ENTRANCE — antiphon and reading are inversely linked ──
+// Single rAF loop drives both. As antiphon fades out, reading fades in.
+// Phase 1 (0–2s):   antiphon rises alone, reading stays dark
+// Phase 2 (2–4.5s): antiphon holds, reading begins very slowly
+// Phase 3 (4.5–7s): antiphon falls, reading accelerates
+// Phase 4 (7–9s):   antiphon gone, reading finishes arriving
+var _entranceRAF = null;
+
+function showAntiphon(){
+  var wrap = document.getElementById('antiphon');
+  var sp   = wrap ? wrap.querySelector('span') : null;
+  if(!wrap||!sp) return;
+  var ch = getCanonicalHour();
+  sp.textContent = ch.latin;
 }
+
+function startPhasedEntrance(){
+  var wrap   = document.getElementById('antiphon');
+  var region = document.getElementById('contentRegion');
+  if(!wrap || !region) return;
+
+  if(_prefersReducedMotion){
+    wrap.style.opacity   = '0';
+    region.style.opacity = '1';
+    return;
+  }
+
+  var startTime = null;
+  var TOTAL     = 9000; // 9 seconds total
+
+  function easeIn(t){ return t * t * t; }
+  function easeOut(t){ return 1 - Math.pow(1-t, 2); }
+
+  function tick(now){
+    if(!startTime) startTime = now;
+    var elapsed = now - startTime;
+    var t = Math.min(elapsed / TOTAL, 1);
+
+    // ── Antiphon opacity ──
+    // Rise over first 2s, hold to 4.5s, fall by 7s
+    var aT;
+    if(t < 0.22)       aT = easeOut(t / 0.22);          // 0→1 rise
+    else if(t < 0.50)  aT = 1;                            // hold
+    else if(t < 0.78)  aT = easeIn(1 - (t-0.50)/0.28);  // 1→0 fall
+    else               aT = 0;
+    wrap.style.opacity = aT.toFixed(4);
+
+    // ── Reading opacity ──
+    // Invisible until antiphon starts falling (t=0.50)
+    // Then eases in and finishes as antiphon is gone
+    var rT;
+    if(t < 0.42)      rT = 0;
+    else if(t < 1.0)  rT = easeOut((t - 0.42) / 0.58);
+    else               rT = 1;
+    region.style.opacity = rT.toFixed(4);
+
+    if(t < 1){
+      _entranceRAF = requestAnimationFrame(tick);
+    } else {
+      wrap.style.opacity   = '0';
+      region.style.opacity = '1';
+      _entranceRAF = null;
+    }
+  }
+
+  _entranceRAF = requestAnimationFrame(tick);
+}
+
 
 function init(){
   applyCanonicalHour();
@@ -1237,7 +1283,7 @@ function init(){
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
   // Antiphon and content begin together
   showAntiphon();
-  setTimeout(startContentFade, 600);
+  setTimeout(startPhasedEntrance, 200);
   loadAndRender(paramDate);
 }
 
@@ -1810,6 +1856,7 @@ document.addEventListener('mouseleave',function(){
 
 setFooterVerse();
 init();
+
 
 </script>
 </body>
