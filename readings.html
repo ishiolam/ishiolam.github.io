@@ -39,14 +39,14 @@ main{max-width:620px;margin:0 auto;padding:108px 36px 160px}
 .date-text{font-family:'Cinzel',serif;font-size:11.5px;letter-spacing:0.19em;text-transform:uppercase;color:rgba(197,165,90,0.45);line-height:1;min-height:14px}
 .lit-day{margin-top:12px;font-style:italic;font-size:15px;color:rgba(197,165,90,0.27);line-height:1.55;min-height:23px}
 
-
-
 /* SUBTITLE - always visible */
 .com-subtitle{font-style:italic;font-size:23px;color:rgba(197,165,90,0.65);line-height:1.6;margin-bottom:10px;text-align:center;letter-spacing:0.01em}
 .com-subtitle:empty{display:none}
 
 /* BODY - always visible, content fades in when loaded */
 .com-body{font-size:19.5px;line-height:1.92}
+/* Added ambient text reflection for the fire glow */
+.com-body.content-loaded {text-shadow: 0 2px 10px rgba(197, 165, 90, 0.12);}
 .com-body p{margin-bottom:40px}
 .com-body p:last-child{margin-bottom:0}
 .com-body em{color:var(--gold);font-style:italic}
@@ -57,38 +57,24 @@ main{max-width:620px;margin:0 auto;padding:108px 36px 160px}
 .com-body a{color:var(--gold-dim);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.18);transition:color .3s,border-color .3s}
 .com-body a:hover{color:var(--gold);border-color:var(--gold-dim)}
 .com-body img{display:block;max-width:100%;height:auto;margin:36px 0 0;opacity:0.88;filter:brightness(0.92) contrast(1.05)}
-/* Hide Substack's expand/fullscreen button */
 .com-body button{display:none!important}
 .com-body [class*="image-expand"]{display:none!important}
 .com-body [class*="expand"]{display:none!important}
-/* Caption — italic gold, separated from image */
 .com-body figcaption,
 .com-body .image-caption,
-.com-body [class*="caption"]{
-  display:block;
-  font-style:italic;
-  font-size:14px;
-  color:rgba(197,165,90,0.45);
-  letter-spacing:0.02em;
-  margin:10px 0 36px;
-  line-height:1.6;
-}
-/* Wrap img+caption together */
+.com-body [class*="caption"]{display:block;font-style:italic;font-size:14px;color:rgba(197,165,90,0.45);letter-spacing:0.02em;margin:10px 0 36px;line-height:1.6;}
 .com-body figure{margin:36px 0}
 .com-body figure img{margin:0}
 
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* content-loaded arrival handled by pageIn on #contentRegion */
 
 .substack-link{display:inline-block;margin-top:52px;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(197,165,90,0.22);text-decoration:none;border-bottom:1px solid rgba(197,165,90,0.1);padding-bottom:2px;transition:color .3s,border-color .3s}
 .substack-link:hover{color:var(--gold-dim);border-color:var(--gold-dim)}
 .substack-link::before{content:'✠';display:block;font-size:11px;color:rgba(197,165,90,0.2);margin-bottom:18px;letter-spacing:0.3em;text-align:center;border-bottom:none}
 
-/* SKELETON - clearly visible against dark bg */
 .sk{display:block;background:linear-gradient(90deg,rgba(197,165,90,0.08) 0%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.08) 100%);background-size:200% 100%;animation:shim 1.6s ease-in-out infinite;border-radius:2px;height:15px;margin-bottom:15px}
 @keyframes shim{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* SUBSCRIBE */
 .sub-wrap{margin-top:130px;padding-top:0;border-top:none;text-align:center}
 .sub-cta{font-style:italic;color:rgba(197,165,90,0.32);font-size:16px;line-height:1.8;margin-bottom:28px;font-weight:400}
 .sub-form{display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -109,302 +95,107 @@ footer{text-align:center;padding:80px 24px 48px}
 @media(max-width:680px){main{padding:88px 22px 100px}nav{padding:0 22px}.date-nav{grid-template-columns:68px 1fr 68px}.com-body{font-size:17.5px}.sub-cta{font-size:15px}}
 @media(max-width:420px){body{font-size:17px}.com-body{font-size:16.5px}.date-text{font-size:10.5px}}
 
-/* Drop cap */
-.com-body.content-loaded > p:first-of-type::first-letter{
-  float:left;font-family:'Cinzel',serif;font-size:4.8em;line-height:0.78;
-  color:var(--gold);margin:0.06em 0.1em 0 0;font-weight:400;opacity:0.9;
-}
-/* Reading progress bar */
-#readProgress{position:fixed;top:0;left:0;height:2px;width:0%;
-  background:linear-gradient(90deg,rgba(197,165,90,0.3),rgba(197,165,90,0.8));
-  z-index:200;transition:width 0.1s linear;pointer-events:none;}
+.com-body.content-loaded > p:first-of-type::first-letter{float:left;font-family:'Cinzel',serif;font-size:4.8em;line-height:0.78;color:var(--gold);margin:0.06em 0.1em 0 0;font-weight:400;opacity:0.9;}
+#readProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,rgba(197,165,90,0.3),rgba(197,165,90,0.8));z-index:200;transition:width 0.1s linear;pointer-events:none;}
 :root{--season-glow:rgba(139,105,20,0.045)}
-main::before{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(ellipse at center,var(--season-glow) 0%,transparent 68%);
-  pointer-events:none;z-index:0;transition:background 2s ease;
-}
+main::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,var(--season-glow) 0%,transparent 68%);pointer-events:none;z-index:0;transition:background 2s ease;}
 main{position:relative;z-index:1;}
 
-/* Date as inscription */
 .date-center{position:relative;padding:0 8px}
-.date-center::before,.date-center::after{
-  content:'';display:block;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(197,165,90,0.25),transparent);
-  margin:0 auto;width:80%;
-}
+.date-center::before,.date-center::after{content:'';display:block;height:1px;background:linear-gradient(90deg,transparent,rgba(197,165,90,0.25),transparent);margin:0 auto;width:80%;}
 .date-center::before{margin-bottom:14px}
 .date-center::after{margin-top:14px}
-/* Liturgical season stripe above date */
-.season-stripe{
-  display:block;width:24px;height:2px;
-  background:var(--season-color,rgba(197,165,90,0.3));
-  margin:0 auto 16px;
-  transition:background 2s ease;
-}
+.season-stripe{display:block;width:24px;height:2px;background:var(--season-color,rgba(197,165,90,0.3));margin:0 auto 16px;transition:background 2s ease;}
 
-/* Paragraph scroll reveal — only active after load */
-.com-body.content-loaded p,
-.com-body.content-loaded blockquote,
-.com-body.content-loaded figure,
-.com-body.content-loaded h2,
-.com-body.content-loaded h3{
-  opacity:0.18;
-  transform:translateY(5px);
-  transition:opacity 1.1s ease, transform 1.1s ease;
-}
-.com-body.content-loaded p.revealed,
-.com-body.content-loaded blockquote.revealed,
-.com-body.content-loaded figure.revealed,
-.com-body.content-loaded h2.revealed,
-.com-body.content-loaded h3.revealed{
-  opacity:1;
-  transform:none;
-}
-/* First paragraph — always revealed immediately */
-.com-body.content-loaded p:first-of-type{
-  opacity:1 !important;
-  transform:none !important;
-}
+.com-body.content-loaded p,.com-body.content-loaded blockquote,.com-body.content-loaded figure,.com-body.content-loaded h2,.com-body.content-loaded h3{opacity:0.18;transform:translateY(5px);transition:opacity 1.1s ease, transform 1.1s ease;}
+.com-body.content-loaded p.revealed,.com-body.content-loaded blockquote.revealed,.com-body.content-loaded figure.revealed,.com-body.content-loaded h2.revealed,.com-body.content-loaded h3.revealed{opacity:1;transform:none;}
+.com-body.content-loaded p:first-of-type{opacity:1 !important;transform:none !important;}
 
-/* Candle flicker — imperceptible breathing */
-@keyframes flicker{
-  0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  25%{opacity:0.88;transform:translate(-50%,-50%) scale(1.015)}
-  50%{opacity:0.95;transform:translate(-50%,-50%) scale(0.992)}
-  75%{opacity:0.91;transform:translate(-50%,-50%) scale(1.008)}
-}
+@keyframes flicker{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}25%{opacity:0.88;transform:translate(-50%,-50%) scale(1.015)}50%{opacity:0.95;transform:translate(-50%,-50%) scale(0.992)}75%{opacity:0.91;transform:translate(-50%,-50%) scale(1.008)}}
 main::before{animation:flicker 4.8s ease-in-out infinite}
 
-/* Edge vignette — draws eye to text */
-body::after{
-  content:'';position:fixed;inset:0;
-  background:radial-gradient(ellipse at center,transparent 55%,rgba(5,4,3,0.55) 100%);
-  pointer-events:none;z-index:50;
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(5,4,3,0.55) 100%);pointer-events:none;z-index:40;} /* Adjusted z-index below text */
+
+.incipit{display:block;text-align:center;font-size:13px;color:rgba(197,165,90,0.28);letter-spacing:0.5em;margin:32px 0 40px;user-select:none;}
+
+.time-greeting{display:block;text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:0.38em;text-transform:uppercase;color:rgba(197,165,90,0.18);margin-bottom:10px;transition:opacity 1.5s ease;min-height:0;}
+
+#marginWhisper{position:fixed;left:18px;top:50%;transform:translateY(-50%) rotate(-90deg);font-family:'EB Garamond',serif;font-size:11px;color:rgba(197,165,90,0.035);letter-spacing:0.25em;pointer-events:none;z-index:2;white-space:nowrap;transition:opacity 3s ease;user-select:none;}
+
+#dustCanvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:1;}
+
+/* ── THE SACRED FIRE ── */
+#fireGlow {
+  position: fixed;
+  bottom: -20vh; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150vw; 
+  height: 80vh;
+  pointer-events: none;
+  z-index: 50; /* Above background elements, mix-blend-mode passes through to text */
+  mix-blend-mode: color-dodge; 
+  background: 
+    radial-gradient(ellipse at 50% 100%, rgba(255, 175, 30, 0.12) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(210, 125, 15, 0.08) 20%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(160, 85, 8, 0.04) 40%, transparent 80%);
+  animation: holyBreath 5.5s ease-in-out infinite alternate;
 }
 
-
-
-/* Incipit — the mark that says: here it begins */
-.incipit{
-  display:block;text-align:center;
-  font-size:13px;color:rgba(197,165,90,0.28);
-  letter-spacing:0.5em;
-  margin:32px 0 40px;
-  user-select:none;
+@keyframes holyBreath {
+  0%   { opacity: 0.6; transform: translateX(-50%) scale(0.98); filter: brightness(0.9); }
+  50%  { opacity: 0.95; transform: translateX(-50%) scale(1.02); filter: brightness(1.15); }
+  100% { opacity: 0.7; transform: translateX(-50%) scale(1); filter: brightness(1); }
 }
 
+#emberCanvas{position:fixed;inset:0;pointer-events:none;z-index:3;}
 
-/* ── TIME GREETING ── */
-.time-greeting{
-  display:block;text-align:center;
-  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:0.38em;
-  text-transform:uppercase;color:rgba(197,165,90,0.18);
-  margin-bottom:10px;
-  transition:opacity 1.5s ease;
-  min-height:0;
-}
-
-/* ── MARGIN WHISPER ── */
-#marginWhisper{
-  position:fixed;left:18px;top:50%;
-  transform:translateY(-50%) rotate(-90deg);
-  font-family:'EB Garamond',serif;font-size:11px;
-  color:rgba(197,165,90,0.035);
-  letter-spacing:0.25em;pointer-events:none;
-  z-index:2;white-space:nowrap;
-  transition:opacity 3s ease;
-  user-select:none;
-}
-
-/* ── GOLD DUST CANVAS ── */
-#dustCanvas{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:1;
-  opacity:1;
-}
-
-/* ── BURNING BUSH — the light, not the flame ── */
-#fireGlow{
-  position:fixed;
-  bottom:-200px;right:-200px;
-  width:1100px;height:1100px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:2;
-  background:
-    radial-gradient(ellipse 28% 26% at 60% 62%, rgba(255,175,30,0.10) 0%, transparent 42%),
-    radial-gradient(ellipse 52% 50% at 58% 60%, rgba(210,125,15,0.055) 0%, transparent 58%),
-    radial-gradient(ellipse 82% 80% at 55% 58%, rgba(160,85,8,0.026) 0%, transparent 74%),
-    radial-gradient(ellipse 100% 98% at 52% 55%, rgba(120,60,5,0.012) 0%, transparent 85%);
-  animation:bushRadiance 6s ease-in-out infinite alternate;
-}
-@keyframes bushRadiance{
-  0%  {opacity:0.55; transform:scale(0.92)}
-  35% {opacity:0.88; transform:scale(1.01)}
-  65% {opacity:0.72; transform:scale(0.97)}
-  100%{opacity:1.0;  transform:scale(1.06)}
-}
-/* Ember sparks rising from the unseen source */
-#emberCanvas{
-  position:fixed;inset:0;
-  pointer-events:none;
-  z-index:3;
-}
-
-/* ── SUBTITLE TYPEWRITER ── */
 .com-subtitle{cursor:default}
-.subtitle-cursor{
-  display:inline-block;width:1px;height:0.9em;
-  background:rgba(197,165,90,0.4);
-  margin-left:2px;vertical-align:middle;
-  animation:blink-cur 0.9s ease infinite;
-}
+.subtitle-cursor{display:inline-block;width:1px;height:0.9em;background:rgba(197,165,90,0.4);margin-left:2px;vertical-align:middle;animation:blink-cur 0.9s ease infinite;}
 @keyframes blink-cur{0%,100%{opacity:0}50%{opacity:1}}
 
-/* ── HEARTBEAT on season stripe ── */
-@keyframes heartbeat{
-  0%{transform:scaleX(1);opacity:1}
-  30%{transform:scaleX(2.2);opacity:0.9}
-  60%{transform:scaleX(1.1);opacity:1}
-  100%{transform:scaleX(1);opacity:1}
-}
+@keyframes heartbeat{0%{transform:scaleX(1);opacity:1}30%{transform:scaleX(2.2);opacity:0.9}60%{transform:scaleX(1.1);opacity:1}100%{transform:scaleX(1);opacity:1}}
 .season-stripe.pulse{animation:heartbeat 0.85s ease forwards}
 
-/* ── END MARK ── */
-#endMark{
-  display:block;text-align:center;
-  font-size:11px;color:rgba(197,165,90,0);
-  margin-top:52px;letter-spacing:0.4em;
-  transition:color 2.5s ease;
-  user-select:none;
-}
+#endMark{display:block;text-align:center;font-size:11px;color:rgba(197,165,90,0);margin-top:52px;letter-spacing:0.4em;transition:color 2.5s ease;user-select:none;}
 #endMark.visible{color:rgba(197,165,90,0.28)}
 
-/* ── RETURN RECOGNITION ── */
-#returnGreet{
-  position:fixed;top:70px;left:50%;transform:translateX(-50%);
-  font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.3em;
-  text-transform:uppercase;color:rgba(197,165,90,0);
-  transition:color 1.5s ease;z-index:99;pointer-events:none;
-  white-space:nowrap;
-}
+#returnGreet{position:fixed;top:70px;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(197,165,90,0);transition:color 1.5s ease;z-index:99;pointer-events:none;white-space:nowrap;}
 #returnGreet.visible{color:rgba(197,165,90,0.3)}
 
-/* ── FOOTER VERSE STILL ── */
-.f-verse-still{
-  font-family:'Cinzel',serif;font-size:8px;
-  letter-spacing:0.18em;color:rgba(197,165,90,0.12);
-  margin-left:6px;
-}
-.f-verse{font-style:italic;font-size:14px;color:rgba(197,165,90,0.22);
-  line-height:1.8;margin-bottom:18px;max-width:380px;
-  margin-left:auto;margin-right:auto}
-.f-verse-ref{display:block;font-family:'Cinzel',serif;font-size:8.5px;
-  letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.14);
-  margin-top:8px}
+.f-verse-still{font-family:'Cinzel',serif;font-size:8px;letter-spacing:0.18em;color:rgba(197,165,90,0.12);margin-left:6px;}
+.f-verse{font-style:italic;font-size:14px;color:rgba(197,165,90,0.22);line-height:1.8;margin-bottom:18px;max-width:380px;margin-left:auto;margin-right:auto}
+.f-verse-ref{display:block;font-family:'Cinzel',serif;font-size:8.5px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(197,165,90,0.14);margin-top:8px}
 
+body::before{content:'';position:fixed;left:0;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,rgba(197,165,90,0.12) 20%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.12) 80%,transparent);z-index:50;pointer-events:none;}
+.com-body.content-loaded > p:first-of-type{font-size:1.0em;}
 
-/* ── BOOK SPINE — left edge binding ── */
-body::before{
-  content:'';position:fixed;left:0;top:0;bottom:0;width:1px;
-  background:linear-gradient(180deg,transparent,rgba(197,165,90,0.12) 20%,rgba(197,165,90,0.18) 50%,rgba(197,165,90,0.12) 80%,transparent);
-  z-index:50;pointer-events:none;
-}
-
-/* Drop cap stands alone — first paragraph needs no additional treatment */
-.com-body.content-loaded > p:first-of-type{
-  font-size:1.0em;
-}
-
-/* ── READING TIME ── */
-.reading-time{
-  display:block;text-align:center;
-  font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:0.32em;
-  text-transform:uppercase;color:rgba(197,165,90,0.18);
-  margin-top:0;margin-bottom:60px;
-  min-height:0;
-  opacity:0;transition:opacity 0.8s ease;
-}
+.reading-time{display:block;text-align:center;font-family:'Cinzel',serif;font-size:7.5px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(197,165,90,0.18);margin-top:0;margin-bottom:60px;min-height:0;opacity:0;transition:opacity 0.8s ease;}
 .reading-time.visible{opacity:1}
 .reading-time:empty{margin-bottom:0;opacity:0}
 
-/* ── IMAGE VEIL REVEAL ── */
-.com-body img{
-  clip-path:inset(100% 0 0 0);
-  transition:clip-path 1.2s cubic-bezier(0.4,0,0.2,1);
-}
-.com-body img.unveiled{
-  clip-path:inset(0% 0 0 0);
-}
+.com-body img{clip-path:inset(100% 0 0 0);transition:clip-path 1.2s cubic-bezier(0.4,0,0.2,1);}
+.com-body img.unveiled{clip-path:inset(0% 0 0 0);}
 
-/* ── PAGE TURN — 3D perspective on navigation ── */
-#contentRegion{
-  perspective:1200px;
-  transform-style:preserve-3d;
-}
-#contentRegion.turning-out{
-  animation:pageOut 0.42s cubic-bezier(0.4,0,1,1) forwards;
-}
-#contentRegion.turning-in{
-  animation:pageIn 0.44s cubic-bezier(0,0,0.2,1) forwards;
-}
-@keyframes pageOut{
-  0%  {opacity:1;transform:rotateX(0deg) translateY(0)}
-  100%{opacity:0;transform:rotateX(6deg) translateY(12px) scale(0.98)}
-}
-@keyframes pageIn{
-  0%  {opacity:0;transform:rotateX(-5deg) translateY(-10px) scale(0.985)}
-  100%{opacity:1;transform:rotateX(0deg) translateY(0) scale(1)}
-}
+#contentRegion{perspective:1200px;transform-style:preserve-3d;}
+#contentRegion.turning-out{animation:pageOut 0.42s cubic-bezier(0.4,0,1,1) forwards;}
+#contentRegion.turning-in{animation:pageIn 0.44s cubic-bezier(0,0,0.2,1) forwards;}
+@keyframes pageOut{0%{opacity:1;transform:rotateX(0deg) translateY(0)}100%{opacity:0;transform:rotateX(6deg) translateY(12px) scale(0.98)}}
+@keyframes pageIn{0%{opacity:0;transform:rotateX(-5deg) translateY(-10px) scale(0.985)}100%{opacity:1;transform:rotateX(0deg) translateY(0) scale(1)}}
 
-/* ── SUBSCRIBE — hidden until earned ── */
-.sub-wrap{
-  visibility:hidden;opacity:0;
-  transition:opacity 1.4s ease, visibility 0s linear 1.4s;
-}
-.sub-wrap.earned{
-  visibility:visible;opacity:1;
-  transition:opacity 1.4s ease;
-}
+.sub-wrap{visibility:hidden;opacity:0;transition:opacity 1.4s ease, visibility 0s linear 1.4s;}
+.sub-wrap.earned{visibility:visible;opacity:1;transition:opacity 1.4s ease;}
 
-/* ── FOCUS MODE ── */
-body.focus-mode nav,
-body.focus-mode .date-nav,
-body.focus-mode #dustCanvas,
-body.focus-mode #fireGlow,
-body.focus-mode #emberCanvas,
-body.focus-mode footer,
-body.focus-mode .sub-wrap{
-  opacity:0 !important;
-  pointer-events:none !important;
-  transition:opacity 0.6s ease !important;
-}
+body.focus-mode nav,body.focus-mode .date-nav,body.focus-mode #dustCanvas,body.focus-mode #fireGlow,body.focus-mode #emberCanvas,body.focus-mode footer,body.focus-mode .sub-wrap{opacity:0 !important;pointer-events:none !important;transition:opacity 0.6s ease !important;}
+body.focus-mode #marginWhisper{opacity:0 !important;}
+body.focus-mode main{padding-top:60px;}
+#focusHint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:7px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(197,165,90,0.1);pointer-events:none;z-index:400;transition:opacity 0.4s;white-space:nowrap;}
 
-body.focus-mode #marginWhisper{
-  opacity:0 !important;
-}
-body.focus-mode main{
-  padding-top:60px;
-}
-
-/* ── FOCUS HINT ── */
-#focusHint{
-  position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
-  font-family:'Cinzel',serif;font-size:7px;letter-spacing:0.3em;
-  text-transform:uppercase;color:rgba(197,165,90,0.1);
-  pointer-events:none;z-index:400;transition:opacity 0.4s;
-  white-space:nowrap;
-}
-
-
-/* ── BELL BUTTON ── */
 #bellBtn{background:none;border:none;cursor:pointer;font-size:12px;opacity:0.22;padding:4px 2px;transition:opacity .3s;line-height:1;color:inherit}
 #bellBtn:hover{opacity:0.5}
 #bellBtn.on{opacity:0.45}
-/* ── FOCUS HINT: desktop only ── */
+
 @media(max-width:680px){#focusHint{display:none}}
-/* ── PREFERS REDUCED MOTION ── */
 @media(prefers-reduced-motion:reduce){
   body{transition:none!important;opacity:1!important}
   #contentRegion.turning-out,#contentRegion.turning-in{animation:none!important}
@@ -416,17 +207,10 @@ body.focus-mode main{
   .subtitle-cursor{animation:none!important;opacity:1}
   .season-stripe.pulse{animation:none!important}
   .com-body img{clip-path:inset(0)!important;transition:none!important}
+  #fireGlow {animation: none !important;}
 }
 
-/* ── SEASON LABEL ── */
-.season-label{
-  display:block;text-align:center;
-  font-family:'Cinzel',serif;font-size:7px;letter-spacing:0.45em;
-  text-transform:uppercase;color:rgba(197,165,90,0.2);
-  margin-bottom:8px;min-height:0;
-  transition:color 2s ease;
-  user-select:none;
-}
+.season-label{display:block;text-align:center;font-family:'Cinzel',serif;font-size:7px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(197,165,90,0.2);margin-bottom:8px;min-height:0;transition:color 2s ease;user-select:none;}
 </style>
 </head>
 <body>
@@ -452,7 +236,7 @@ body.focus-mode main{
       <span class="season-stripe" id="seasonStripe"></span>
       <div class="time-greeting" id="timeGreeting"></div>
       <div class="date-text" id="dateTxt">—</div>
-      <div class="lit-day" id="litDay"> </div>
+      <div class="lit-day" id="litDay"> </div>
     </div>
     <button class="nav-btn next" id="nextBtn" onclick="go(-1)">Next →</button>
   </div>
@@ -476,7 +260,7 @@ body.focus-mode main{
     <span class="sk" style="width:62%"></span>
   </div>
   <div id="endMark">✶</div>
-  </div><!-- /contentRegion -->
+  </div>
 
   <div class="sub-wrap">
     <div class="sub-cta">If this found you —</div>
@@ -531,7 +315,7 @@ function setDate(key){
 function render(){
   var post = allPosts[curIdx];
   if(!post) return;
-  if(!_firstRender) flameDip();
+  if(!_firstRender && typeof flameDip === 'function') flameDip();
 
   var region = document.getElementById('contentRegion');
   if(region && !_firstRender){
@@ -543,38 +327,34 @@ function render(){
   _firstRender = false;
 
   setTimeout(function(){
-    // Instant scroll + reset progress
     window.scrollTo(0,0);
     var rp=document.getElementById('readProgress'); if(rp) rp.style.width='0%';
 
-    // Nav state
     document.getElementById('prevBtn').disabled = curIdx >= allPosts.length-1;
     document.getElementById('nextBtn').disabled = curIdx <= 0;
     setDate(post.dateKey);
     document.getElementById('litDay').textContent = post.litDay || '\u00a0';
     document.title = (post.litDay ? post.litDay + ' \u2014 ' : '') + 'Ishi Olam';
-    applySeasonGlow(post.dateKey);
-    applySeasonStripe(post.dateKey);
+    if(typeof applySeasonGlow === 'function') applySeasonGlow(post.dateKey);
+    if(typeof applySeasonStripe === 'function') applySeasonStripe(post.dateKey);
     var inc = document.getElementById('incipit');
-    if(inc){
+    if(inc && typeof getLiturgicalSeason === 'function'){
       var s2 = getLiturgicalSeason(post.dateKey);
       var ic = {lent:'rgba(120,80,160,0.35)',easter:'rgba(220,190,80,0.45)',advent:'rgba(90,65,130,0.35)',ordinary:'rgba(197,165,90,0.28)'};
       inc.style.color = ic[s2] || ic.ordinary;
     }
-    updateNavLabels();
+    if(typeof updateNavLabels === 'function') updateNavLabels();
     try{ history.replaceState(null,'','?date='+post.dateKey); }catch(e){}
 
-    // Populate content
     var subtitle = document.getElementById('comSubtitle');
     var body = document.getElementById('comBody');
-    // Decode any HTML entities in subtitle (RSS may contain &#8217; etc.)
     var _rawSub = post.subtitle || '';
     if(_rawSub && _rawSub.includes('&')){
       var _dec = document.createElement('textarea');
       _dec.innerHTML = _rawSub;
       _rawSub = _dec.value;
     }
-    typeSubtitle(_rawSub, subtitle);
+    if(typeof typeSubtitle === 'function') typeSubtitle(_rawSub, subtitle);
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
     if(post.link){
@@ -585,21 +365,20 @@ function render(){
     }
     void body.offsetWidth;
     body.classList.add('content-loaded');
-    setTimeout(initReveal, 60);
-    setTimeout(initImageVeil, 80);
-    setReadingTime(body.innerHTML);
+    if(typeof initReveal === 'function') setTimeout(initReveal, 60);
+    if(typeof initImageVeil === 'function') setTimeout(initImageVeil, 80);
+    if(typeof setReadingTime === 'function') setReadingTime(body.innerHTML);
     var rt=document.getElementById('readingTime');
     if(rt){ rt.classList.remove('visible'); void rt.offsetWidth; setTimeout(function(){rt.classList.add('visible');},180); }
-    pulseStripe();
-    showEndMark();
-    hapticPulse();
-    ringBell();
-    _subEarned = false;
+    if(typeof pulseStripe === 'function') pulseStripe();
+    if(typeof showEndMark === 'function') showEndMark();
+    if(typeof hapticPulse === 'function') hapticPulse();
+    if(typeof ringBell === 'function') ringBell();
+    if(typeof _subEarned !== 'undefined') _subEarned = false;
     var sub = document.querySelector('.sub-wrap');
     if(sub) sub.classList.remove('earned');
-    setTimeout(initSubscribeEarn, 400);
+    if(typeof initSubscribeEarn === 'function') setTimeout(initSubscribeEarn, 400);
 
-    // Page turn IN
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
@@ -608,7 +387,6 @@ function render(){
     }
   }, _td);
 }
-
 
 function getTag(item,tag){ var el=item.getElementsByTagName(tag)[0]; return el?(el.textContent||''):''; }
 function getEncoded(item){ var el=item.getElementsByTagName('content:encoded')[0]||item.getElementsByTagName('encoded')[0]; return el?(el.textContent||''):''; }
@@ -622,16 +400,9 @@ function getLink(item){
 
 function cleanHtml(html){
   if(!html) return '';
-
-  // Substack's subscribe widget is always at the end of post content.
-  // The safest removal: find the first <input and chop everything from there,
-  // then remove any dangling open tags left behind.
   var inputIdx = html.search(/<input/i);
   if(inputIdx !== -1){
-    // Walk back to find the opening of the containing block
-    // (usually a <div or <p a few hundred chars back)
     var before = html.substring(0, inputIdx);
-    // Trim any trailing incomplete block — find last complete closing tag
     var lastClose = Math.max(
       before.lastIndexOf('</p>'),
       before.lastIndexOf('</figure>'),
@@ -646,16 +417,9 @@ function cleanHtml(html){
       html = before;
     }
   }
-
-  // Remove horizontal rules
   html = html.replace(/<hr[^>]*>/gi, '');
-
-  // Remove empty paragraphs
   html = html.replace(/<p[^>]*>\s*(?:&nbsp;|&#160;)?\s*<\/p>/gi, '');
-
-  // Remove Substack image expand buttons (small icon next to images)
   html = html.replace(/<button[^>]*>[\s\S]*?<\/button>/gi, '');
-
   return html.trim();
 }
 
@@ -663,8 +427,6 @@ function parseItem(item){
   var title=getTag(item,'title');
   var m=title.match(/^(\d{4}-\d{2}-\d{2})\s*[-—–]\s*(.*)/);
   var rawHtml=cleanHtml(getEncoded(item)||getTag(item,'description'));
-  // Subtitle: try explicit tag first, then itunes:subtitle, then
-  // first <em> or <i> block in content that stands alone as a short phrase
   var sub = getTag(item,'subtitle') || getTag(item,'itunes:subtitle') || '';
 
   return {
@@ -691,9 +453,8 @@ function showError(){
 function loadAndRender(paramDate){
   var CACHE_KEY = 'ishi_feed_' + SUBSTACK_SLUG;
   var CACHE_TS  = 'ishi_feed_ts_' + SUBSTACK_SLUG;
-  var MAX_AGE   = 15 * 60 * 1000; // 15 minutes
+  var MAX_AGE   = 15 * 60 * 1000;
 
-  // Try sessionStorage cache first — instant load
   try {
     var cached = sessionStorage.getItem(CACHE_KEY);
     var ts     = parseInt(sessionStorage.getItem(CACHE_TS) || '0');
@@ -709,7 +470,6 @@ function loadAndRender(paramDate){
           curIdx=ti>=0?ti:0;
         }
         render();
-        // Silently refresh cache in background
         fetchFeed(function(posts){
           if(posts.length){
             try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify(posts)); sessionStorage.setItem(CACHE_TS, String(Date.now())); }catch(e){}
@@ -720,7 +480,6 @@ function loadAndRender(paramDate){
     }
   } catch(e){}
 
-  // No cache — fetch fresh
   fetchFeed(function(posts){
     if(!posts.length){ showError(); return; }
     allPosts = posts;
@@ -729,7 +488,6 @@ function loadAndRender(paramDate){
       var i=allPosts.findIndex(function(p){ return p.dateKey===paramDate; });
       curIdx=i>=0?i:0;
     } else {
-      // Find today's post first, fall back to most recent
       var today=todayKey();
       var todayIdx=allPosts.findIndex(function(p){ return p.dateKey===today; });
       curIdx=todayIdx>=0?todayIdx:0;
@@ -756,8 +514,8 @@ function init(){
   setDate(startKey);
   document.getElementById('nextBtn').disabled = true;
   document.getElementById('prevBtn').disabled = true;
-  applyTimeOfDay();
-  handleReturnRecognition();
+  if(typeof applyTimeOfDay === 'function') applyTimeOfDay();
+  if(typeof handleReturnRecognition === 'function') handleReturnRecognition();
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
   loadAndRender(paramDate);
 }
@@ -772,612 +530,94 @@ function handleSubscribe(){
   var sc=document.getElementById('subConf'); if(sc){ void sc.offsetHeight; sc.classList.add('visible'); }
 }
 
+// Fixed scroll listener
 window.addEventListener('scroll',function(){
   var el=document.getElementById('readProgress');
-  if(!el)return;
-  var s=window.scrollY||document.documentElement.scrollTop;
-  var d=document.documentElement.scrollHeight-window.innerHeight;
-  el.style.width=(d>0?Math.min(100,(s/d)*100):0)+'%';
-},{passive:true});
-
-// ── Liturgical season detection ──
-function getEaster(year){
-  // Meeus/Jones/Butcher algorithm
-  var a=year%19,b=Math.floor(year/100),c=year%100;
-  var d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25);
-  var g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30;
-  var i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7;
-  var m=Math.floor((a+11*h+22*l)/451);
-  var month=Math.floor((h+l-7*m+114)/31);
-  var day=((h+l-7*m+114)%31)+1;
-  return new Date(year,month-1,day);
-}
-
-function getLiturgicalSeason(dateStr){
-  var p=dateStr.split('-');
-  var d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
-  var year=d.getFullYear();
-  var easter=getEaster(year);
-  var easterMs=easter.getTime();
-  var dMs=d.getTime();
-  var day=86400000;
-
-  // Ash Wednesday = 46 days before Easter
-  var ashWed=new Date(easterMs - 46*day);
-  // Pentecost = 49 days after Easter
-  var pentecost=new Date(easterMs + 49*day);
-  // Advent: 4 Sundays before Dec 25
-  var christmas=new Date(year,11,25);
-  var christmasDay=christmas.getDay();
-  var advent=new Date(year,11,25-(christmasDay===0?28:christmasDay+21));
-  // Christmas season ends Jan 13 (Baptism of the Lord area)
-  var christmasEnd=new Date(year+1,0,13);
-
-  if(dMs>=ashWed.getTime() && dMs<easterMs) return 'lent';
-  if(dMs>=easterMs && dMs<pentecost.getTime()) return 'easter';
-  if(dMs>=advent.getTime() || dMs<christmasEnd.getTime()) return 'advent';
-  return 'ordinary';
-}
-
-var SEASON_GLOW={
-  lent:   'rgba(100,70,140,0.05)',   // violet
-  easter: 'rgba(220,180,80,0.06)',   // bright gold
-  advent: 'rgba(80,60,120,0.05)',    // deep violet
-  ordinary:'rgba(139,105,20,0.045)' // warm gold
-};
-
-function applySeasonGlow(dateStr){
-  var season=getLiturgicalSeason(dateStr);
-  var glow=SEASON_GLOW[season]||SEASON_GLOW.ordinary;
-  document.documentElement.style.setProperty('--season-glow', glow);
-}
-
-// ── showToast ──
-var _toastTimer;
-function showToast(msg){
-  var t=document.getElementById('toast');
-  if(!t){
-    t=document.createElement('div');
-    t.id='toast';
-    t.style.cssText='position:fixed;bottom:36px;left:50%;transform:translateX(-50%);'+
-      'font-family:Cinzel,serif;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;'+
-      'color:rgba(197,165,90,0.5);padding:10px 24px;border:1px solid rgba(197,165,90,0.12);'+
-      'background:rgba(10,9,8,0.95);pointer-events:none;opacity:0;transition:opacity .4s;z-index:300';
-    document.body.appendChild(t);
-  }
-  t.textContent=msg;
-  t.style.opacity='1';
-  clearTimeout(_toastTimer);
-  _toastTimer=setTimeout(function(){t.style.opacity='0';},2200);
-}
-
-// ── Update Prev/Next button labels with adjacent dates ──
-function updateNavLabels(){
-  var prev=document.getElementById('prevBtn');
-  var next=document.getElementById('nextBtn');
-  var older=allPosts[curIdx+1];
-  var newer=allPosts[curIdx-1];
-  if(older){
-    var op=older.dateKey.split('-');
-    var odt=new Date(parseInt(op[0]),parseInt(op[1])-1,parseInt(op[2]));
-    prev.textContent='← '+MONTHS[odt.getMonth()].slice(0,3)+' '+parseInt(op[2]);
-    prev.disabled=false;
-  } else {
-    prev.textContent='← Prev';
-    prev.disabled=true;
-  }
-  if(newer){
-    var np2=newer.dateKey.split('-');
-    var ndt=new Date(parseInt(np2[0]),parseInt(np2[1])-1,parseInt(np2[2]));
-    next.textContent=MONTHS[ndt.getMonth()].slice(0,3)+' '+parseInt(np2[2])+' →';
-    next.disabled=false;
-  } else {
-    next.textContent='Next →';
-    next.disabled=true;
-  }
-}
-
-var SEASON_COLOR={
-  lent:   'rgba(120,80,160,0.55)',
-  easter: 'rgba(220,190,80,0.65)',
-  advent: 'rgba(90,65,130,0.55)',
-  ordinary:'rgba(197,165,90,0.35)'
-};
-
-var SEASON_NAMES={lent:'Lent',easter:'Eastertide',advent:'Advent',ordinary:''};
-function applySeasonStripe(dateStr){
-  var season=getLiturgicalSeason(dateStr);
-  var stripe=document.getElementById('seasonStripe');
-  if(stripe) stripe.style.background=SEASON_COLOR[season]||SEASON_COLOR.ordinary;
-  var lbl=document.getElementById('seasonLabel');
-  if(lbl){
-    lbl.textContent=SEASON_NAMES[season]||'';
-    var SEASON_LABEL_COLOR={lent:'rgba(120,80,160,0.22)',easter:'rgba(220,190,80,0.22)',advent:'rgba(90,65,130,0.22)',ordinary:'transparent'};
-    lbl.style.color=SEASON_LABEL_COLOR[season]||'transparent';
-  }
-}
-
-// Paragraph candlelight reveal via IntersectionObserver
-var _revealObserver;
-function initReveal(){
-  if(_revealObserver) _revealObserver.disconnect();
-  var targets=document.querySelectorAll('.com-body p, .com-body blockquote, .com-body figure, .com-body h2, .com-body h3');
-  if(!targets.length) return;
-  _revealObserver=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting) e.target.classList.add('revealed');
-    });
-  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
-  targets.forEach(function(el,i){
-    if(i===0){ el.classList.add('revealed'); }
-    else { _revealObserver.observe(el); }
-  });
-}
-
-// Rotating footer verse
-var FOOTER_VERSES=[
-  ['I will betroth you to me forever.','Hosea 2:19'],
-  ['You have searched me and known me.','Psalm 139:1'],
-  ['I am my beloved’s and my beloved is mine.','Song of Songs 6:3'],
-  ['He calls his own sheep by name and leads them out.','John 10:3'],
-  ['The Word became flesh and dwelt among us.','John 1:14'],
-  ['Behold, I stand at the door and knock.','Revelation 3:20'],
-  ['You are precious in my eyes, and honored, and I love you.','Isaiah 43:4']
-];
-function setFooterVerse(){
-  var el=document.getElementById('footerVerse');
   if(!el) return;
-  var v=FOOTER_VERSES[Math.floor(Math.random()*FOOTER_VERSES.length)];
-  el.innerHTML='“'+v[0]+'”<span class="f-verse-ref">'+v[1]+'<span class="f-verse-still" style="display:none"> — still.</span></span>';
-}
-
-// Keyboard navigation — left/right arrows
-document.addEventListener('keydown',function(e){
-  if(e.target.tagName==='INPUT') return;
-  if(e.key==='ArrowLeft'||e.key==='Left') go(1);
-  if(e.key==='ArrowRight'||e.key==='Right') go(-1);
+  var scrollDistance = document.documentElement.scrollTop || document.body.scrollTop;
+  var totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var progress = (scrollDistance / totalHeight) * 100;
+  el.style.width = progress + '%';
 });
 
-// Entry ceremony
-document.fonts.ready.then(function(){ document.body.style.opacity='1'; });
-setTimeout(function(){ document.body.style.opacity='1'; }, 900);
+// ── EMBER DRIFT PHYSICS ──
+(function igniteEmbers() {
+  const canvas = document.getElementById('emberCanvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let embers = [];
 
-// Nav — dissolves while reading, returns when you look up
-var _lastScroll=0;
-window.addEventListener('scroll',function(){
-  var s=window.scrollY;
-  var nav=document.querySelector('nav');
-  if(!nav) return;
-  if(s>_lastScroll && s>120){
-    nav.classList.add('hidden');
-  } else {
-    nav.classList.remove('hidden');
+  function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
   }
-  _lastScroll=s;
-},{passive:true});
-
-// Touch gestures — swipe to navigate, double-tap for focus
-var _touchStartX=0, _touchStartY=0, _lastTap=0;
-document.addEventListener('touchstart',function(e){
-  _touchStartX=e.touches[0].clientX;
-  _touchStartY=e.touches[0].clientY;
-},{passive:true});
-document.addEventListener('touchend',function(e){
-  var dx=e.changedTouches[0].clientX-_touchStartX;
-  var dy=e.changedTouches[0].clientY-_touchStartY;
-  var now=Date.now();
-  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>52){
-    // Swipe — navigate, reset tap so no accidental double-tap
-    _lastTap=0;
-    if(dx>0) go(1); else go(-1);
-  } else {
-    // Tap — check for double-tap focus toggle
-    if(now-_lastTap<320&&e.touches.length===0){
-      if(e.target.tagName!=='BUTTON'&&e.target.tagName!=='INPUT'&&e.target.tagName!=='A'){
-        toggleFocus();
-      }
-    }
-    _lastTap=now;
-  }
-},{passive:true});
-
-// ════════════════════════════════════════════════════════
-// TIME OF DAY — the page knows when you arrived
-// ════════════════════════════════════════════════════════
-function getTimeOfDay(){
-  var h = new Date().getHours();
-  if(h>=4  && h<6)  return {label:'Before dawn',   bg:'#070605', glow:0.032};
-  if(h>=6  && h<10) return {label:'This morning',  bg:'#0A0907', glow:0.048};
-  if(h>=10 && h<17) return {label:'',              bg:'#0A0908', glow:0.042};
-  if(h>=17 && h<21) return {label:'This evening',  bg:'#0B0907', glow:0.055};
-  return                    {label:'In the night',  bg:'#060504', glow:0.038};
-}
-
-function applyTimeOfDay(){
-  var t = getTimeOfDay();
-  document.body.style.background = t.bg;
-  document.documentElement.style.background = t.bg;
-  var tg = document.getElementById('timeGreeting');
-  if(tg){
-    tg.textContent = t.label;
-    tg.style.opacity = t.label ? '1' : '0';
-    tg.style.marginBottom = t.label ? '' : '0';
-  }
-}
-
-// ════════════════════════════════════════════════════════
-// SUBTITLE TYPEWRITER — the revelation being inscribed
-// ════════════════════════════════════════════════════════
-var _typeTimer;
-var _typeGen = 0;   // generation counter — prevents stale chars inserting
-function typeSubtitle(text, el){
-  clearTimeout(_typeTimer);
-  _typeGen++;        // invalidate any in-flight typing from previous call
-  var myGen = _typeGen;
-  el.textContent = '';
-  el.style.display = text ? '' : 'none';
-  if(!text) return;
-  el.style.display = '';
-  var cursor = document.createElement('span');
-  cursor.className = 'subtitle-cursor';
-  el.appendChild(cursor);
-  var i = 0;
-  function nextChar(){
-    if(myGen !== _typeGen) return; // stale — a newer call has taken over
-    if(i < text.length){
-      el.insertBefore(document.createTextNode(text[i]), cursor);
-      i++;
-      _typeTimer = setTimeout(nextChar, 48 + Math.random()*28);
-    } else {
-      setTimeout(function(){
-        if(myGen !== _typeGen) return;
-        cursor.style.transition='opacity 1.2s ease';
-        cursor.style.opacity='0';
-        setTimeout(function(){ if(cursor.parentNode) cursor.parentNode.removeChild(cursor); },1300);
-      }, 600);
-    }
-  }
-  setTimeout(nextChar, 220);
-}
-
-// ════════════════════════════════════════════════════════
-// GOLD DUST PARTICLES
-// ════════════════════════════════════════════════════════
-(function(){
-  var canvas = document.getElementById('dustCanvas');
-  if(!canvas) return;
-  var ctx = canvas.getContext('2d');
-  var W, H, particles = [];
-
-  function resize(){
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize, {passive:true});
+  window.addEventListener('resize', resize);
   resize();
 
-  if(_prefersReducedMotion) return;
-  for(var i=0; i<11; i++){
-    particles.push({
-      x: Math.random()*(W+400) - 200,
-      y: Math.random()*H,
-      r: 0.6 + Math.random()*0.9,
-      vy: -(0.12 + Math.random()*0.22),
-      vx: (Math.random()-0.5)*0.08,
-      o: 0.012 + Math.random()*0.022,
-      drift: Math.random()*Math.PI*2,
-      driftSpeed: 0.004 + Math.random()*0.006
-    });
-  }
+  class Ember {
+    constructor() {
+      this.reset();
+      this.y = Math.random() * height; 
+    }
+    reset() {
+      this.x = (width / 2) + ((Math.random() - 0.5) * (width * 0.8));
+      this.y = height + Math.random() * 100;
+      this.size = Math.random() * 1.5 + 0.5;
+      
+      this.speedY = Math.random() * -1.2 - 0.3;
+      this.speedX = Math.random() * 1 - 0.5;
+      
+      this.life = Math.random() * 0.5 + 0.5;
+      this.opacity = 1;
+      
+      const colors = ['255, 175, 30', '210, 125, 15', '197, 165, 90'];
+      this.color = colors[Math.floor(Math.random() * colors.length)];
+      
+      // Give each spark a slight unique "twinkle" interval
+      this.twinklePhase = Math.random() * Math.PI * 2;
+    }
+    update() {
+      this.y += this.speedY;
+      this.x += this.speedX;
+      this.speedX += (Math.random() - 0.5) * 0.05; 
+      
+      this.opacity -= 0.003 / this.life;
+      this.twinklePhase += 0.1;
 
-  function drawDust(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(function(p){
-      p.y += p.vy;
-      p.x += p.vx + Math.sin(p.drift)*0.15;
-      p.drift += p.driftSpeed;
-      if(p.y < -10){ p.y = H + 10; p.x = Math.random()*(W+400)-200; }
+      if (this.opacity <= 0 || this.y < 0) {
+        this.reset();
+      }
+    }
+    draw() {
+      // Calculate active opacity incorporating the fade and a gentle twinkle
+      const activeOpacity = Math.max(0, this.opacity * (0.6 + 0.4 * Math.sin(this.twinklePhase)));
+      
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(197,165,90,'+p.o.toFixed(3)+')';
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${this.color}, ${activeOpacity})`;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = `rgba(${this.color}, ${activeOpacity})`;
       ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < 45; i++) {
+    embers.push(new Ember());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    embers.forEach(ember => {
+      ember.update();
+      ember.draw();
     });
-    requestAnimationFrame(drawDust);
+    requestAnimationFrame(animate);
   }
-  drawDust();
+  
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      animate();
+  }
 })();
-
-// ════════════════════════════════════════════════════════
-// BURNING BUSH — fire GIF + rising embers + radiance
-// ════════════════════════════════════════════════════════
-(function(){
-  if(_prefersReducedMotion) return;
-  var ec = document.getElementById('emberCanvas');
-  if(!ec) return;
-  var ctx = ec.getContext('2d');
-  var W,H;
-  function resize(){ W=ec.width=window.innerWidth; H=ec.height=window.innerHeight; }
-  window.addEventListener('resize',resize,{passive:true});
-  resize();
-
-  function OX(){ return W-190; }
-  function OY(){ return H-140; }
-
-  function Ember(){ this.reset(); }
-  Ember.prototype.reset=function(){
-    this.x=OX()+(Math.random()-0.5)*120;
-    this.y=OY()+Math.random()*60;
-    this.vx=(Math.random()-0.5)*0.9;
-    this.vy=-(0.4+Math.random()*1.8);
-    this.r=0.5+Math.random()*1.9;
-    this.life=0;
-    this.maxLife=80+Math.floor(Math.random()*200);
-    this.ph=Math.random()*Math.PI*2;
-    this.hot=Math.random()>0.38;
-  };
-  Ember.prototype.update=function(){
-    this.life++;this.ph+=0.09;
-    this.vx+=(Math.random()-0.5)*0.08;this.vx*=0.977;
-    this.x+=this.vx;this.y+=this.vy;this.vy*=0.9987;
-    if(this.life>=this.maxLife||this.y<-14) this.reset();
-  };
-  Ember.prototype.draw=function(c){
-    var p=this.life/this.maxLife;
-    var a=(1-p)*(0.6+Math.sin(this.ph)*0.28);
-    if(a<0.018) return;
-    var r,g,b;
-    if(this.hot){r=255;g=Math.floor(250-p*105);b=Math.floor(215-p*215);}
-    else{r=255;g=Math.floor(182-p*162);b=0;}
-    var sz=this.r*(1+p*0.65);
-    var grd=c.createRadialGradient(this.x,this.y,0,this.x,this.y,sz*3.8);
-    grd.addColorStop(0,'rgba('+r+','+g+','+b+','+a.toFixed(3)+')');
-    grd.addColorStop(0.42,'rgba('+r+','+g+','+b+','+(a*0.38).toFixed(3)+')');
-    grd.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
-    c.beginPath();c.arc(this.x,this.y,sz*3.8,0,Math.PI*2);
-    c.fillStyle=grd;c.fill();
-  };
-
-  var embers=[];
-  for(var i=0;i<30;i++){
-    var e=new Ember();
-    e.life=Math.floor(Math.random()*e.maxLife);
-    embers.push(e);
-  }
-
-  var _fireTarget=0.75,_fireAlpha=0.75;
-
-  function loop(){
-    _fireAlpha+=(_fireTarget-_fireAlpha)*0.035;
-    var fw=document.getElementById('fireWrap');
-    if(fw) fw.style.opacity=_fireAlpha.toFixed(3);
-    ctx.clearRect(0,0,W,H);
-    ctx.globalCompositeOperation='lighter';
-    for(var i=0;i<embers.length;i++){ embers[i].update();embers[i].draw(ctx); }
-    ctx.globalCompositeOperation='source-over';
-    requestAnimationFrame(loop);
-  }
-  loop();
-
-  window._flameDip=function(dim){ _fireTarget=dim?0.03:(_focusMode?0.09:0.22); };
-  window._flameSetFocus=function(on){ _fireTarget=on?0.09:0.22; };
-})();
-
-// ════════════════════════════════════════════════════════
-// FLAME DIP on navigation
-// ════════════════════════════════════════════════════════
-function flameDip(){
-  if(window._flameDip){ _flameDip(true); setTimeout(function(){ _flameDip(false); },520); }
-}
-
-// ════════════════════════════════════════════════════════
-// MARGIN WHISPER — rotates through Hebrew words
-// ════════════════════════════════════════════════════════
-var WHISPERS = ['\u05d0\u05d4\u05d1\u05d4','\u05d7\u05e1\u05d3','\u05e9\u05dc\u05d5\u05dd','\u05d0\u05de\u05ea','\u05d7\u05df'];
-var _whisperIdx = 0;
-function rotateWhisper(){
-  var el = document.getElementById('marginWhisper');
-  if(!el) return;
-  el.style.opacity='0';
-  setTimeout(function(){
-    _whisperIdx = (_whisperIdx+1) % WHISPERS.length;
-    el.textContent = WHISPERS[_whisperIdx];
-    el.setAttribute('lang','he');
-    el.style.opacity='1';
-  }, 3000);
-}
-setInterval(rotateWhisper, 28000);
-
-// ════════════════════════════════════════════════════════
-// HEARTBEAT — season stripe pulses on new content
-// ════════════════════════════════════════════════════════
-function pulseStripe(){
-  var stripe = document.getElementById('seasonStripe');
-  if(!stripe) return;
-  stripe.classList.remove('pulse');
-  void stripe.offsetWidth;
-  stripe.classList.add('pulse');
-  setTimeout(function(){ stripe.classList.remove('pulse'); }, 900);
-}
-
-// ════════════════════════════════════════════════════════
-// END MARK — appears after reading finishes loading
-// ════════════════════════════════════════════════════════
-function showEndMark(){
-  var em = document.getElementById('endMark');
-  if(!em) return;
-  em.classList.remove('visible');
-  setTimeout(function(){ em.classList.add('visible'); }, 1800);
-}
-
-// ════════════════════════════════════════════════════════
-// RETURN RECOGNITION — the page remembers you
-// ════════════════════════════════════════════════════════
-function handleReturnRecognition(){
-  try{
-    var visits = parseInt(localStorage.getItem('ishi_visits')||'0') + 1;
-    localStorage.setItem('ishi_visits', visits);
-
-    // Visit 2+: footer verse says "— still."
-    if(visits >= 2){
-      var stillEl = document.querySelector('.f-verse-still');
-      if(stillEl) stillEl.style.display='inline';
-    }
-
-    // Visit 7+: a single greeting appears for 3 seconds, then dissolves
-    if(visits >= 7){
-      var rg = document.getElementById('returnGreet');
-      if(rg){
-        rg.textContent = 'You have come back.';
-        setTimeout(function(){ rg.classList.add('visible'); }, 1200);
-        setTimeout(function(){ rg.classList.remove('visible'); }, 4200);
-      }
-    }
-  } catch(e){}
-}
-
-// ════════════════════════════════════════════════════════
-// READING TIME — sacred numerals
-// ════════════════════════════════════════════════════════
-var SACRED_NUMS = ['','One','Two','Three','Four','Five','Six','Seven',
-  'Eight','Nine','Ten','Eleven','Twelve','Thirteen','Fourteen','Fifteen',
-  'Sixteen','Seventeen','Eighteen','Nineteen','Twenty'];
-
-function setReadingTime(htmlContent){
-  var el = document.getElementById('readingTime');
-  if(!el) return;
-  var words = htmlContent.replace(/<[^>]+>/g,'').split(/\s+/).filter(Boolean).length;
-  var mins = Math.max(1, Math.round(words / 175));
-  var label = (mins < SACRED_NUMS.length ? SACRED_NUMS[mins] : mins) + ' minute' + (mins===1?'':'s');
-  el.textContent = label;
-}
-
-// ════════════════════════════════════════════════════════
-// IMAGE VEIL REVEAL
-// ════════════════════════════════════════════════════════
-function initImageVeil(){
-  var imgs = document.querySelectorAll('.com-body img');
-  if(!imgs.length) return;
-  imgs.forEach(function(img){
-    img.classList.remove('unveiled');
-    if(img.complete && img.naturalWidth){
-      setTimeout(function(){ img.classList.add('unveiled'); }, 300);
-    } else {
-      img.addEventListener('load', function(){
-        setTimeout(function(){ img.classList.add('unveiled'); }, 200);
-      });
-    }
-  });
-}
-
-// ════════════════════════════════════════════════════════
-// SUBSCRIBE EARNED — revealed only to those who finish
-// ════════════════════════════════════════════════════════
-var _subEarned = false;
-var _subScrollHandler = null;
-function initSubscribeEarn(){
-  if(_subEarned) return;
-  if(_subScrollHandler) window.removeEventListener('scroll', _subScrollHandler);
-  var sub = document.querySelector('.sub-wrap');
-  if(!sub) return;
-  _subScrollHandler = function(){
-    var bottom = document.documentElement.scrollHeight - window.innerHeight;
-    if(window.scrollY >= bottom - 220){
-      if(!_subEarned){
-        _subEarned = true;
-        sub.classList.add('earned');
-        window.removeEventListener('scroll', _subScrollHandler);
-      }
-    }
-  };
-  window.addEventListener('scroll', _subScrollHandler, {passive:true});
-  _subScrollHandler();
-}
-
-// ════════════════════════════════════════════════════════
-// HAPTIC PULSE — body receives the new day
-// ════════════════════════════════════════════════════════
-var _userHasInteracted = false;
-document.addEventListener('touchstart', function(){ _userHasInteracted=true; }, {once:true, passive:true});
-document.addEventListener('click', function(){ _userHasInteracted=true; }, {once:true});
-function hapticPulse(){
-  try{ if(_userHasInteracted && navigator.vibrate) navigator.vibrate(40); }catch(e){}
-}
-
-// ════════════════════════════════════════════════════════
-// FOCUS MODE — pure encounter
-// ════════════════════════════════════════════════════════
-var _focusMode = false;
-function toggleFocus(){
-  _focusMode = !_focusMode;
-  document.body.classList.toggle('focus-mode', _focusMode);
-  var hint = document.getElementById('focusHint');
-  if(hint) hint.style.opacity = _focusMode ? '0' : '0.1';
-  if(window._flameSetFocus) _flameSetFocus(_focusMode);
-}
-document.addEventListener('keydown', function(e){
-  if(e.target.tagName === 'INPUT') return;
-  if(e.key === 'f' || e.key === 'F') toggleFocus();
-});
-
-// ═══════════════════════════════════════════════════════
-// BELL — a tone for the new day
-// ═══════════════════════════════════════════════════════
-var _bellEnabled = false;
-var _audioCtx = null;
-
-function getAudioCtx(){
-  if(!_audioCtx){
-    try{ _audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
-  }
-  return _audioCtx;
-}
-
-function ringBell(){
-  if(!_bellEnabled) return;
-  var ctx = getAudioCtx();
-  if(!ctx) return;
-  var p = (ctx.state==='suspended') ? ctx.resume() : Promise.resolve();
-  p.then(function(){
-    var now = ctx.currentTime;
-    // Bell timbre: fundamental + inharmonic overtones + sub-body
-    // Ratios approximate a church bell's spectrum
-    var partials=[
-      {f:440,  a:0.065, type:'sine'},
-      {f:440*2.756, a:0.018, type:'sine'},   // minor 10th — bell characteristic
-      {f:440*5.404, a:0.009, type:'sine'},   // upper partial
-      {f:220,  a:0.025, type:'triangle'},    // sub-body warmth
-      {f:440*1.22,  a:0.012, type:'sine'}    // slight detuning for life
-    ];
-    partials.forEach(function(partial){
-      var osc = ctx.createOscillator();
-      var gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.type = partial.type||'sine';
-      osc.frequency.setValueAtTime(partial.f, now);
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(partial.a, now + 0.012);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.4);
-      osc.start(now);
-      osc.stop(now + 2.5);
-    });
-  }).catch(function(){});
-}
-
-function toggleBell(){
-  _bellEnabled = !_bellEnabled;
-  if(_bellEnabled && !_audioCtx) getAudioCtx();
-  var btn = document.getElementById('bellBtn');
-  if(btn){
-    var bs=btn.querySelector('span')||btn; bs.textContent = _bellEnabled ? '🔔' : '🔕';
-    btn.classList.toggle('on', _bellEnabled);
-  }
-  try{ localStorage.setItem('ishi_bell', _bellEnabled?'1':'0'); }catch(e){}
-}
-
-
-setFooterVerse();
-init();
 </script>
 </body>
 </html>
