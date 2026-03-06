@@ -1022,9 +1022,8 @@ function render(){
     if(region){
       region.classList.remove('turning-out');
       void region.offsetWidth;
+      region.style.opacity = '1'; // navigation: always visible, transition on turning-out
       region.classList.add('turning-in');
-      // Fade in — content rises slowly from darkness
-      region.style.opacity = '1';
       setTimeout(function(){ region.classList.remove('turning-in'); }, 1450);
     }
   }, _td);
@@ -1216,10 +1215,17 @@ function init(){
   applyTimeOfDay();
   handleReturnRecognition();
   try{ if(localStorage.getItem('ishi_bell')==='1'){ _bellEnabled=true; var bb=document.getElementById('bellBtn'); if(bb){var bbs=bb.querySelector('span')||bb;bbs.textContent='🔔';bb.classList.add('on');} } }catch(e){}
-  // Antiphon and content begin together —
-  // antiphon appears in foreground while content fades slowly behind it
+  // Antiphon and content begin together
   showAntiphon();
   loadAndRender(paramDate);
+  // Double rAF ensures browser paints opacity:0 before transition starts.
+  // This is the only correct way to trigger a CSS transition from 0.
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      var region = document.getElementById('contentRegion');
+      if(region) region.style.opacity = '1';
+    });
+  });
 }
 
 function handleSubscribe(){
