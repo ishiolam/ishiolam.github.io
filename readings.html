@@ -50,12 +50,6 @@ nav.hidden{transform:translateY(-100%);opacity:0}
 
 main{
   max-width:620px;margin:0 auto;padding:108px 36px 160px;
-  /* Vellum surface — grain applied to content itself */
-  filter:url(#vellum);
-  /* Codex edges */
-  box-shadow:
-    inset 0 0 80px rgba(197,165,90,0.02),
-    inset 0 0 200px rgba(139,105,20,0.014);
 }
 
 /* DATE NAV - always visible */
@@ -528,35 +522,6 @@ body.focus-mode main{
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <!-- Vellum grain: coarse fibrous texture of scraped skin -->
-    <filter id="vellum" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
-      <feTurbulence type="fractalNoise" baseFrequency="0.65 0.72" numOctaves="4" seed="8" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
-      <feComponentTransfer in="grayNoise" result="subtleNoise">
-        <feFuncA type="linear" slope="0.028"/>
-      </feComponentTransfer>
-      <feBlend in="SourceGraphic" in2="subtleNoise" mode="multiply" result="blended"/>
-      <!-- Warm vellum tint: slight yellow-brown stain -->
-      <feColorMatrix type="matrix" in="blended"
-        values="1.04 0.02 0    0  0.008
-                0.01 1.01 0.01 0  0.004
-                0    0    0.96 0  0
-                0    0    0    1  0"/>
-    </filter>
-    <!-- Age stain: single faint circular water mark -->
-    <filter id="ageStain" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" seed="42" result="stain"/>
-      <feColorMatrix type="matrix" in="stain"
-        values="0 0 0 0 0.08
-                0 0 0 0 0.06
-                0 0 0 0 0.02
-                0 0 0 0.06 0"/>
-      <feComposite operator="in" in2="SourceGraphic"/>
-    </filter>
-  </defs>
-</svg>
 <div id="readProgress"></div>
 <div id="textureOverlay" aria-hidden="true"></div>
 <div id="vignetteOverlay" aria-hidden="true"></div>
@@ -630,10 +595,10 @@ body.focus-mode main{
 <footer>
   <div class="f-verse" id="footerVerse"></div>
   <div class="f-name">Ishi Olam</div>
-  <a href="/cdn-cgi/l/email-protection#7e0850170d16175011121f133e19131f1712501d1113" class="f-mail"><span class="__cf_email__" data-cfemail="8ef8a0e7fde6e7a0e1e2efe3cee9e3efe7e2a0ede1e3">[email&#160;protected]</span></a>
+  <a href="mailto:v.ishi.olam@gmail.com" class="f-mail">v.ishi.olam@gmail.com</a>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var SUBSTACK_SLUG = 'ishiolam';
 var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 var WEEKDAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -733,6 +698,12 @@ function render(){
       _dec.innerHTML = _rawSub;
       _rawSub = _dec.value;
     }
+    var _rawSub = post.subtitle || '';
+    if(_rawSub && _rawSub.includes('&')){
+      var _dec = document.createElement('textarea');
+      _dec.innerHTML = _rawSub;
+      _rawSub = _dec.value;
+    }
     typeSubtitle(_rawSub, subtitle);
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
@@ -825,6 +796,20 @@ function parseItem(item){
   // Subtitle: try explicit tag first, then itunes:subtitle, then
   // first <em> or <i> block in content that stands alone as a short phrase
   var sub = getTag(item,'subtitle') || getTag(item,'itunes:subtitle') || '';
+
+  // Substack has no subtitle tag — extract first standalone italic phrase from body
+  if(!sub){
+    var emMatch = rawHtml.match(/<(?:em|i)[^>]*>([^<]{8,160})<\/(?:em|i)>/);
+    if(emMatch && emMatch[1] && emMatch[1].split(' ').length <= 20){
+      sub = emMatch[1];
+      // Decode any entities in the extracted subtitle
+      var tmp = document.createElement('textarea');
+      tmp.innerHTML = sub;
+      sub = tmp.value;
+      // Remove from body so it doesn't appear twice
+      rawHtml = rawHtml.replace(emMatch[0], '');
+    }
+  }
 
   return {
     dateKey: m?m[1]:null,
