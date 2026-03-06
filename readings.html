@@ -1144,7 +1144,7 @@ function typeSubtitle(text, el){
     embers.push(e);
   }
 
-  var _fireTarget=0.38,_fireAlpha=0.38;
+  var _fireTarget=0.22,_fireAlpha=0.22;
 
   function loop(){
     _fireAlpha+=(_fireTarget-_fireAlpha)*0.035;
@@ -1158,8 +1158,8 @@ function typeSubtitle(text, el){
   }
   loop();
 
-  window._flameDip=function(dim){ _fireTarget=dim?0.04:(_focusMode?0.18:0.38); };
-  window._flameSetFocus=function(on){ _fireTarget=on?0.18:0.38; };
+  window._flameDip=function(dim){ _fireTarget=dim?0.03:(_focusMode?0.09:0.22); };
+  window._flameSetFocus=function(on){ _fireTarget=on?0.09:0.22; };
 })();
 
 // ════════════════════════════════════════════════════════
@@ -1296,8 +1296,11 @@ function initSubscribeEarn(){
 // ════════════════════════════════════════════════════════
 // HAPTIC PULSE — body receives the new day
 // ════════════════════════════════════════════════════════
+var _userHasInteracted = false;
+document.addEventListener('touchstart', function(){ _userHasInteracted=true; }, {once:true, passive:true});
+document.addEventListener('click', function(){ _userHasInteracted=true; }, {once:true});
 function hapticPulse(){
-  try{ if(navigator.vibrate) navigator.vibrate(40); }catch(e){}
+  try{ if(_userHasInteracted && navigator.vibrate) navigator.vibrate(40); }catch(e){}
 }
 
 // ════════════════════════════════════════════════════════
