@@ -568,13 +568,13 @@ function render(){
     var subtitle = document.getElementById('comSubtitle');
     var body = document.getElementById('comBody');
     // Decode any HTML entities in subtitle (RSS may contain &#8217; etc.)
-  var _rawSub = post.subtitle || '';
-  if(_rawSub && _rawSub.includes('&')){
-    var _dec = document.createElement('textarea');
-    _dec.innerHTML = _rawSub;
-    _rawSub = _dec.value;
-  }
-  typeSubtitle(_rawSub, subtitle);
+    var _rawSub = post.subtitle || '';
+    if(_rawSub && _rawSub.includes('&')){
+      var _dec = document.createElement('textarea');
+      _dec.innerHTML = _rawSub;
+      _rawSub = _dec.value;
+    }
+    typeSubtitle(_rawSub, subtitle);
     body.classList.remove('content-loaded');
     body.innerHTML = post.html;
     if(post.link){
@@ -1144,7 +1144,7 @@ function typeSubtitle(text, el){
     embers.push(e);
   }
 
-  var _fireTarget=0.22,_fireAlpha=0.22;
+  var _fireTarget=0.75,_fireAlpha=0.75;
 
   function loop(){
     _fireAlpha+=(_fireTarget-_fireAlpha)*0.035;
